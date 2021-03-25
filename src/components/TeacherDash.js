@@ -15,7 +15,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   storeTeacherAuthIDAction,
-  storeTeacherAssignmentsGeneralInfoAction,
   storeTeacherMilestonesGeneralInfoAction,
   storeTeacherForumsGeneralInfoAction,
   storeTeacherArticlesGeneralInfoAction,
@@ -70,18 +69,6 @@ export default function TeacherDash() {
       .then((snapshot) => {
         const data = firebaseLooper(snapshot);
         dispatch(storeTeacherStatisticsGeneralInfoAction(data));
-      })
-      .catch((err) => console.log(err));
-  };
-  const getAllAssignmentData = () => {
-    const assignments_Collection = teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Assignments");
-    assignments_Collection
-      .get()
-      .then((snapshot) => {
-        const data = firebaseLooper(snapshot);
-        dispatch(storeTeacherAssignmentsGeneralInfoAction(data));
       })
       .catch((err) => console.log(err));
   };
@@ -197,7 +184,6 @@ export default function TeacherDash() {
     }
     getAllUserData();
     getAllStatisticData();
-    getAllAssignmentData();
     getAllMilestoneData();
     getAllForumDiscussionData();
     getAllArticleData();

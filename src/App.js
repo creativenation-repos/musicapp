@@ -16,6 +16,8 @@ import CoursesMain from "./components/Teachers/Courses/CoursesMain";
 import CourseFullWizard from "./components/Teachers/Courses/CourseFullWizard";
 import CourseEditWizard from "./components/Teachers/Courses/CourseEditWizard";
 import AssignmentsMain from "./components/Teachers/Assignments/AssignmentsMain";
+import AssignmentView from "./components/Teachers/Assignments/AssignmentView";
+import AssignmentEdit from "./components/Teachers/Assignments/AssignmentEdit";
 import MilestonesMain from "./components/Teachers/Milestones/MilestonesMain";
 import ForumsMain from "./components/Teachers/Forums/ForumsMain";
 import ArticlesMain from "./components/Teachers/Articles/ArticlesMain";
@@ -36,6 +38,8 @@ import StudentCourseLesson from "./components/Students/Courses/StudentCourseLess
 import StudentCourseExercise from "./components/Students/Courses/StudentCourseExercise";
 import StudentCourseQuiz from "./components/Students/Courses/StudentCourseQuiz";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { BrowserRouter as Router, Link, Switch, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -98,29 +102,46 @@ export default function App() {
             <div id="mainMenu">
               {/* Menu */}
               <div>
-                <button onClick={() => dispatch(menuAction())}>Menu</button>
+                <button
+                  id="mainmenuburger"
+                  onClick={() => dispatch(menuAction())}
+                >
+                  <FontAwesomeIcon id="mainmenuburger-icon" icon={faBars} />
+                </button>
               </div>
               {/* Nav */}
               {menuState ? (
                 <div>
-                  <ul>
+                  <ul class="list-item">
                     <li>
-                      <Link to="/">Home</Link>
+                      <Link class="Link" to="/">
+                        Home
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/courses">Courses</Link>
+                      <Link class="Link" to="/courses">
+                        Courses
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/plans">Plans</Link>
+                      <Link class="Link" to="/plans">
+                        Plans
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/support">Support</Link>
+                      <Link class="Link" to="/support">
+                        Support
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/contact">Contact</Link>
+                      <Link class="Link" to="/contact">
+                        Contact
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/login">Login</Link>
+                      <Link class="Link" to="/login">
+                        Login
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -441,6 +462,13 @@ export default function App() {
           <Route path="/teacher-assignments">
             <AssignmentsMain />
           </Route>
+          <Route path="/teacher-assignment-view">
+            <AssignmentView />
+          </Route>
+          <Route path="/teacher-assignment-edit">
+            <AssignmentEdit />
+          </Route>
+          {/* Milestones */}
           <Route path="/teacher-milestones">
             <MilestonesMain />
           </Route>

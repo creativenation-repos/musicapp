@@ -1,26 +1,80 @@
 import React, { useEffect } from "react";
 
 import TopBar from "../Dash/TopBar";
-import AssignmentBlock from "./AssignmentBlock";
 import DashFooter from "../Dash/DashFooter";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-
+import { teachers_Collection } from "../../../utils/firebase";
+import { firebaseLooper } from "../../../utils/tools";
+import {
+  storeTeacherAssignmentsGeneralInfoAction,
+  storeTeacherSingleAssignmentAction,
+} from "../../../redux/actions";
 
 export default function AssignmentsMain() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  const assignmentState = useSelector(
+  const assignments = useSelector(
     (state) => state.storeTeacherAssignmentsGeneralInfoReducer
   );
+
+  // GET
+  const getAllAssignments = () => {
+    teachers_Collection
+      .doc(teacherAuthID)
+      .collection("Assignments")
+      .get()
+      .then((snapshot) => {
+        const assData = firebaseLooper(snapshot);
+        dispatch(storeTeacherAssignmentsGeneralInfoAction(assData));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  // HANDLE
+  const handleAssignmentList = () => {
+    return assignments.map((ass, i) => {
+      return (
+        <div key={i}>
+          <h3>{ass.Name}</h3>
+          {ass.Date ? (
+            <p>Assigned: {ass.Date.toDate().toString().substr(4, 11)}</p>
+          ) : null}
+          {ass.Due ? (
+            <p>Due: {ass.Due.toDate().toString().substr(4, 11)}</p>
+          ) : null}
+          <button id={ass.id} onClick={navAssignmentView}>
+            View
+          </button>
+          <button class="btn-salmon">Remove</button>
+        </div>
+      );
+    });
+  };
+
+  // NAV
+  const navAssignmentView = (event) => {
+    // Get assignment and store it
+    const assID = event.target.getAttribute("id");
+    assignments.forEach((ass) => {
+      if (ass.id === assID) {
+        dispatch(storeTeacherSingleAssignmentAction(ass));
+      }
+    });
+
+    history.push("/teacher-assignment-view");
+  };
 
   useEffect(() => {
     if (!teacherAuthID) {
       history.push("/teacherdash");
       return;
     }
+
+    getAllAssignments();
   }, []);
 
   return (
@@ -32,15 +86,14 @@ export default function AssignmentsMain() {
 
       {/* Content */}
       <div>
+        {/* Search */}
         <div>
           <input id="tbAssSearch" type="text" placeholder="Search" />
           <button>Create New Assignment</button>
         </div>
-        <div>
-          {assignmentState.map((ass, i) => {
-            return <AssignmentBlock key={i} name={ass.Name} due={ass.Due} assignedTo={ass.AssignedTo} /> ;
-          })}
-        </div>
+        <br />
+        {/* Assignment List */}
+        <div>{handleAssignmentList()}</div>
       </div>
 
       {/* Footer */}

@@ -1,18 +1,41 @@
 import React, { Component } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCommentAlt,
+  faClipboardCheck,
+  faCalendarDay,
+  faComments,
+  faSearch,
+  faBell,
+} from "@fortawesome/free-solid-svg-icons";
+
+import "./TopBar.css";
 
 export default class TopBar extends Component {
   render() {
     return (
       <div>
         <div>
-          <button>New Message</button>
-          <button>New Assignment</button>
-          <button>New Event</button>
-          <button>New Forum Post</button>
+          <button class="btn-topbar">
+            <FontAwesomeIcon icon={faCommentAlt} />
+          </button>
+          <button class="btn-topbar">
+            <FontAwesomeIcon icon={faClipboardCheck} />
+          </button>
+          <button class="btn-topbar">
+            <FontAwesomeIcon icon={faCalendarDay} />
+          </button>
+          <button class="btn-topbar">
+            <FontAwesomeIcon icon={faComments} />
+          </button>
         </div>
         <div>
-          <button>Search</button>
-          <button>Notifications</button>
+          <button class="btn-topbar">
+            <FontAwesomeIcon icon={faSearch} />
+          </button>
+          <button class="btn-topbar">
+            <FontAwesomeIcon icon={faBell} />
+          </button>
           <div>
             <div>
               <p>Jesus Jimenez</p>
@@ -25,6 +48,7 @@ export default class TopBar extends Component {
             <img src="" alt="" />
           </div>
         </div>
+        <br />
       </div>
     );
   }

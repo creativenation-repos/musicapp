@@ -1,4 +1,5 @@
 import React from "react";
+import "./Login/Login.css";
 
 import { useHistory } from "react-router-dom";
 import {
@@ -38,7 +39,7 @@ export default function Login() {
             // If they do exist and are correct, then do the stuffs
 
             document.querySelector("#mainMenu").classList.add("hide");
-            
+
             // Choose between teacher or student depending on their credentials
 
             dispatch(isLoggedInAction());
@@ -46,14 +47,18 @@ export default function Login() {
             if (user.AccountType === "Teacher") {
               // Save authID
               dispatch(storeTeacherAuthIDAction(username));
-              dispatch(storeAccountTypeAction('Teacher'));
-              document.querySelector("#teacherMainMenu").classList.remove("hide");
+              dispatch(storeAccountTypeAction("Teacher"));
+              document
+                .querySelector("#teacherMainMenu")
+                .classList.remove("hide");
               history.push("/teacherdash");
             } else if (user.AccountType === "Student") {
               // Save authID
               dispatch(storeStudentAuthIDAction(username));
-              dispatch(storeAccountTypeAction('Student'));
-              document.querySelector("#studentMainMenu").classList.remove("hide");
+              dispatch(storeAccountTypeAction("Student"));
+              document
+                .querySelector("#studentMainMenu")
+                .classList.remove("hide");
               history.push("/studentdash");
             }
           }
@@ -91,7 +96,9 @@ export default function Login() {
               <input id="tbPassword" type="password" placeholder="Password" />
             </div>
             <div>
-              <button onClick={handleRouteClick}>Login</button>
+              <button class="btn-navy" onClick={handleRouteClick}>
+                Login
+              </button>
             </div>
             <div>
               <p>Are you new to Musicademy?</p>

@@ -761,6 +761,17 @@ export const storeSingleCourseExerReducer = (state = {}, action) => {
   }
 };
 
+// Assignment Reducers
+export const storeTeacherSingleAssignmentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeTeacherSingleAssignmentAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // Messages Reducers
 export const storeTeacherMessagesReducer = (state = [], action) => {
   switch (action.type) {
@@ -1186,6 +1197,7 @@ export const allReducers = combineReducers({
   toggleEditLessonFormReducer,
   storeSingleCourseLessonReducer,
   storeSingleCourseExerReducer,
+  storeTeacherSingleAssignmentReducer,
 
   // Student Reducers
   storeStudentUserDataReducer,

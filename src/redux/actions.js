@@ -473,6 +473,14 @@ export const storeSingleCourseExerAction = (payload) => {
   };
 };
 
+// Assignments
+export const storeTeacherSingleAssignmentAction = (payload) => {
+  return {
+    type: "storeTeacherSingleAssignmentAction",
+    payload: payload,
+  };
+};
+
 // Messages Actions
 export const storeTeacherMessagesAction = (payload) => {
   return {
