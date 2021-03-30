@@ -18,6 +18,7 @@ import CourseEditWizard from "./components/Teachers/Courses/CourseEditWizard";
 import AssignmentsMain from "./components/Teachers/Assignments/AssignmentsMain";
 import AssignmentView from "./components/Teachers/Assignments/AssignmentView";
 import AssignmentEdit from "./components/Teachers/Assignments/AssignmentEdit";
+import AssignmentNew from "./components/Teachers/Assignments/AssignmentNew";
 import MilestonesMain from "./components/Teachers/Milestones/MilestonesMain";
 import ForumsMain from "./components/Teachers/Forums/ForumsMain";
 import ArticlesMain from "./components/Teachers/Articles/ArticlesMain";
@@ -37,6 +38,8 @@ import StudentCoursePreview from "./components/Students/Courses/StudentCoursePre
 import StudentCourseLesson from "./components/Students/Courses/StudentCourseLesson";
 import StudentCourseExercise from "./components/Students/Courses/StudentCourseExercise";
 import StudentCourseQuiz from "./components/Students/Courses/StudentCourseQuiz";
+import StudentAssignmentsMain from "./components/Students/Assignments/StudentAssignmentsMain";
+import StudentAssignmentView from "./components/Students/Assignments/StudentAssignmentView";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -49,6 +52,7 @@ import {
 } from "./redux/actions";
 
 import "./App.css";
+
 
 export default function App() {
   const menuState = useSelector((state) => state.menuReducer);
@@ -169,19 +173,27 @@ export default function App() {
               <div>
                 <ul className="list-item">
                   <li>
-                    <Link to="/teacherdash">
+                    <Link className="list-item-link" to="/teacherdash">
                       <img src="" alt="" />
                       <p className="menuText">Dashboard</p>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/teacher-statistics">
+                    <Link
+                      className="list-item-link"
+                      className="list-item-link"
+                      to="/teacher-statistics"
+                    >
                       <img src="" alt="" />
                       <p className="menuText">Statistics</p>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/teacher-profile">
+                    <Link
+                      className="list-item-link"
+                      className="list-item-link"
+                      to="/teacher-profile"
+                    >
                       <img src="" alt="" />
                       <p className="menuText">Profile</p>
                     </Link>
@@ -196,43 +208,71 @@ export default function App() {
                 </div>
                 <ul className="list-item">
                   <li>
-                    <Link to="/teacher-students">
+                    <Link
+                      className="list-item-link"
+                      className="list-item-link"
+                      to="/teacher-students"
+                    >
                       <img src="" alt="" />
                       <p className="menuText">Students</p>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/teacher-groups">
+                    <Link
+                      className="list-item-link"
+                      className="list-item-link"
+                      to="/teacher-groups"
+                    >
                       <img src="" alt="" />
                       <p className="menuText">Groups</p>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/teacher-courses">
+                    <Link
+                      className="list-item-link"
+                      className="list-item-link"
+                      to="/teacher-courses"
+                    >
                       <img src="" alt="" />
                       <p className="menuText">Courses</p>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/teacher-assignments">
+                    <Link
+                      className="list-item-link"
+                      className="list-item-link"
+                      to="/teacher-assignments"
+                    >
                       <img src="" alt="" />
                       <p className="menuText">Assignments</p>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/teacher-milestones">
+                    <Link
+                      className="list-item-link"
+                      className="list-item-link"
+                      to="/teacher-milestones"
+                    >
                       <img src="" alt="" />
                       <p className="menuText">Milestones</p>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/teacher-forums">
+                    <Link
+                      className="list-item-link"
+                      className="list-item-link"
+                      to="/teacher-forums"
+                    >
                       <img src="" alt="" />
                       <p className="menuText">Forums</p>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/teacher-articles">
+                    <Link
+                      className="list-item-link"
+                      className="list-item-link"
+                      to="/teacher-articles"
+                    >
                       <img src="" alt="" />
                       <p className="menuText">Articles</p>
                     </Link>
@@ -248,31 +288,51 @@ export default function App() {
                 <div>
                   <ul className="list-item">
                     <li>
-                      <Link to="/teacher-messages">
+                      <Link
+                        className="list-item-link"
+                        className="list-item-link"
+                        to="/teacher-messages"
+                      >
                         <img src="" alt="" />
                         <p className="menuText">Messages</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/teacher-filemanager">
+                      <Link
+                        className="list-item-link"
+                        className="list-item-link"
+                        to="/teacher-filemanager"
+                      >
                         <img src="" alt="" />
                         <p className="menuText">File Manager</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/teacher-events">
+                      <Link
+                        className="list-item-link"
+                        className="list-item-link"
+                        to="/teacher-events"
+                      >
                         <img src="" alt="" />
                         <p className="menuText">Events</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/teacher-invoices">
+                      <Link
+                        className="list-item-link"
+                        className="list-item-link"
+                        to="/teacher-invoices"
+                      >
                         <img src="" alt="" />
                         <p className="menuText">Invoices</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/teacher-settings">
+                      <Link
+                        className="list-item-link"
+                        className="list-item-link"
+                        to="/teacher-settings"
+                      >
                         <img src="" alt="" />
                         <p className="menuText">Settings</p>
                       </Link>
@@ -289,13 +349,21 @@ export default function App() {
                 <div>
                   <ul className="list-item">
                     <li>
-                      <Link to="/teacher-tutorials">
+                      <Link
+                        className="list-item-link"
+                        className="list-item-link"
+                        to="/teacher-tutorials"
+                      >
                         <img src="" alt="" />
                         <p className="menuText">Tutorials</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/teacher-support">
+                      <Link
+                        className="list-item-link"
+                        className="list-item-link"
+                        to="/teacher-support"
+                      >
                         <img src="" alt="" />
                         <p className="menuText">Support</p>
                       </Link>
@@ -326,19 +394,19 @@ export default function App() {
               <div>
                 <ul className="list-item">
                   <li>
-                    <Link to="/studentdash">
+                    <Link className="list-item-link" to="/studentdash">
                       <img src="" alt="" />
                       <p className="menuText">Dashboard</p>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/student-statistics">
+                    <Link className="list-item-link" to="/student-statistics">
                       <img src="" alt="" />
                       <p className="menuText">Statistics</p>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/student-profile">
+                    <Link className="list-item-link" to="/student-profile">
                       <img src="" alt="" />
                       <p className="menuText">Profile</p>
                     </Link>
@@ -353,13 +421,17 @@ export default function App() {
                 </div>
                 <ul className="list-item">
                   <li>
-                    <Link to="/student-connections">
+                    <Link className="list-item-link" to="/student-connections">
                       <img src="" alt="" />
                       <p className="menuText">Connections</p>
                     </Link>
-                    <Link to="/student-courses">
+                    <Link className="list-item-link" to="/student-courses">
                       <img src="" alt="" />
                       <p className="menuText">Courses</p>
+                    </Link>
+                    <Link className="list-item-link" to="/student-assignments">
+                      <img src="" alt="" />
+                      <p className="menuText">Assignments</p>
                     </Link>
                   </li>
                 </ul>
@@ -373,7 +445,7 @@ export default function App() {
                 <div>
                   <ul className="list-item">
                     <li>
-                      <Link to="/teacher-messages">
+                      <Link className="list-item-link" to="/teacher-messages">
                         <img src="" alt="" />
                         <p className="menuText">Messages</p>
                       </Link>
@@ -390,13 +462,13 @@ export default function App() {
                 <div>
                   <ul className="list-item">
                     <li>
-                      <Link to="/student-tutorials">
+                      <Link className="list-item-link" to="/student-tutorials">
                         <img src="" alt="" />
                         <p className="menuText">Tutorials</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/student-support">
+                      <Link className="list-item-link" to="/student-support">
                         <img src="" alt="" />
                         <p className="menuText">Support</p>
                       </Link>
@@ -468,6 +540,9 @@ export default function App() {
           <Route path="/teacher-assignment-edit">
             <AssignmentEdit />
           </Route>
+          <Route path="/teacher-assignment-new">
+            <AssignmentNew />
+          </Route>
           {/* Milestones */}
           <Route path="/teacher-milestones">
             <MilestonesMain />
@@ -511,6 +586,7 @@ export default function App() {
           <Route path="/student-profile">
             <StudentProfileMain />
           </Route>
+          {/* Courses */}
           <Route path="/student-courses">
             <StudentCoursesMain />
           </Route>
@@ -525,6 +601,13 @@ export default function App() {
           </Route>
           <Route path="/student-course-quiz">
             <StudentCourseQuiz />
+          </Route>
+          {/* Assignments */}
+          <Route path="/student-assignments">
+            <StudentAssignmentsMain />
+          </Route>
+          <Route path="/student-assignment-view">
+            <StudentAssignmentView />
           </Route>
         </Switch>
       </div>

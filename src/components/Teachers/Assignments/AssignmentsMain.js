@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import { teachers_Collection } from "../../../utils/firebase";
 import { firebaseLooper } from "../../../utils/tools";
 import {
+  storeTeacherAssignmentAssigneesAction,
   storeTeacherAssignmentsGeneralInfoAction,
   storeTeacherSingleAssignmentAction,
 } from "../../../redux/actions";
@@ -36,23 +37,25 @@ export default function AssignmentsMain() {
 
   // HANDLE
   const handleAssignmentList = () => {
-    return assignments.map((ass, i) => {
-      return (
-        <div key={i}>
-          <h3>{ass.Name}</h3>
-          {ass.Date ? (
-            <p>Assigned: {ass.Date.toDate().toString().substr(4, 11)}</p>
-          ) : null}
-          {ass.Due ? (
-            <p>Due: {ass.Due.toDate().toString().substr(4, 11)}</p>
-          ) : null}
-          <button id={ass.id} onClick={navAssignmentView}>
-            View
-          </button>
-          <button class="btn-salmon">Remove</button>
-        </div>
-      );
-    });
+    if (assignments.length > 0) {
+      return assignments.map((ass, i) => {
+        return (
+          <div key={i}>
+            <h3>{ass.Name}</h3>
+            {ass.Date ? (
+              <p>Assigned: {ass.Date.toDate().toString().substr(4, 11)}</p>
+            ) : null}
+            {ass.Due ? (
+              <p>Due: {ass.Due.toDate().toString().substr(4, 11)}</p>
+            ) : null}
+            <button id={ass.id} onClick={navAssignmentView}>
+              View
+            </button>
+            <button class="btn-salmon">Remove</button>
+          </div>
+        );
+      });
+    }
   };
 
   // NAV
@@ -62,10 +65,14 @@ export default function AssignmentsMain() {
     assignments.forEach((ass) => {
       if (ass.id === assID) {
         dispatch(storeTeacherSingleAssignmentAction(ass));
+        dispatch(storeTeacherAssignmentAssigneesAction(ass.Assignees));
       }
     });
 
     history.push("/teacher-assignment-view");
+  };
+  const navAssignmentNew = () => {
+    history.push("/teacher-assignment-new");
   };
 
   useEffect(() => {
@@ -89,7 +96,9 @@ export default function AssignmentsMain() {
         {/* Search */}
         <div>
           <input id="tbAssSearch" type="text" placeholder="Search" />
-          <button>Create New Assignment</button>
+          <button className="btn-navy" onClick={navAssignmentNew}>
+            Create New Assignment
+          </button>
         </div>
         <br />
         {/* Assignment List */}

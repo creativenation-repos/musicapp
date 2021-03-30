@@ -481,6 +481,26 @@ export const storeTeacherSingleAssignmentAction = (payload) => {
   };
 };
 
+export const toggleAssigneeFormAction = () => {
+  return {
+    type: "toggleAssigneeFormAction",
+  };
+};
+
+export const storeTeacherNewAssignmentTypeAction = (payload) => {
+  return {
+    type: "storeTeacherNewAssignmentTypeAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherAssignmentAssigneesAction = (payload) => {
+  return {
+    type: "storeTeacherAssignmentAssigneesAction",
+    payload: payload,
+  };
+};
+
 // Messages Actions
 export const storeTeacherMessagesAction = (payload) => {
   return {
@@ -712,6 +732,35 @@ export const storeStudentQuizResultsAction = (payload) => {
 export const storeStudentNextLessonAction = (payload) => {
   return {
     type: "storeStudentNextLessonAction",
+    payload: payload,
+  };
+};
+
+// Assignments
+export const storeStudentAssignmentsAction = (payload) => {
+  return {
+    type: "storeStudentAssignmentsAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentAssignmentsInfoAction = (payload) => {
+  return {
+    type: "storeStudentAssignmentsInfoAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentSingleAssignmentAction = (payload) => {
+  return {
+    type: "storeStudentSingleAssignmentAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentAssignmentPracticeRatingAction = (payload) => {
+  return {
+    type: "storeStudentAssignmentPracticeRatingAction",
     payload: payload,
   };
 };

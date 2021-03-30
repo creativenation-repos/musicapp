@@ -6,8 +6,14 @@ import TopBar from "../Dash/TopBar";
 import DashFooter from "../Dash/DashFooter";
 import InputDateFormatter from "../../InputDateFormatter";
 import FirebaseDate from "../../FirebaseDate";
-import { storeTeacherSingleAssignmentAction } from "../../../redux/actions";
-import { teachers_Collection } from "../../../utils/firebase";
+import {
+  storeTeacherAssignmentAssigneesAction,
+  storeTeacherSingleAssignmentAction,
+} from "../../../redux/actions";
+import {
+  students_Collection,
+  teachers_Collection,
+} from "../../../utils/firebase";
 
 export default function AssignmentEdit() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
@@ -25,6 +31,50 @@ export default function AssignmentEdit() {
         <div>
           <h3>Assignment Prompt:</h3>
           <textarea id="taAssText" defaultValue={assignment.Text}></textarea>
+        </div>
+      );
+    } else if (assignment.Type === "Practice") {
+      return (
+        <div>
+          <div>
+            <h3>Assignment Prompt:</h3>
+            <textarea
+              id="taAssPracText"
+              defaultValue={assignment.Text}
+            ></textarea>
+          </div>
+          <div>
+            <h3>Repertoire:</h3>
+            <input
+              id="tbPracReper"
+              type="text"
+              defaultValue={assignment.Repertoire}
+            />
+          </div>
+          <div>
+            <h3>Composer:</h3>
+            <input
+              id="tbPracComp"
+              type="text"
+              defaultValue={assignment.Composer}
+            />
+          </div>
+          <div>
+            <h3>Tempo</h3>
+            <input
+              id="tbPracTempo"
+              type="text"
+              defaultValue={assignment.Tempo}
+            />
+          </div>
+          <div>
+            <h3>Max Time</h3>
+            <input
+              id="tbPracMaxTime"
+              type="text"
+              defaultValue={assignment.MaxTime}
+            />
+          </div>
         </div>
       );
     }
@@ -48,33 +98,77 @@ export default function AssignmentEdit() {
   const saveAllChanges = () => {
     const assName = document.querySelector("#tbAssName").value;
     const assDue = FirebaseDate(document.querySelector("#daAssDue").value);
-    const assText = document.querySelector("#taAssText").value;
     const allNames = [...assignment.Assignees];
 
-    // Save to DB
-    teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Assignments")
-      .doc(assignment.id)
-      .update({
+    if (assignment.Type === "Textual") {
+      const assText = document.querySelector("#taAssText").value;
+
+      // Save to DB
+      teachers_Collection
+        .doc(teacherAuthID)
+        .collection("Assignments")
+        .doc(assignment.id)
+        .update({
+          Name: assName,
+          Due: assDue,
+          Text: assText,
+          Assignees: allNames,
+        })
+        .catch((err) => console.log(err));
+
+      // Dispatch
+      const newAss = {
+        ...assignment,
         Name: assName,
         Due: assDue,
         Text: assText,
         Assignees: allNames,
-      })
-      .catch((err) => console.log(err));
+      };
 
-    // Dispatch
-    const newAss = {
-      ...assignment,
-      Name: assName,
-      Due: assDue,
-      Text: assText,
-      Assignees: allNames,
-    };
+      dispatch(storeTeacherSingleAssignmentAction(newAss));
+      dispatch(storeTeacherAssignmentAssigneesAction(allNames));
+    } else if (assignment.Type === "Practice") {
+      const assPrompt = document.querySelector("#taAssPracText").value;
+      const assReper = document.querySelector("#tbPracReper").value;
+      const assComp = document.querySelector("#tbPracComp").value;
+      const assTempo = document.querySelector("#tbPracTempo").value;
+      const assMaxTime = document.querySelector("#tbPracMaxTime").value;
 
-    dispatch(storeTeacherSingleAssignmentAction(newAss));
-    history.push("teacher-assignment-view");
+      // Save to DB
+      teachers_Collection
+        .doc(teacherAuthID)
+        .collection("Assignments")
+        .doc(assignment.id)
+        .update({
+          Name: assName,
+          Due: assDue,
+          Text: assPrompt,
+          Repertoire: assReper,
+          Composer: assComp,
+          Tempo: assTempo,
+          MaxTime: assMaxTime,
+          Assignees: allNames,
+        })
+        .catch((err) => console.log(err));
+
+      // Dispatch
+      const newAss = {
+        ...assignment,
+        Name: assName,
+        Due: assDue,
+        Text: assPrompt,
+        Repertoire: assReper,
+        Composer: assComp,
+        Tempo: assTempo,
+        MaxTime: assMaxTime,
+        Assignees: allNames,
+      };
+
+      dispatch(storeTeacherSingleAssignmentAction(newAss));
+      dispatch(storeTeacherAssignmentAssigneesAction(allNames));
+    }
+
+    history.push("/teacher-assignment-view");
   };
 
   //   REMOVE
@@ -82,6 +176,14 @@ export default function AssignmentEdit() {
     const name = event.target.getAttribute("id");
     const allStuds = [...assignment.Assignees];
     const filtered = allStuds.filter((stud) => stud !== name);
+
+    // Remove from DB
+    students_Collection
+      .doc(name)
+      .collection("AssignmentsInfo")
+      .doc(assignment.id)
+      .delete()
+      .catch((err) => console.log(err));
 
     const newAss = {
       ...assignment,

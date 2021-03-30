@@ -59,13 +59,23 @@ button:focus {
   color: white;
   padding: 2%;
 }
+.list-item-link {
+  color: rgba(0, 0, 0, 0.7);
+  text-decoration: none;
+  font-weight: 600;
+  line-height: 0;
+  font-size: 17px;
+}
 
+.menu-heading {
+  color: rgba(0, 0, 0, 0.7);
+}
 #keep-left {
-  width: 13%;
+  width: 15%;
   display: block;
   float: left;
 }
 
 #keep-right {
-  margin-left: 13%;
+  margin-left: 18%;
 }

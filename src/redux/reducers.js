@@ -772,6 +772,36 @@ export const storeTeacherSingleAssignmentReducer = (state = {}, action) => {
   }
 };
 
+export const toggleAssigneeFormReducer = (state = false, action) => {
+  switch (action.type) {
+    case "toggleAssigneeFormAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherNewAssignmentTypeReducer = (state = "", action) => {
+  switch (action.type) {
+    case "storeTeacherNewAssignmentTypeAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherAssignmentAssigneesReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherAssignmentAssigneesAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // Messages Reducers
 export const storeTeacherMessagesReducer = (state = [], action) => {
   switch (action.type) {
@@ -1119,6 +1149,50 @@ export const storeStudentNextLessonReducer = (state = {}, action) => {
   }
 };
 
+// Assignments
+export const storeStudentAssignmentsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentAssignmentsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentAssignmentsInfoReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentAssignmentsInfoAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentSingleAssignmentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeStudentSingleAssignmentAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentAssignmentPracticeRatingReducer = (
+  state = "",
+  action
+) => {
+  switch (action.type) {
+    case "storeStudentAssignmentPracticeRatingAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // All Reducers
 export const allReducers = combineReducers({
   menuReducer,
@@ -1198,6 +1272,9 @@ export const allReducers = combineReducers({
   storeSingleCourseLessonReducer,
   storeSingleCourseExerReducer,
   storeTeacherSingleAssignmentReducer,
+  toggleAssigneeFormReducer,
+  storeTeacherNewAssignmentTypeReducer,
+  storeTeacherAssignmentAssigneesReducer,
 
   // Student Reducers
   storeStudentUserDataReducer,
@@ -1230,4 +1307,9 @@ export const allReducers = combineReducers({
   toggleStudentQuizResultsReducer,
   storeStudentQuizResultsReducer,
   storeStudentNextLessonReducer,
+  // Assignments
+  storeStudentAssignmentsReducer,
+  storeStudentAssignmentsInfoReducer,
+  storeStudentSingleAssignmentReducer,
+  storeStudentAssignmentPracticeRatingReducer,
 });
