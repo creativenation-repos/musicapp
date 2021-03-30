@@ -138,35 +138,64 @@ export default function StudentAssignmentView() {
 
   //   POST
   const submitAssignment = () => {
-    const pracTime = parseInt(document.querySelector("#tbPracTime").value, 10);
-    const ra = rating;
-    const concerns = document.querySelector("#taPracticeConcerns").value;
+    if (assignment.Type === "Textual") {
+      const response = document.querySelector("#taTextualRes").value;
 
-    // Save to DB
+      students_Collection
+        .doc(studentAuthID)
+        .collection("AssignmentsInfo")
+        .where("Name", "==", assignment.Name)
+        .get()
+        .then((snapshot) => {
+          const resData = firebaseLooper(snapshot);
+          resData.forEach((data) => {
+            students_Collection
+              .doc(studentAuthID)
+              .collection("AssignmentsInfo")
+              .doc(data.id)
+              .update({
+                isComplete: true,
+                Response: response,
+                CompletionDate: GetToday(),
+              })
+              .catch((err) => console.log(err));
+          });
+        })
+        .catch((err) => console.log(err));
+    } else if (assignment.Type === "Practice") {
+      const pracTime = parseInt(
+        document.querySelector("#tbPracTime").value,
+        10
+      );
+      const ra = rating;
+      const concerns = document.querySelector("#taPracticeConcerns").value;
 
-    students_Collection
-      .doc(studentAuthID)
-      .collection("AssignmentsInfo")
-      .where("Name", "==", assignment.Name)
-      .get()
-      .then((snapshot) => {
-        const resData = firebaseLooper(snapshot);
-        resData.forEach((data) => {
-          students_Collection
-            .doc(studentAuthID)
-            .collection("AssignmentsInfo")
-            .doc(data.id)
-            .update({
-              isComplete: true,
-              Time: pracTime,
-              Rating: ra,
-              Concerns: concerns,
-              CompletionDate: GetToday(),
-            })
-            .catch((err) => console.log(err));
-        });
-      })
-      .catch((err) => console.log(err));
+      // Save to DB
+
+      students_Collection
+        .doc(studentAuthID)
+        .collection("AssignmentsInfo")
+        .where("Name", "==", assignment.Name)
+        .get()
+        .then((snapshot) => {
+          const resData = firebaseLooper(snapshot);
+          resData.forEach((data) => {
+            students_Collection
+              .doc(studentAuthID)
+              .collection("AssignmentsInfo")
+              .doc(data.id)
+              .update({
+                isComplete: true,
+                Time: pracTime,
+                Rating: ra,
+                Concerns: concerns,
+                CompletionDate: GetToday(),
+              })
+              .catch((err) => console.log(err));
+          });
+        })
+        .catch((err) => console.log(err));
+    }
 
     const assignmentsInfoThings = [...assignmentsInfo];
     assignmentsInfoThings.forEach((a) => {
