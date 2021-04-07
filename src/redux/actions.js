@@ -502,16 +502,16 @@ export const storeTeacherAssignmentAssigneesAction = (payload) => {
 };
 
 // Messages Actions
-export const storeTeacherMessagesAction = (payload) => {
+export const storeTeacherSingleThreadAction = (payload) => {
   return {
-    type: "STORETEACHMESS",
+    type: "storeTeacherSingleThreadAction",
     payload: payload,
   };
 };
 
-export const storeSingleThreadAction = (payload) => {
+export const toggleTeacherNewMessageAction = (payload) => {
   return {
-    type: "STORESINGLETHREAD",
+    type: "toggleTeacherNewMessageAction",
     payload: payload,
   };
 };
@@ -544,11 +544,67 @@ export const storeInvoiceServicesAction = (payload) => {
   };
 };
 
+// Events Actions
+export const storeTodayArrayAction = (payload) => {
+  return {
+    type: "storeTodayArrayAction",
+    payload: payload,
+  };
+};
+
+export const storeMonthEventsAction = (payload) => {
+  return {
+    type: "storeMonthEventsAction",
+    payload: payload,
+  };
+};
+
+export const storeSingleMonthEventAction = (payload) => {
+  return {
+    type: "storeSingleMonthEventAction",
+    payload: payload,
+  };
+};
+
+export const toggleAddEventInviteeAction = () => {
+  return {
+    type: "toggleAddEventInviteeAction",
+  };
+};
+
+// Milestones Actions
+export const storeTeacherSingleMilestoneSegAction = (payload) => {
+  return {
+    type: "storeTeacherSingleMilestoneSegAction",
+    payload: payload,
+  };
+};
+
+export const toggleNewTaskFormAction = () => {
+  return {
+    type: "toggleNewTaskFormAction",
+  };
+};
+
+export const toggleNewSegmentFormAction = (payload) => {
+  return {
+    type: "toggleNewSegmentFormAction",
+    payload: payload,
+  };
+};
+
 // Student Stuffs ******************************************************************************************
 
 export const storeStudentUserDataAction = (payload) => {
   return {
     type: "storeStudentUserDataAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentTeachersListAction = (payload) => {
+  return {
+    type: "storeStudentTeachersListAction",
     payload: payload,
   };
 };
@@ -762,5 +818,26 @@ export const storeStudentAssignmentPracticeRatingAction = (payload) => {
   return {
     type: "storeStudentAssignmentPracticeRatingAction",
     payload: payload,
+  };
+};
+
+// Messages
+export const storeStudentMessagesAction = (payload) => {
+  return {
+    type: "storeStudentMessagesAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentSingleThreadAction = (payload) => {
+  return {
+    type: "storeStudentSingleThreadAction",
+    payload: payload,
+  };
+};
+
+export const toggleStudentNewMessageAction = () => {
+  return {
+    type: "toggleStudentNewMessageAction",
   };
 };

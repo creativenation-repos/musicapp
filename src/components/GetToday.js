@@ -1,8 +1,5 @@
-
-
-import firebase from '../utils/firebase';
+import firebase from "../utils/firebase";
 
 export default function GetToday() {
-    return firebase.firestore.Timestamp.fromDate(new Date());
+  return firebase.firestore.Timestamp.fromDate(new Date());
 }
-

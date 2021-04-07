@@ -2,64 +2,62 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import TopBar from "../Dash/TopBar";
-import DashFooter from "../Dash/DashFooter";
+import TopBar from "../TopBar";
+import Footer from "../Footer";
+import RandomString from "../../RandomString";
+import { students_Collection } from "../../../utils/firebase";
 import {
-  teachers_Collection,
-  students_Collection,
-} from "../../../utils/firebase";
-import {
-  storeTeacherMessagesGeneralInfoAction,
-  storeTeacherSingleThreadAction,
-  toggleTeacherNewMessageAction,
-  storeTeacherStudentGeneralInfoAction,
+  storeStudentMessagesAction,
+  storeStudentSingleThreadAction,
+  toggleStudentNewMessageAction,
+  storeStudentTeachersListAction,
 } from "../../../redux/actions";
 import { firebaseLooper } from "../../../utils/tools";
-import RandomString from "../../RandomString";
 
-export default function MessagesMain() {
-  const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+export default function StudentMessagesMain() {
+  const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
+  const user = useSelector((state) => state.storeStudentUserDataReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
   const toggleNewMessageForm = useSelector(
-    (state) => state.toggleTeacherNewMessageReducer
+    (state) => state.toggleStudentNewMessageReducer
   );
 
-  const messages = useSelector(
-    (state) => state.storeTeacherMessagesGeneralInfoReducer
-  );
-  const students = useSelector(
-    (state) => state.storeTeacherStudentGeneralInfoReducer
+  const messages = useSelector((state) => state.storeStudentMessagesReducer);
+  const teachers = useSelector(
+    (state) => state.storeStudentTeachersListReducer
   );
 
-  // GET
+  //   GET
   const getAllMessages = () => {
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Messages")
       .get()
       .then((snapshot) => {
-        const threads = firebaseLooper(snapshot);
-        const threadCount = snapshot.size;
+        const messData = firebaseLooper(snapshot);
+        const messCount = snapshot.size;
         let tempArray = [];
-        threads.forEach((thread, i) => {
-          teachers_Collection
-            .doc(teacherAuthID)
+
+        messData.forEach((mess, i) => {
+          students_Collection
+            .doc(studentAuthID)
             .collection("Messages")
-            .doc(thread.id)
+            .doc(mess.id)
             .collection("MessageBlocks")
             .orderBy("Date", "asc")
             .get()
             .then((snapshot) => {
               const messageBlocks = firebaseLooper(snapshot);
-              thread = {
-                ...thread,
+
+              const temp = {
+                ...mess,
                 Messages: messageBlocks,
               };
-              tempArray.push(thread);
-              if (i + 1 === threadCount) {
-                dispatch(storeTeacherMessagesGeneralInfoAction(tempArray));
+              tempArray.push(temp);
+              if (i + 1 === messCount) {
+                dispatch(storeStudentMessagesAction(tempArray));
               }
             })
             .catch((err) => console.log(err));
@@ -67,39 +65,19 @@ export default function MessagesMain() {
       })
       .catch((err) => console.log(err));
   };
-  const getAllStudentGeneralInfo = () => {
-    const student_Collection = teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Students");
-    student_Collection
+  const getAllTeachers = () => {
+    students_Collection
+      .doc(studentAuthID)
+      .collection("Teachers")
       .get()
       .then((snapshot) => {
-        const studentData = firebaseLooper(snapshot);
-        const studCount = snapshot.size;
-        // You now have student IDs, now get their data from the student table
-        let studentArray = [];
-        let count = 0;
-
-        studentData.forEach((stud) => {
-          students_Collection
-            .where("StudentID", "==", stud.id)
-            .get()
-            .then((snapshot2) => {
-              const studData = firebaseLooper(snapshot2);
-              studentArray.push(studData[0]);
-
-              if (studCount - 1 === count) {
-                dispatch(storeTeacherStudentGeneralInfoAction(studentArray));
-              }
-              count = count + 1;
-            })
-            .catch((err) => console.log(err));
-        });
+        const teachersList = firebaseLooper(snapshot);
+        dispatch(storeStudentTeachersListAction(teachersList));
       })
       .catch((err) => console.log(err));
   };
 
-  // HANDLE
+  //   HANDLE
   const handleThreadList = () => {
     return messages.map((mess, i) => {
       return (
@@ -132,15 +110,15 @@ export default function MessagesMain() {
     return (
       <div>
         <p>Choose Recipient:</p>
-        {students.map((stud, i) => {
+        {teachers.map((teach, i) => {
           return (
             <button
               key={i}
-              id={stud.id}
+              id={teach.TeacherID}
               onClick={navNewThreadView}
               className="btn-navy"
             >
-              {stud.FirstName} {stud.LastName}
+              {teach.FirstName} {teach.LastName}
             </button>
           );
         })}
@@ -154,26 +132,25 @@ export default function MessagesMain() {
 
     messages.forEach((thread) => {
       if (thread.id === threadID) {
-        dispatch(storeTeacherSingleThreadAction(thread));
+        dispatch(storeStudentSingleThreadAction(thread));
       }
     });
 
-    history.push("/teacher-message-thread");
+    history.push("/student-message-thread");
   };
   const navNewThreadView = (event) => {
-    const studID = event.target.getAttribute("id");
+    const connID = event.target.getAttribute("id");
     let found = false;
     messages.forEach((thread) => {
-      if (thread.Recipient === studID) {
+      if (thread.Recipient === connID) {
         found = true;
       }
     });
 
-
     if (found) {
       messages.forEach((thread) => {
-        if (thread.Recipient === studID) {
-          dispatch(storeTeacherSingleThreadAction(thread));
+        if (thread.Recipient === connID) {
+          dispatch(storeStudentSingleThreadAction(thread));
         }
       });
     } else {
@@ -181,23 +158,23 @@ export default function MessagesMain() {
       const rand2 = RandomString();
       const threadID = `Thread${rand1}${rand2}`;
 
-      teachers_Collection
-        .doc(teacherAuthID)
+      students_Collection
+        .doc(studentAuthID)
         .collection("Messages")
         .doc(threadID)
         .set({
-          Recipient: studID,
+          Recipient: connID,
         })
         .catch((err) => console.log(err));
 
       const tempObj = {
         id: threadID,
-        Recipient: studID,
+        Recipient: connID,
       };
 
-      dispatch(storeTeacherSingleThreadAction(tempObj));
+      dispatch(storeStudentSingleThreadAction(tempObj));
     }
-    history.push("/teacher-message-thread");
+    history.push("/student-message-thread");
   };
 
   // REMOVE
@@ -205,8 +182,8 @@ export default function MessagesMain() {
     const threadID = event.target.getAttribute("id");
 
     // Remove to DB
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Messages")
       .doc(threadID)
       .collection("MessageBlocks")
@@ -214,8 +191,8 @@ export default function MessagesMain() {
       .then((snapshot) => {
         const data = firebaseLooper(snapshot);
         data.forEach((d) => {
-          teachers_Collection
-            .doc(teacherAuthID)
+          students_Collection
+            .doc(studentAuthID)
             .collection("Messages")
             .doc(threadID)
             .collection("MessageBlocks")
@@ -225,8 +202,8 @@ export default function MessagesMain() {
         });
       })
       .catch((err) => console.log(err));
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Messages")
       .doc(threadID)
       .delete()
@@ -236,17 +213,17 @@ export default function MessagesMain() {
     const allMess = [...messages];
     const filtered = allMess.filter((thread) => thread.id !== threadID);
 
-    dispatch(storeTeacherMessagesGeneralInfoAction(filtered));
+    dispatch(storeStudentMessagesAction(filtered));
   };
 
   useEffect(() => {
-    if (!teacherAuthID) {
-      history.push("/teacherdash");
+    if (!studentAuthID) {
+      history.push("/studentdash");
       return;
     }
 
-    getAllStudentGeneralInfo();
     getAllMessages();
+    getAllTeachers();
   }, []);
   return (
     <div>
@@ -255,25 +232,23 @@ export default function MessagesMain() {
         <TopBar />
       </div>
 
+      {/* Content */}
       <div>
         <h1>Messages</h1>
         <div>
           {/* New Message */}
-          <button onClick={() => dispatch(toggleTeacherNewMessageAction())}>
+          <button onClick={() => dispatch(toggleStudentNewMessageAction())}>
             {toggleNewMessageForm ? "Close" : "New Message"}
           </button>
           {toggleNewMessageForm ? handleNewMessageForm() : null}
         </div>
         <br />
-        <div>
-          {/* Threads */}
-          {handleThreadList()}
-        </div>
+        <div>{handleThreadList()}</div>
       </div>
 
       {/* Footer */}
       <div>
-        <DashFooter />
+        <Footer />
       </div>
     </div>
   );

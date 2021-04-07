@@ -10,16 +10,14 @@ import Achievement from "./Teachers/Dash/Achievement";
 import UpcomingEvents from "./Teachers/Dash/UpcomingEvents";
 
 import DashFooter from "./Teachers/Dash/DashFooter";
+import "./TeacherDash.css";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   storeTeacherAuthIDAction,
-  storeTeacherMilestonesGeneralInfoAction,
   storeTeacherForumsGeneralInfoAction,
   storeTeacherArticlesGeneralInfoAction,
-  storeTeacherMessagesGeneralInfoAction,
-  storeTeacherEventsGeneralInfoAction,
   storeTeacherInvoicesGeneralInfoAction,
   storeTeacherSettingsGeneralInfoAction,
   storeTeacherStatisticsGeneralInfoAction,
@@ -72,18 +70,6 @@ export default function TeacherDash() {
       })
       .catch((err) => console.log(err));
   };
-  const getAllMilestoneData = () => {
-    const milestone_Collection = teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Milestones");
-    milestone_Collection
-      .get()
-      .then((snapshot) => {
-        const data = firebaseLooper(snapshot);
-        dispatch(storeTeacherMilestonesGeneralInfoAction(data));
-      })
-      .catch((err) => console.log(err));
-  };
   const getAllForumDiscussionData = () => {
     groups_Collection
       .get()
@@ -120,31 +106,6 @@ export default function TeacherDash() {
       })
       .catch((err) => console.log(err));
   };
-  const getAllMessageData = () => {
-    const messages_Collection = teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Messages");
-    messages_Collection
-      .get()
-      .then((snapshot) => {
-        const data = firebaseLooper(snapshot);
-        dispatch(storeTeacherMessagesGeneralInfoAction(data));
-      })
-      .catch((err) => console.log(err));
-  };
-  const getAllEventData = () => {
-    const events_Collection = teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Events");
-    events_Collection
-      .orderBy("Date", "asc")
-      .get()
-      .then((snapshot) => {
-        const data = firebaseLooper(snapshot);
-        dispatch(storeTeacherEventsGeneralInfoAction(data));
-      })
-      .catch((err) => console.log(err));
-  };
   const getAllInvoiceData = () => {
     const invoices_Collection = teachers_Collection
       .doc(teacherAuthID)
@@ -170,13 +131,6 @@ export default function TeacherDash() {
       .catch((err) => console.log(err));
   };
 
-  const onLogOut = () => {
-    dispatch(storeAccountTypeAction(""));
-    dispatch(storeTeacherAuthIDAction(""));
-    dispatch(isLoggedInAction());
-    history.push("/login");
-  };
-
   useEffect(() => {
     if (!teacherAuthID) {
       history.push("/login");
@@ -184,11 +138,8 @@ export default function TeacherDash() {
     }
     getAllUserData();
     getAllStatisticData();
-    getAllMilestoneData();
     getAllForumDiscussionData();
     getAllArticleData();
-    getAllMessageData();
-    getAllEventData();
     getAllInvoiceData();
     getAllSettingData();
   }, []);
@@ -201,12 +152,8 @@ export default function TeacherDash() {
         <TopBar />
       </div>
 
-      <div style={{ float: "right" }}>
-        <button onClick={onLogOut}>Log Out</button>
-      </div>
-
       {/* Main Content */}
-      <div>
+      <div className="content">
         {/* Announcement Box */}
         <div>
           <AnnouncementBox />

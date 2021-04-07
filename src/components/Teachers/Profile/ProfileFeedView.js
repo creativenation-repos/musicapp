@@ -8,7 +8,10 @@ import {
   storeProfileFeedSinglePostDataAction,
 } from "../../../redux/actions";
 
-import ProfileFeedViewBlock from "./ProfileFeedViewBlock";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import "./Profile.css";
+import { faEllipsisV, faPen, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function ProfileFeedView() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
@@ -16,10 +19,10 @@ export default function ProfileFeedView() {
   const dispatch = useDispatch();
 
   //   States
-  const feedDataState = useSelector(
-    (state) => state.storeProfileFeedPostDataReducer
-  );
+  const posts = useSelector((state) => state.storeProfileFeedPostDataReducer);
+  const userDataState = useSelector((state) => state.userDataReducer);
 
+  // GET
   const getProfileFeedData = () => {
     const feed_Collection = teachers_Collection
       .doc(teacherAuthID)
@@ -63,11 +66,60 @@ export default function ProfileFeedView() {
 
   const storeSinglePost = (event) => {
     const postID = event.target.getAttribute("id");
-    feedDataState.forEach((post) => {
+    posts.forEach((post) => {
       if (post.id === postID) {
         dispatch(storeProfileFeedSinglePostDataAction(post));
         history.push("/teacher-profile/edit-feed");
       }
+    });
+  };
+
+  // HANDLE
+  const handleCurrPage = () => {
+    let feedBtn = document.querySelector("#link-feed");
+    feedBtn.classList.add("navy-back");
+
+    let aboutBtn = document.querySelector("#link-about");
+    aboutBtn.classList.remove("navy-back");
+
+    let awardsBtn = document.querySelector("#link-awards");
+    awardsBtn.classList.remove("navy-back");
+
+    let galleryBtn = document.querySelector("#link-gallery");
+    galleryBtn.classList.remove("navy-back");
+
+    let reviewsBtn = document.querySelector("#link-reviews");
+    reviewsBtn.classList.remove("navy-back");
+  };
+  const handlePostList = () => {
+    return posts.map((post, i) => {
+      return (
+        <div className="post-wrapper" key={i}>
+          <div className="post-top-wrapper">
+            <div className="post-name-split">
+              <h3 className="post-name">
+                {userDataState.FirstName} {userDataState.LastName}
+              </h3>
+              <p className="post-date">
+                {post.Date ? post.Date.toDate().toString().substr(4, 11) : null}
+              </p>
+            </div>
+            <div>
+              <button
+                className="btn-edit"
+                id={post.id}
+                onClick={storeSinglePost}
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+
+          <div className="post-body">
+            <p>{post.Text}</p>
+          </div>
+        </div>
+      );
     });
   };
 
@@ -77,29 +129,19 @@ export default function ProfileFeedView() {
       return;
     }
     getProfileFeedData();
+    handleCurrPage();
   }, []);
 
   return (
     <div>
-      <div>
-        <button onClick={() => history.push("/teacher-profile/new-feed")}>
-          Create New Post
-        </button>
-      </div>
-      <hr />
-      <div>
-        {feedDataState.map((post, i) => {
-          return (
-            <div key={i}>
-              <button id={post.id} onClick={storeSinglePost}>
-                Edit
-              </button>
-              <ProfileFeedViewBlock post={post} />
-              <br />
-            </div>
-          );
-        })}
-      </div>
+      <button
+        className="btn-newPost"
+        onClick={() => history.push("/teacher-profile/new-feed")}
+      >
+        Create Post
+      </button>
+      <br />
+      <div>{handlePostList()}</div>
     </div>
   );
 }

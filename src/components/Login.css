@@ -1,0 +1,84 @@
+.login-wrapper {
+  width: 35%;
+  margin: 10% auto;
+}
+.login-wrapper h1 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+.login-text {
+  text-align: center;
+  margin: 20px;
+}
+.login-text h2 {
+  padding: 0;
+  padding-bottom: 15px;
+  margin: 0;
+  color: rgba(0, 0, 0, 0.8);
+  letter-spacing: -1px;
+  font-weight: 600;
+  font-size: 30px;
+}
+.login-text p {
+  padding: 0;
+  margin: 0;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 15px;
+}
+.login-box {
+  background-color: rgb(245, 248, 250);
+  border-radius: 7px;
+  padding: 15px;
+  border: 1px solid rgb(233, 236, 239);
+}
+.login-form {
+  width: 60%;
+  margin: 0 auto;
+}
+.login-tb {
+  border: 1px solid rgb(233, 236, 239);
+  width: 100%;
+  padding: 8px;
+  border-radius: 3px;
+}
+.btn-login {
+  -webkit-appearance: none;
+  background-color: #150e56;
+  border-radius: 5px;
+  color: white;
+  padding: 5px;
+  margin: 15px auto;
+  width: 100%;
+  font-weight: 500;
+}
+.login-reg {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  display: flex;
+}
+
+.login-reg button {
+  -webkit-appearance: none;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgba(0, 0, 0, 0.4);
+  border: 0;
+  width: 100%;
+  text-decoration: underline;
+}
+label {
+  display: block;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 15px;
+  padding: 2% 0;
+}
+#btn-forgot {
+  color: rgba(0, 0, 0, 0.4);
+  -webkit-appearance: none;
+  border: 0;
+  background-color: rgba(0, 0, 0, 0);
+  text-decoration: underline;
+  text-align: right;
+  width: 100%;
+}

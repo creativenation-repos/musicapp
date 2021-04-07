@@ -104,6 +104,7 @@ export default function ProfileAwardsEdit() {
     dispatch(toggleNewCertFormAction());
   };
 
+  // REMOVE
   const removeAward = (event) => {
     const awardID = event.target.getAttribute("id");
 
@@ -121,7 +122,6 @@ export default function ProfileAwardsEdit() {
 
     dispatch(storeAwardListAction(filteredAwards));
   };
-
   const removeCert = (event) => {
     const certID = event.target.getAttribute("id");
 
@@ -211,11 +211,31 @@ export default function ProfileAwardsEdit() {
     history.push("/teacher-profile/awards");
   };
 
+  // HANDLE
+  const handleCurrPage = () => {
+    let feedBtn = document.querySelector("#link-feed");
+    feedBtn.classList.remove("navy-back");
+
+    let aboutBtn = document.querySelector("#link-about");
+    aboutBtn.classList.remove("navy-back");
+
+    let awardsBtn = document.querySelector("#link-awards");
+    awardsBtn.classList.add("navy-back");
+
+    let galleryBtn = document.querySelector("#link-gallery");
+    galleryBtn.classList.remove("navy-back");
+
+    let reviewsBtn = document.querySelector("#link-reviews");
+    reviewsBtn.classList.remove("navy-back");
+  };
+
   useEffect(() => {
     if (!teacherAuthID) {
       history.push("/teacherdash");
       return;
     }
+
+    handleCurrPage();
   }, []);
   return (
     <div>

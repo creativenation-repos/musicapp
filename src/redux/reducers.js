@@ -803,9 +803,9 @@ export const storeTeacherAssignmentAssigneesReducer = (state = [], action) => {
 };
 
 // Messages Reducers
-export const storeTeacherMessagesReducer = (state = [], action) => {
+export const storeTeacherSingleThreadReducer = (state = {}, action) => {
   switch (action.type) {
-    case "STORETEACHMESS":
+    case "storeTeacherSingleThreadAction":
       state = action.payload;
       return state;
     default:
@@ -813,10 +813,10 @@ export const storeTeacherMessagesReducer = (state = [], action) => {
   }
 };
 
-export const storeSingleThreadReducer = (state = {}, action) => {
+export const toggleTeacherNewMessageReducer = (state = false, action) => {
   switch (action.type) {
-    case "STORESINGLETHREAD":
-      state = action.payload;
+    case "toggleTeacherNewMessageAction":
+      state = !state;
       return state;
     default:
       return state;
@@ -863,10 +863,92 @@ export const storeInvoiceServicesReducer = (state = [], action) => {
   }
 };
 
+// Events Reducers
+export const storeTodayArrayReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTodayArrayAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeMonthEventsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeMonthEventsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeSingleMonthEventReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeSingleMonthEventAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const toggleAddEventInviteeReducer = (state = false, action) => {
+  switch (action.type) {
+    case "toggleAddEventInviteeAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
+// Milestones Reducers
+export const storeTeacherSingleMilestoneSegReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeTeacherSingleMilestoneSegAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const toggleNewTaskFormReducer = (state = false, action) => {
+  switch (action.type) {
+    case "toggleNewTaskFormAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const toggleNewSegmentFormReducer = (state = false, action) => {
+  switch (action.type) {
+    case "toggleNewSegmentFormAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // Student Stuffs ********************************************************************************************************
 export const storeStudentUserDataReducer = (state = {}, action) => {
   switch (action.type) {
     case "storeStudentUserDataAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentTeachersListReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentTeachersListAction":
       state = action.payload;
       return state;
     default:
@@ -1193,6 +1275,37 @@ export const storeStudentAssignmentPracticeRatingReducer = (
   }
 };
 
+// Messages
+export const storeStudentMessagesReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentMessagesAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentSingleThreadReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeStudentSingleThreadAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const toggleStudentNewMessageReducer = (state = false, action) => {
+  switch (action.type) {
+    case "toggleStudentNewMessageAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // All Reducers
 export const allReducers = combineReducers({
   menuReducer,
@@ -1221,8 +1334,6 @@ export const allReducers = combineReducers({
   storeTeacherStatisticsGeneralInfoReducer,
   statisticsObjectReducer,
   userDataReducer,
-  storeTeacherMessagesReducer,
-  storeSingleThreadReducer,
   storeCurrentMonthReducer,
   storeSingleForumReducer,
   storeSingleInvoiceReducer,
@@ -1275,9 +1386,19 @@ export const allReducers = combineReducers({
   toggleAssigneeFormReducer,
   storeTeacherNewAssignmentTypeReducer,
   storeTeacherAssignmentAssigneesReducer,
+  storeTeacherSingleThreadReducer,
+  toggleTeacherNewMessageReducer,
+  storeTodayArrayReducer,
+  storeMonthEventsReducer,
+  storeSingleMonthEventReducer,
+  toggleAddEventInviteeReducer,
+  storeTeacherSingleMilestoneSegReducer,
+  toggleNewTaskFormReducer,
+  toggleNewSegmentFormReducer,
 
   // Student Reducers
   storeStudentUserDataReducer,
+  storeStudentTeachersListReducer,
   // Profile
   storeStudentProfileFeedPostsReducer,
   storeStudentProfileFeedPostReducer,
@@ -1312,4 +1433,8 @@ export const allReducers = combineReducers({
   storeStudentAssignmentsInfoReducer,
   storeStudentSingleAssignmentReducer,
   storeStudentAssignmentPracticeRatingReducer,
+  // Messages
+  storeStudentMessagesReducer,
+  storeStudentSingleThreadReducer,
+  toggleStudentNewMessageReducer,
 });

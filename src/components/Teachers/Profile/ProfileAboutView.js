@@ -16,6 +16,7 @@ export default function ProfileAboutView() {
   const about = useSelector((state) => state.storeProfileAboutDataReducer);
   const exp = useSelector((state) => state.storeProfileExperienceDataReducer);
 
+  // GET
   const getAllAboutData = () => {
     const profile_Collection = teachers_Collection
       .doc(teacherAuthID)
@@ -32,7 +33,6 @@ export default function ProfileAboutView() {
       })
       .catch((err) => console.log(err));
   };
-
   const getAllExperienceData = () => {
     const experience_Collection = teachers_Collection
       .doc(teacherAuthID)
@@ -48,6 +48,24 @@ export default function ProfileAboutView() {
       .catch((err) => console.log(err));
   };
 
+  // HANDLE
+  const handleCurrPage = () => {
+    let feedBtn = document.querySelector("#link-feed");
+    feedBtn.classList.remove("navy-back");
+
+    let aboutBtn = document.querySelector("#link-about");
+    aboutBtn.classList.add("navy-back");
+
+    let awardsBtn = document.querySelector("#link-awards");
+    awardsBtn.classList.remove("navy-back");
+
+    let galleryBtn = document.querySelector("#link-gallery");
+    galleryBtn.classList.remove("navy-back");
+
+    let reviewsBtn = document.querySelector("#link-reviews");
+    reviewsBtn.classList.remove("navy-back");
+  };
+
   useEffect(() => {
     if (!teacherAuthID) {
       history.push("/teacherdash");
@@ -56,6 +74,7 @@ export default function ProfileAboutView() {
     window.scrollTo(0, 0);
     getAllAboutData();
     getAllExperienceData();
+    handleCurrPage();
   }, []);
   return (
     <div>

@@ -20,6 +20,9 @@ import ProfileReviewsView from "./ProfileReviewsView";
 
 import DashFooter from "../Dash/DashFooter";
 
+import "./Profile.css";
+
+
 export default function ProfileMain() {
   let { url } = useRouteMatch();
   const dispatch = useDispatch();
@@ -27,11 +30,13 @@ export default function ProfileMain() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
   const userDataState = useSelector((state) => state.userDataReducer);
 
+
   useEffect(() => {
     if (!teacherAuthID) {
       history.push("/teacherdash");
       return;
     }
+
   }, []);
 
   return (
@@ -41,31 +46,70 @@ export default function ProfileMain() {
         <TopBar />
       </div>
 
-      <div>
+      <div className="content">
         {/* Photos */}
-        <div>
-          <img src="" alt="" />
-          <div>
+        {/* Solid Cover */}
+        <div className="profile-cover">
+          <div className="text-cover">
             <h2>{`${userDataState.FirstName} ${userDataState.LastName}`}</h2>
             <p>{userDataState.AccountType}</p>
           </div>
         </div>
+
+        {/* Content */}
+
         {/* Bottom Nav */}
-        <div>
-          <ul>
-            <Link to={`${url}/feed`}>Feed</Link>
+        <div className="profile-nav">
+          <ul style={{ display: "flex" }}>
+            <li>
+              <Link className="profile-Link" id="link-feed" to={`${url}/feed`}>
+                Feed
+              </Link>
+            </li>
             <br />
-            <Link to={`${url}/about`}>About</Link>
+            <li>
+              <Link
+                className="profile-Link"
+                id="link-about"
+                to={`${url}/about`}
+              >
+                About
+              </Link>
+            </li>
             <br />
-            <Link to={`${url}/awards`}>Awards</Link>
+            <li>
+              <Link
+                className="profile-Link"
+                id="link-awards"
+                to={`${url}/awards`}
+              >
+                Awards
+              </Link>
+            </li>
             <br />
-            <Link to={`${url}/gallery`}>Gallery</Link>
+            <li>
+              <Link
+                className="profile-Link"
+                id="link-gallery"
+                to={`${url}/gallery`}
+              >
+                Gallery
+              </Link>
+            </li>
             <br />
-            <Link to={`${url}/reviews`}>Reviews</Link>
+            <li>
+              <Link
+                className="profile-Link"
+                id="link-reviews"
+                to={`${url}/reviews`}
+              >
+                Reviews
+              </Link>
+            </li>
             <br />
           </ul>
         </div>
-        {/* Content */}
+
         <div>
           {/* ********************** */}
 

@@ -38,18 +38,6 @@ export default function StudentAssignmentsMain() {
       .then((snapshot) => {
         const assignmentList = firebaseLooper(snapshot);
         dispatch(storeStudentAssignmentsInfoAction(assignmentList));
-        assignmentList.forEach((ass) => {
-          teachers_Collection
-            .doc(ass.Teacher)
-            .collection("Assignments")
-            .where("Name", "==", ass.Name)
-            .get()
-            .then((snapshot) => {
-              const assData = firebaseLooper(snapshot);
-              dispatch(storeStudentAssignmentsAction(assData));
-            })
-            .catch((err) => console.log(err));
-        });
       })
       .catch((err) => console.log(err));
   };
@@ -89,9 +77,22 @@ export default function StudentAssignmentsMain() {
   //   NAV
   const navAssignmentView = (event) => {
     const assID = event.target.getAttribute("id");
-    assignments.forEach((ass) => {
-      if (ass.id === assID) {
-        dispatch(storeStudentSingleAssignmentAction(ass));
+
+    assignmentsInfo.forEach((ass) => {
+      if (ass.AssID === assID) {
+        teachers_Collection
+          .doc(ass.Teacher)
+          .collection("Assignments")
+          .get()
+          .then((snapshot) => {
+            const assData = firebaseLooper(snapshot);
+            assData.forEach((ad) => {
+              if (ad.id === assID) {
+                dispatch(storeStudentSingleAssignmentAction(ad));
+              }
+            });
+          })
+          .catch((err) => console.log(err));
       }
     });
 

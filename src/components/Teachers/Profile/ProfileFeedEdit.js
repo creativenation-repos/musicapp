@@ -51,6 +51,7 @@ export default function ProfileFeedEdit() {
     history.push("/teacher-profile/feed");
   };
 
+  // REMOVE
   const removeSinglePost = () => {
     const postID = singlePostState.id;
 
@@ -70,35 +71,61 @@ export default function ProfileFeedEdit() {
     history.push("/teacher-profile/feed");
   };
 
+  // HANDLE
+  const handleCurrPage = () => {
+    let feedBtn = document.querySelector("#link-feed");
+    feedBtn.classList.add("navy-back");
+
+    let aboutBtn = document.querySelector("#link-about");
+    aboutBtn.classList.remove("navy-back");
+
+    let awardsBtn = document.querySelector("#link-awards");
+    awardsBtn.classList.remove("navy-back");
+
+    let galleryBtn = document.querySelector("#link-gallery");
+    galleryBtn.classList.remove("navy-back");
+
+    let reviewsBtn = document.querySelector("#link-reviews");
+    reviewsBtn.classList.remove("navy-back");
+  };
+
   useEffect(() => {
     if (!teacherAuthID) {
       history.push("/teacherdash");
       return;
     }
+
+    handleCurrPage();
   }, []);
 
   return (
-    <div>
+    <div className="post-edit-wrapper">
       <button
+        className="btn-back maroon-back"
         onClick={() => {
           history.push("/teacher-profile/feed");
         }}
       >
-        Back to Feed
+        Back
       </button>
 
-      <div>
-        <h1>Edit Post</h1>
-        <label>Post</label>
-        <br />
-        <input
+      <div className="post-create">
+        <h1 className="post-create-head">Edit Post</h1>
+        <textarea
+          className="ta"
           id="tbPostText"
-          type="text"
           defaultValue={singlePostState.Text}
-        />
+        ></textarea>
+        <div className="btn-wrapper">
+          
+          <button className="btn-remove" onClick={removeSinglePost}>
+            Remove
+          </button>
+          <button className="btn-dark" onClick={saveSinglePost}>
+            Save
+          </button>
+        </div>
       </div>
-      <button onClick={saveSinglePost}>Save</button>
-      <button onClick={removeSinglePost}>Remove</button>
     </div>
   );
 }

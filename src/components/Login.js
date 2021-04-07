@@ -13,6 +13,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { users_Collection } from "../utils/firebase";
 import { firebaseLooper } from "../utils/tools";
 
+import "./Login.css";
+
 export default function Login() {
   const loginSwitchState = useSelector(
     (state) => state.loginRegisterSwitchReducer
@@ -71,37 +73,44 @@ export default function Login() {
     if (loginSwitchState === "login") {
       return (
         <div>
-          <div>
+          <div className="login-text">
             <h2>Welcome back!</h2>
             <p>Please log in to begin your musical adventures!</p>
           </div>
-          <div>
+          <div className="login-form">
             <div>
               <label>Username or Email</label>
               <input
+                className="login-tb"
                 id="tbUsername"
                 type="text"
                 placeholder="jdoe123! or johndoe@gmail.com"
               />
             </div>
             <div>
-              <div>
+              <div style={{ display: "flex" }}>
                 <label>Password</label>
                 <button
+                  id="btn-forgot"
                   onClick={() => dispatch(loginRegisterToggleAction("forgot"))}
                 >
                   Forgot Password?
                 </button>
               </div>
-              <input id="tbPassword" type="password" placeholder="Password" />
+              <input
+                className="login-tb"
+                id="tbPassword"
+                type="password"
+                placeholder="Password"
+              />
             </div>
             <div>
-              <button class="btn-navy" onClick={handleRouteClick}>
+              <button class="btn-login" onClick={handleRouteClick}>
                 Login
               </button>
             </div>
-            <div>
-              <p>Are you new to Musicademy?</p>
+            <div className="login-reg">
+              <p>Are you new to Musicademy? </p>
               <button
                 onClick={() => dispatch(loginRegisterToggleAction("register"))}
               >
@@ -202,15 +211,9 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="login-wrapper">
       {/* Form */}
-      <div>
-        <div>
-          <img src="" alt="" />
-          <h1>Musicademy</h1>
-        </div>
-        <div>{handleLoginSwitch()}</div>
-      </div>
+      <div className="login-box">{handleLoginSwitch()}</div>
     </div>
   );
 }

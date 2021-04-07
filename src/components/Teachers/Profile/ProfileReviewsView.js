@@ -46,12 +46,44 @@ export default function ProfileReviewsView() {
       .catch((err) => console.log(err));
   };
 
+  // HANDLE
+  const handleReviewList = () => {
+    return reviews.map((rev, i) => {
+      return (
+        <div key={i}>
+          <h3>{rev.Rating}</h3>
+          <p>{rev.FullName}</p>
+          <p>{rev.Review}</p>
+          <p>{rev.Date.toDate().toString().substr(4, 11)}</p>
+          <hr />
+        </div>
+      );
+    });
+  };
+  const handleCurrPage = () => {
+    let feedBtn = document.querySelector("#link-feed");
+    feedBtn.classList.remove("navy-back");
+
+    let aboutBtn = document.querySelector("#link-about");
+    aboutBtn.classList.remove("navy-back");
+
+    let awardsBtn = document.querySelector("#link-awards");
+    awardsBtn.classList.remove("navy-back");
+
+    let galleryBtn = document.querySelector("#link-gallery");
+    galleryBtn.classList.remove("navy-back");
+
+    let reviewsBtn = document.querySelector("#link-reviews");
+    reviewsBtn.classList.add("navy-back");
+  };
+
   useEffect(() => {
     if (!teacherAuthID) {
       history.push("/teacherdash");
       return;
     }
     getAllReviews();
+    handleCurrPage();
   }, []);
   return (
     <div>
@@ -59,19 +91,7 @@ export default function ProfileReviewsView() {
       <div></div>
 
       {/* Review List */}
-      <div>
-        {reviews.map((rev, i) => {
-          return (
-            <div key={i}>
-              <h3>{rev.Rating}</h3>
-              <p>{rev.FullName}</p>
-              <p>{rev.Review}</p>
-              <p>{rev.Date.toDate().toString().substr(4, 11)}</p>
-              <hr/>
-            </div>
-          );
-        })}
-      </div>
+      <div>{handleReviewList()}</div>
     </div>
   );
 }
