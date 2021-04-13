@@ -117,7 +117,10 @@ export default function MessageThreadView() {
       .catch((err) => console.log(err));
 
     //   Dispatch
-    let allMess = [...thread.Messages];
+    let allMess = [];
+    if (thread.Messages) {
+      allMess = [...thread.Messages];
+    }
     allMess.push({
       id: messID,
       Sender: teacherAuthID,

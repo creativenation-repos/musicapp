@@ -231,62 +231,44 @@ export const storeTeacherStudentGeneralInfoAction = (payload) => {
   };
 };
 
-export const toggleStudentOverviewAction = () => {
+export const storeTeacherSingleStudentAction = (payload) => {
   return {
-    type: "toggleStudentOverviewAction",
-  };
-};
-
-export const toggleSearchUsernameAction = () => {
-  return {
-    type: "toggleSearchUsernameAction",
-  };
-};
-
-export const toggleSendRequestButtonAction = () => {
-  return {
-    type: "toggleSendRequestButtonAction",
-  };
-};
-
-export const storeNewStudentAction = (payload) => {
-  return {
-    type: "storeNewStudentAction",
+    type: "storeTeacherSingleStudentAction",
     payload: payload,
   };
 };
 
-export const storeSingleStudentInfoAction = (payload) => {
+export const storeTeacherSingleStudentLessonsAction = (payload) => {
   return {
-    type: "storeSingleStudentInfoAction",
+    type: "storeTeacherSingleStudentLessonsAction",
     payload: payload,
   };
 };
 
-export const storeTeacherStudentLessonsAction = (payload) => {
+export const storeTeacherSingleStudentExersAction = (payload) => {
   return {
-    type: "storeTeacherStudentLessonsAction",
+    type: "storeTeacherSingleStudentExersAction",
     payload: payload,
   };
 };
 
-export const storeTeacherStudentExercisesAction = (payload) => {
+export const storeTeacherSingleStudentQuizzesAction = (payload) => {
   return {
-    type: "storeTeacherStudentExercisesAction",
+    type: "storeTeacherSingleStudentQuizzesAction",
     payload: payload,
   };
 };
 
-export const storeTeacherStudentQuizzesAction = (payload) => {
+export const storeTeacherSingleStudentAssAction = (payload) => {
   return {
-    type: "storeTeacherStudentQuizzesAction",
+    type: "storeTeacherSingleStudentAssAction",
     payload: payload,
   };
 };
 
-export const storeTeacherStudentExamsAction = (payload) => {
+export const storeTeacherSingleStudentMilestonesAction = (payload) => {
   return {
-    type: "storeTeacherStudentExamsAction",
+    type: "storeTeacherSingleStudentMilestonesAction",
     payload: payload,
   };
 };

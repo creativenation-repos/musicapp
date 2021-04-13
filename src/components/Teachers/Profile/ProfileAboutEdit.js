@@ -58,7 +58,6 @@ export default function ProfileAboutEdit() {
       });
     }
 
-
     // Personal
     const email = document.querySelector("#tbEmailText").value;
     const location = document.querySelector("#tbLocationText").value;
@@ -266,153 +265,165 @@ export default function ProfileAboutEdit() {
     handleCurrPage();
   }, []);
   return (
-    <div>
+    <div className="post-edit-wrapper">
       <div>
-        <button onClick={() => history.push("/teacher-profile/about")}>
-          Back to About
+        <button
+          className="btn-back maroon-back"
+          onClick={() => history.push("/teacher-profile/about")}
+        >
+          Back
         </button>
       </div>
 
-      <div></div>
-      <div>
-        <h2>About</h2>
-        <textarea id="taAboutDescText" defaultValue={about.About}></textarea>
-      </div>
-      <hr />
-      <div>
-        <h2>Experience</h2>
-        {exp.map((ex, i) => {
-          const start = `${ex.Start.toDate().getFullYear()}-${
-            ex.Start.toDate().getMonth() + 1 < 10 ? "0" : ""
-          }${ex.Start.toDate().getMonth() + 1}-${
-            ex.Start.toDate().getDate() < 10 ? "0" : ""
-          }${ex.Start.toDate().getDate()}`;
+      <div className="post-create">
+        <div>
+          <h2>About</h2>
+          <textarea id="taAboutDescText" defaultValue={about.About}></textarea>
+        </div>
 
-          const end = `${ex.End.toDate().getFullYear()}-${
-            ex.End.toDate().getMonth() + 1 < 10 ? "0" : ""
-          }${ex.End.toDate().getMonth() + 1}-${
-            ex.End.toDate().getDate() < 10 ? "0" : ""
-          }${ex.End.toDate().getDate()}`;
+        <div>
+          <h2>Experience</h2>
+          {exp.map((ex, i) => {
+            const start = `${ex.Start.toDate().getFullYear()}-${
+              ex.Start.toDate().getMonth() + 1 < 10 ? "0" : ""
+            }${ex.Start.toDate().getMonth() + 1}-${
+              ex.Start.toDate().getDate() < 10 ? "0" : ""
+            }${ex.Start.toDate().getDate()}`;
 
-          return (
-            <div key={i}>
-              <h4>Institution</h4>
-              <input
-                id={`tbExpInstText${i}`}
-                type="text"
-                defaultValue={ex.Institution}
-              />
-              <h4>Description</h4>
-              <textarea
-                id={`taExpDescText${i}`}
-                defaultValue={ex.Desc}
-              ></textarea>
-              <h4>Started</h4>
-              <input id={`dtStarted${i}`} type="date" defaultValue={start} />
-              <h4>Ended</h4>
-              <input id={`dtEnded${i}`} type="date" defaultValue={end} />
-              <button id={ex.id} onClick={removeExperience}>
-                Remove
-              </button>
-              <hr />
-            </div>
-          );
-        })}
+            const end = `${ex.End.toDate().getFullYear()}-${
+              ex.End.toDate().getMonth() + 1 < 10 ? "0" : ""
+            }${ex.End.toDate().getMonth() + 1}-${
+              ex.End.toDate().getDate() < 10 ? "0" : ""
+            }${ex.End.toDate().getDate()}`;
 
-        {toggleExpState ? (
-          <div>
-            <button
-              onClick={() => {
-                dispatch(toggleNewExperienceFormAction());
-              }}
-            >
-              Cancel
-            </button>
-            {/* Form */}
-            <div>
-              <h3>Institution</h3>
-              <input id="tbInstText" type="text" placeholder="Institution" />
-            </div>
-            <div>
-              <h3>Description</h3>
-              <textarea id="tbDescText" placeholder="Description"></textarea>
-            </div>
-            <div>
-              <h3>Started: </h3>
-              <input id="daStartDate" type="date" />
-            </div>
-            <div>
-              <h3>Ended: </h3>
-              <input id="daEndDate" type="date" />
-            </div>
-            <div>
-              <button onClick={applyNewExperience}>Apply</button>
-            </div>
-          </div>
-        ) : (
-          <button onClick={() => dispatch(toggleNewExperienceFormAction())}>
-            +
-          </button>
-        )}
-      </div>
-      <div>
-        <h2>Personal</h2>
-        <p>Email:</p>
-        <input id="tbEmailText" type="text" defaultValue={about.Email} />
-        <p>Location:</p>
-        <input id="tbLocationText" type="text" defaultValue={about.Location} />
-        <p>Instruments: </p>
-        {about.Instruments
-          ? about.Instruments.map((ins, i) => {
-              return (
-                <div key={i}>
-                  <input
-                    id={`tbInstruments${i}`}
-                    type="text"
-                    defaultValue={ins}
-                  />
-                  <button id={ins} onClick={removeInstrument}>
-                    -
-                  </button>
-                </div>
-              );
-            })
-          : null}
-        {about.Joined ? (
-          <div>
-            {/* Toggle Instrument Add */}
-            {toggleInsState ? (
-              <div>
-                <div>
-                  <button
-                    onClick={() => {
-                      dispatch(toggleNewInstrumentFormAction());
-                    }}
-                  >
-                    Cancel
-                  </button>
-                </div>
-                <h3>Instrument</h3>
-                <input id="tbNewInsText" type="text" placeholder="Instrument" />
-                <div>
-                  <button onClick={addInstrument}>Apply</button>
-                </div>
+            return (
+              <div key={i}>
+                <h4>Institution</h4>
+                <input
+                  id={`tbExpInstText${i}`}
+                  type="text"
+                  defaultValue={ex.Institution}
+                />
+                <h4>Description</h4>
+                <textarea
+                  id={`taExpDescText${i}`}
+                  defaultValue={ex.Desc}
+                ></textarea>
+                <h4>Started</h4>
+                <input id={`dtStarted${i}`} type="date" defaultValue={start} />
+                <h4>Ended</h4>
+                <input id={`dtEnded${i}`} type="date" defaultValue={end} />
+                <button id={ex.id} onClick={removeExperience}>
+                  Remove
+                </button>
+                <hr />
               </div>
-            ) : (
+            );
+          })}
+
+          {toggleExpState ? (
+            <div>
               <button
                 onClick={() => {
-                  dispatch(toggleNewInstrumentFormAction());
+                  dispatch(toggleNewExperienceFormAction());
                 }}
               >
-                +
+                Cancel
               </button>
-            )}
+              {/* Form */}
+              <div>
+                <h3>Institution</h3>
+                <input id="tbInstText" type="text" placeholder="Institution" />
+              </div>
+              <div>
+                <h3>Description</h3>
+                <textarea id="tbDescText" placeholder="Description"></textarea>
+              </div>
+              <div>
+                <h3>Started: </h3>
+                <input id="daStartDate" type="date" />
+              </div>
+              <div>
+                <h3>Ended: </h3>
+                <input id="daEndDate" type="date" />
+              </div>
+              <div>
+                <button onClick={applyNewExperience}>Apply</button>
+              </div>
+            </div>
+          ) : (
+            <button onClick={() => dispatch(toggleNewExperienceFormAction())}>
+              +
+            </button>
+          )}
+        </div>
+        <div>
+          <h2>Personal</h2>
+          <p>Email:</p>
+          <input id="tbEmailText" type="text" defaultValue={about.Email} />
+          <p>Location:</p>
+          <input
+            id="tbLocationText"
+            type="text"
+            defaultValue={about.Location}
+          />
+          <p>Instruments: </p>
+          {about.Instruments
+            ? about.Instruments.map((ins, i) => {
+                return (
+                  <div key={i}>
+                    <input
+                      id={`tbInstruments${i}`}
+                      type="text"
+                      defaultValue={ins}
+                    />
+                    <button id={ins} onClick={removeInstrument}>
+                      -
+                    </button>
+                  </div>
+                );
+              })
+            : null}
+          {about.Joined ? (
+            <div>
+              {/* Toggle Instrument Add */}
+              {toggleInsState ? (
+                <div>
+                  <div>
+                    <button
+                      onClick={() => {
+                        dispatch(toggleNewInstrumentFormAction());
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <h3>Instrument</h3>
+                  <input
+                    id="tbNewInsText"
+                    type="text"
+                    placeholder="Instrument"
+                  />
+                  <div>
+                    <button onClick={addInstrument}>Apply</button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    dispatch(toggleNewInstrumentFormAction());
+                  }}
+                >
+                  +
+                </button>
+              )}
 
-            <p>Joined: {about.Joined.toDate().toString().substr(4, 11)}</p>
-          </div>
-        ) : null}
+              <p>Joined: {about.Joined.toDate().toString().substr(4, 11)}</p>
+            </div>
+          ) : null}
+        </div>
+        <button onClick={saveAllChanges}>Save All Changes</button>
       </div>
-      <button onClick={saveAllChanges}>Save All Changes</button>
     </div>
   );
 }

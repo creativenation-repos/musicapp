@@ -189,3 +189,60 @@
 .post-edit-wrapper {
   display: flex;
 }
+
+/* ABOUT */
+
+.about-section {
+  background-color: white;
+  padding: 15px;
+  margin: 0;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+.about-section h2 {
+  padding: 5px 0;
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: -1px;
+}
+.exp-section {
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.about-section p {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+.exp-section h3 {
+  font-size: 18px;
+  letter-spacing: -1px;
+  padding: 0;
+  margin: 0;
+}
+.about-dates {
+  margin-top: 8px;
+}
+.about-date {
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: bold;
+}
+.personal-section p {
+  margin: 0;
+  padding: 0;
+  margin-top: 5px;
+}
+.personal-p {
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: bold;
+}
+.about-inst {
+  padding: 8px;
+  margin: 0;
+  list-style-type: none;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+}

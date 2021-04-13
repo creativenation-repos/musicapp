@@ -10,6 +10,7 @@ import TeacherDash from "./components/TeacherDash";
 import StatisticsMain from "./components/Teachers/Statistics/StatisticsMain";
 import ProfileMain from "./components/Teachers/Profile/ProfileMain";
 import StudentsMain from "./components/Teachers/Students/StudentsMain";
+import StudentOverview from "./components/Teachers/Students/StudentOverview";
 import GroupsMain from "./components/Teachers/Groups/GroupsMain";
 import GroupsPage from "./components/Teachers/Groups/GroupsPage";
 import CoursesMain from "./components/Teachers/Courses/CoursesMain";
@@ -594,8 +595,12 @@ export default function App() {
             <Route path="/teacher-profile">
               <ProfileMain />
             </Route>
+            {/* Students */}
             <Route path="/teacher-students">
               <StudentsMain />
+            </Route>
+            <Route path="/teacher-student-overview">
+              <StudentOverview />
             </Route>
             {/* Groups */}
             <Route path="/teacher-groups">

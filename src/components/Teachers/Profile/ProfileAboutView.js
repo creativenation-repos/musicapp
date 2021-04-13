@@ -78,43 +78,59 @@ export default function ProfileAboutView() {
   }, []);
   return (
     <div>
-      <div>
-        <button onClick={() => history.push("/teacher-profile/edit-about")}>
-          Edit
-        </button>
-      </div>
-      <div>
+      <button
+        className="btn-newPost"
+        onClick={() => history.push("/teacher-profile/edit-about")}
+      >
+        Edit
+      </button>
+      <div className="about-section">
         <h2>About</h2>
         <p>{about.About}</p>
       </div>
-      <hr />
-      <div>
+      <div className="about-section">
         <h2>Experience</h2>
         {exp.map((ex, i) => {
           return (
-            <div key={i}>
+            <div className="exp-section" key={i}>
               <h3>{ex.Institution}</h3>
               <p>{ex.Desc}</p>
-              <p>Started: {ex.Start.toDate().toString().substr(4, 11)}</p>
-              <p>Ended: {ex.End.toDate().toString().substr(4, 11)}</p>
+              <div className="about-dates">
+                <p>
+                  <span className="about-date">Started:</span>{" "}
+                  {ex.Start.toDate().toString().substr(4, 11)}
+                </p>
+                <p>
+                  <span className="about-date">Ended:</span>{" "}
+                  {ex.End.toDate().toString().substr(4, 11)}
+                </p>
+              </div>
             </div>
           );
         })}
       </div>
-      <hr />
-      <div>
+      <div className="about-section personal-section">
         <h2>Personal</h2>
-        <p>Email: {about.Email}</p>
-        <p>Location: {about.Location}</p>
-        <p>Instruments:</p>
+        <p>
+          <span className="personal-p">Email:</span> {about.Email}
+        </p>
+        <p>
+          <span className="personal-p">Location:</span> {about.Location}
+        </p>
+        <p>
+          <span className="personal-p">Instruments:</span>{" "}
+        </p>
         {about.Instruments ? (
           <div>
-            <ul>
+            <ul className="about-inst">
               {about.Instruments.map((ins, i) => {
                 return <li key={i}>{ins}</li>;
               })}
             </ul>
-            <p>Joined: {about.Joined.toDate().toString().substr(4, 11)}</p>
+            <p>
+              <span className="personal-p">Joined:</span>{" "}
+              {about.Joined.toDate().toString().substr(4, 11)}
+            </p>
           </div>
         ) : null}
       </div>

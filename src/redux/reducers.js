@@ -405,39 +405,9 @@ export const storeTeacherStudentGeneralInfoReducer = (state = [], action) => {
   }
 };
 
-export const toggleStudentOverviewReducer = (state = false, action) => {
+export const storeTeacherSingleStudentReducer = (state = {}, action) => {
   switch (action.type) {
-    case "toggleStudentOverviewAction":
-      state = !state;
-      return state;
-    default:
-      return state;
-  }
-};
-
-export const toggleSearchUsernameReducer = (state = false, action) => {
-  switch (action.type) {
-    case "toggleSearchUsernameAction":
-      state = !state;
-      return state;
-    default:
-      return state;
-  }
-};
-
-export const toggleSendRequestButtonReducer = (state = false, action) => {
-  switch (action.type) {
-    case "toggleSendRequestButtonAction":
-      state = !state;
-      return state;
-    default:
-      return state;
-  }
-};
-
-export const storeNewStudentReducer = (state = "", action) => {
-  switch (action.type) {
-    case "storeNewStudentAction":
+    case "storeTeacherSingleStudentAction":
       state = action.payload;
       return state;
     default:
@@ -445,9 +415,9 @@ export const storeNewStudentReducer = (state = "", action) => {
   }
 };
 
-export const storeSingleStudentInfoReducer = (state = {}, action) => {
+export const storeTeacherSingleStudentLessonsReducer = (state = [], action) => {
   switch (action.type) {
-    case "storeSingleStudentInfoAction":
+    case "storeTeacherSingleStudentLessonsAction":
       state = action.payload;
       return state;
     default:
@@ -455,9 +425,9 @@ export const storeSingleStudentInfoReducer = (state = {}, action) => {
   }
 };
 
-export const storeTeacherStudentLessonsReducer = (state = [], action) => {
+export const storeTeacherSingleStudentExersReducer = (state = [], action) => {
   switch (action.type) {
-    case "storeTeacherStudentLessonsAction":
+    case "storeTeacherSingleStudentExersAction":
       state = action.payload;
       return state;
     default:
@@ -465,9 +435,9 @@ export const storeTeacherStudentLessonsReducer = (state = [], action) => {
   }
 };
 
-export const storeTeacherStudentExercisesReducer = (state = [], action) => {
+export const storeTeacherSingleStudentQuizzesReducer = (state = [], action) => {
   switch (action.type) {
-    case "storeTeacherStudentExercisesAction":
+    case "storeTeacherSingleStudentQuizzesAction":
       state = action.payload;
       return state;
     default:
@@ -475,9 +445,9 @@ export const storeTeacherStudentExercisesReducer = (state = [], action) => {
   }
 };
 
-export const storeTeacherStudentQuizzesReducer = (state = [], action) => {
+export const storeTeacherSingleStudentAssReducer = (state = [], action) => {
   switch (action.type) {
-    case "storeTeacherStudentQuizzesAction":
+    case "storeTeacherSingleStudentAssAction":
       state = action.payload;
       return state;
     default:
@@ -485,9 +455,12 @@ export const storeTeacherStudentQuizzesReducer = (state = [], action) => {
   }
 };
 
-export const storeTeacherStudentExamsReducer = (state = [], action) => {
+export const storeTeacherSingleStudentMilestonesReducer = (
+  state = [],
+  action
+) => {
   switch (action.type) {
-    case "storeTeacherStudentExamsAction":
+    case "storeTeacherSingleStudentMilestonesAction":
       state = action.payload;
       return state;
     default:
@@ -1349,15 +1322,6 @@ export const allReducers = combineReducers({
   toggleNewAwardFormReducer,
   toggleNewCertFormReducer,
   storeReviewListReducer,
-  toggleStudentOverviewReducer,
-  toggleSearchUsernameReducer,
-  toggleSendRequestButtonReducer,
-  storeNewStudentReducer,
-  storeSingleStudentInfoReducer,
-  storeTeacherStudentLessonsReducer,
-  storeTeacherStudentExercisesReducer,
-  storeTeacherStudentQuizzesReducer,
-  storeTeacherStudentExamsReducer,
   toggleNewGroupFormReducer,
   storeSingleGroupReducer,
   storeGroupFeedPostsReducer,
@@ -1395,6 +1359,12 @@ export const allReducers = combineReducers({
   storeTeacherSingleMilestoneSegReducer,
   toggleNewTaskFormReducer,
   toggleNewSegmentFormReducer,
+  storeTeacherSingleStudentReducer,
+  storeTeacherSingleStudentLessonsReducer,
+  storeTeacherSingleStudentExersReducer,
+  storeTeacherSingleStudentQuizzesReducer,
+  storeTeacherSingleStudentAssReducer,
+  storeTeacherSingleStudentMilestonesReducer,
 
   // Student Reducers
   storeStudentUserDataReducer,
