@@ -38,6 +38,14 @@
   font-size: 13px;
   color: rgba(0, 0, 0, 0.6);
   font-weight: 500;
+  background-color: rgba(0,0,0,0.05);
+}
+.quiz-head {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 800;
+  padding: 5px;
+  background-color: rgba(0,0,0,0.15);
 }
 .comp-table {
   margin-top: 10px;
@@ -55,4 +63,21 @@
 .comp-table td {
   background-color: rgba(0, 0, 0, 0.03);
   padding: 5px 10px;
+}
+.btn-comp {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 0;
+  margin: 0;
+  margin-bottom: 10px;
+  color: rgba(0,0,0,0.5);
+  border: 0;
+}
+.btn-comp:hover {
+  background-color: #3E00F9;
+  color: white;
+}
+.purple-background {
+  background-color: #3E00F9;
+  color: white;
 }

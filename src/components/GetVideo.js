@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function ConnectionsMain() {
+export default function GetVideo() {
     return (
         <div>
-            <h1>Connections</h1>
+            
         </div>
     )
 }

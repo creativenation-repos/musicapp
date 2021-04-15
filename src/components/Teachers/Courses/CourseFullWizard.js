@@ -6,6 +6,8 @@ import TopBar from "../Dash/TopBar";
 import DashFooter from "../Dash/DashFooter";
 import RandomString from "../../RandomString";
 import GetToday from "../../GetToday";
+import VideoUpload from "../../VideoUpload";
+import { programUpload } from "../../VideoUpload";
 
 import {
   storeShortOptionsAction,
@@ -98,7 +100,7 @@ export default function CourseFullWizard() {
           {/* Upload Video */}
           <div>
             <h3>1. Upload a Video Lesson</h3>
-            <p>Video Upload Here</p>
+            <VideoUpload />
           </div>
 
           {/* Insert Text */}
@@ -494,6 +496,7 @@ export default function CourseFullWizard() {
 
   const saveLesson = () => {
     const lessonName = document.querySelector("#tbLessonName").value;
+    const videoPath = programUpload();
 
     //   Get Video Lesson Path here
 
@@ -561,7 +564,7 @@ export default function CourseFullWizard() {
             .doc(lessonID)
             .set({
               Name: lessonName,
-              Video: "path",
+              Video: videoPath,
               Text: lessonText,
               Question: shortQui,
               Answer: shortAns,
@@ -578,7 +581,7 @@ export default function CourseFullWizard() {
         .doc(lessonID)
         .set({
           Name: lessonName,
-          Video: "path",
+          Video: videoPath,
           Text: lessonText,
           Question: shortQui,
           Answer: shortAns,

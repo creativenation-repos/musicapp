@@ -19,6 +19,7 @@ import {
   storeTeacherSingleStudentQuizzesAction,
   storeTeacherSingleStudentAssAction,
   storeTeacherSingleStudentMilestonesAction,
+  toggleTeacherSingleStudentCompAction,
 } from "../../../redux/actions";
 
 export default function StudentOverview() {
@@ -28,6 +29,9 @@ export default function StudentOverview() {
 
   const student = useSelector(
     (state) => state.storeTeacherSingleStudentReducer
+  );
+  const compType = useSelector(
+    (state) => state.toggleTeacherSingleStudentCompReducer
   );
   const lessons = useSelector(
     (state) => state.storeTeacherSingleStudentLessonsReducer
@@ -152,6 +156,31 @@ export default function StudentOverview() {
   };
 
   //   HANDLE
+  const handleCompType = () => {
+
+    if (compType === "lessons") {
+      return <div>{handleLessonBlock()}</div>;
+    } else if (compType === "exercises") {
+      return <div>{handleExersBlock()}</div>;
+    } else if (compType === "quizzes") {
+      return <div>{handleQuizzesBlock()}</div>;
+    } else if (compType === "assignments") {
+      return <div>{handleAssBlock()}</div>;
+    } else if (compType === "milestones") {
+      return <div>{handleMilestoneBlock()}</div>;
+    } else if (compType === "all") {
+      return (
+        <div>
+          <div>{handleLessonBlock()}</div>
+          <div>{handleExersBlock()}</div>
+          <div>{handleQuizzesBlock()}</div>
+          <div>{handleAssBlock()}</div>
+          <div>{handleMilestoneBlock()}</div>
+        </div>
+      );
+    }
+  };
+
   const handleStudentPersonal = () => {
     return (
       <div className="student-block">
@@ -233,7 +262,7 @@ export default function StudentOverview() {
     return quizzes.map((quiz, i) => {
       return (
         <div key={i}>
-          <h2 className="list-head">{quiz.Name}</h2>
+          <h2 className="quiz-head">{quiz.Name}</h2>
           <table className="comp-table">
             <tr className="comp-table-row">
               <th>Student Answer</th>
@@ -252,7 +281,18 @@ export default function StudentOverview() {
         <tr className="comp-table-row" key={i}>
           <td className="list-head">{res.Given}</td>
           <td className="list-head">{res.Answer}</td>
-          <td className="list-head">{res.Result}</td>
+          <td
+            style={
+              res.Result === "Correct"
+                ? { color: "green" }
+                : res.Result === "Incorrect"
+                ? { color: "red" }
+                : { color: "rgba(0,0,0,0.3" }
+            }
+            className="list-head"
+          >
+            {res.Result}
+          </td>
         </tr>
       );
     });
@@ -351,7 +391,7 @@ export default function StudentOverview() {
   // POST
   const onMilestoneChange = (event) => {
     const taskID = event.target.getAttribute("id");
-    // Figure out what I want the clicking of the milestones to do.
+    // Change the isComplete to true and mark it as complete in their milestones page.
   };
 
   const rerender = () => {
@@ -388,21 +428,61 @@ export default function StudentOverview() {
         </button>
         {/* Personal */}
         {handleStudentPersonal()}
+        <button
+          id="btnLessons"
+          className="btn-comp"
+          onClick={() =>
+            dispatch(toggleTeacherSingleStudentCompAction("lessons"))
+          }
+        >
+          Lessons
+        </button>
+        <button
+          id="btnExers"
+          className="btn-comp"
+          onClick={() =>
+            dispatch(toggleTeacherSingleStudentCompAction("exercises"))
+          }
+        >
+          Exercises
+        </button>
+        <button
+          id="btnQuizzes"
+          className="btn-comp"
+          onClick={() =>
+            dispatch(toggleTeacherSingleStudentCompAction("quizzes"))
+          }
+        >
+          Quizzes
+        </button>
+        <button
+          id="btnAss"
+          className="btn-comp"
+          onClick={() =>
+            dispatch(toggleTeacherSingleStudentCompAction("assignments"))
+          }
+        >
+          Assignments
+        </button>
+        <button
+          id="btnMiles"
+          className="btn-comp"
+          onClick={() =>
+            dispatch(toggleTeacherSingleStudentCompAction("milestones"))
+          }
+        >
+          Milestones
+        </button>
+        <button
+          id="btnAll"
+          className="btn-comp"
+          onClick={() => dispatch(toggleTeacherSingleStudentCompAction("all"))}
+        >
+          All
+        </button>
 
-        {/* Lessons */}
-        <div>{handleLessonBlock()}</div>
-
-        {/* Exercises */}
-        <div>{handleExersBlock()}</div>
-
-        {/* Quizzes */}
-        <div>{handleQuizzesBlock()}</div>
-
-        {/* Assignments */}
-        <div>{handleAssBlock()}</div>
-
-        {/* Milestones */}
-        <div>{handleMilestoneBlock()}</div>
+        {/* Comps */}
+        <div>{handleCompType()}</div>
       </div>
 
       {/* Footer */}

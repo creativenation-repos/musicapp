@@ -273,6 +273,13 @@ export const storeTeacherSingleStudentMilestonesAction = (payload) => {
   };
 };
 
+export const toggleTeacherSingleStudentCompAction = (payload) => {
+  return {
+    type: "toggleTeacherSingleStudentCompAction",
+    payload: payload,
+  };
+};
+
 // Group Actions
 
 export const storeTeacherGroupGeneralInfoAction = (payload) => {
@@ -571,6 +578,13 @@ export const toggleNewTaskFormAction = () => {
 export const toggleNewSegmentFormAction = (payload) => {
   return {
     type: "toggleNewSegmentFormAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherMilestonesAssigneesAction = (payload) => {
+  return {
+    type: "storeTeacherMilestonesAssigneesAction",
     payload: payload,
   };
 };

@@ -2,3 +2,7 @@
   background-color: #EFF2F5;
   padding: 1%;
 }
+.content h1 {
+  color: rgba(0,0,0,1);
+  letter-spacing: -1px;
+}

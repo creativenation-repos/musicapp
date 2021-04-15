@@ -468,6 +468,19 @@ export const storeTeacherSingleStudentMilestonesReducer = (
   }
 };
 
+export const toggleTeacherSingleStudentCompReducer = (
+  state = "lessons",
+  action
+) => {
+  switch (action.type) {
+    case "toggleTeacherSingleStudentCompAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // Group Reducers
 
 export const storeTeacherGroupGeneralInfoReducer = (state = [], action) => {
@@ -902,6 +915,16 @@ export const toggleNewSegmentFormReducer = (state = false, action) => {
   switch (action.type) {
     case "toggleNewSegmentFormAction":
       state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherMilestonesAssigneesReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherMilestonesAssigneesAction":
+      state = action.payload;
       return state;
     default:
       return state;
@@ -1365,6 +1388,8 @@ export const allReducers = combineReducers({
   storeTeacherSingleStudentQuizzesReducer,
   storeTeacherSingleStudentAssReducer,
   storeTeacherSingleStudentMilestonesReducer,
+  toggleTeacherSingleStudentCompReducer,
+  storeTeacherMilestonesAssigneesReducer,
 
   // Student Reducers
   storeStudentUserDataReducer,

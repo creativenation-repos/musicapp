@@ -23,6 +23,7 @@ import AssignmentNew from "./components/Teachers/Assignments/AssignmentNew";
 import MilestonesMain from "./components/Teachers/Milestones/MilestonesMain";
 import MilestoneView from "./components/Teachers/Milestones/MilestoneView";
 import MilestoneEdit from "./components/Teachers/Milestones/MilestoneEdit";
+import MilestoneAssign from "./components/Teachers/Milestones/MilestoneAssign";
 import ForumsMain from "./components/Teachers/Forums/ForumsMain";
 import ArticlesMain from "./components/Teachers/Articles/ArticlesMain";
 import MessagesMain from "./components/Teachers/Messages/MessagesMain";
@@ -641,6 +642,9 @@ export default function App() {
             </Route>
             <Route path="/teacher-milestone-edit">
               <MilestoneEdit />
+            </Route>
+            <Route path="/teacher-milestone-assign">
+              <MilestoneAssign />
             </Route>
             {/* Forums */}
             <Route path="/teacher-forums">

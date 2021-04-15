@@ -48,6 +48,9 @@ export default function MilestonesMain() {
           <button id={mile.id} onClick={navMilestoneView}>
             View
           </button>
+          <button onClick={navMilestoneAssign} id={mile.id}>
+            Assign
+          </button>
         </div>
       );
     });
@@ -123,6 +126,31 @@ export default function MilestonesMain() {
         history.push("/teacher-milestone-view");
       }
     });
+  };
+  const navMilestoneAssign = (event) => {
+    const mileID = event.target.getAttribute("id");
+
+    milestones.forEach((mile) => {
+      if (mile.id === mileID) {
+        teachers_Collection
+          .doc(teacherAuthID)
+          .collection("Milestones")
+          .doc(mileID)
+          .collection("MilestoneTasks")
+          .get()
+          .then((snapshot) => {
+            const tasks = firebaseLooper(snapshot);
+            const tempObj = {
+              ...mile,
+              Tasks: tasks,
+            };
+            dispatch(storeTeacherSingleMilestoneSegAction(tempObj));
+          })
+          .catch((err) => console.log(err));
+      }
+    });
+
+    history.push("/teacher-milestone-assign");
   };
 
   useEffect(() => {
