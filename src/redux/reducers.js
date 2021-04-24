@@ -283,6 +283,29 @@ export const statisticsObjectReducer = (state = {}, action) => {
   }
 };
 
+export const storeTeacherNotificationsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherNotificationsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const toggleTeacherNotificationsWindowReducer = (
+  state = false,
+  action
+) => {
+  switch (action.type) {
+    case "toggleTeacherNotificationsWindowAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // Profile Reducers
 export const storeProfileFeedPostDataReducer = (state = [], action) => {
   switch (action.type) {
@@ -474,6 +497,49 @@ export const toggleTeacherSingleStudentCompReducer = (
 ) => {
   switch (action.type) {
     case "toggleTeacherSingleStudentCompAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherExistingStudentsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherExistingStudentsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherQueueRequestsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherQueueRequestsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const toggleTeacherAddStudentFormReducer = (state = false, action) => {
+  switch (action.type) {
+    case "toggleTeacherAddStudentFormAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherAddStudentSearchResultReducer = (
+  state = null,
+  action
+) => {
+  switch (action.type) {
+    case "storeTeacherAddStudentSearchResultAction":
       state = action.payload;
       return state;
     default:
@@ -952,6 +1018,29 @@ export const storeStudentTeachersListReducer = (state = [], action) => {
   }
 };
 
+export const toggleStudentNotificationsWindowReducer = (
+  state = false,
+  action
+) => {
+  switch (action.type) {
+    case "toggleStudentNotificationsWindowAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentNotificationsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentNotificationsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // Profile
 export const storeStudentProfileFeedPostsReducer = (state = [], action) => {
   switch (action.type) {
@@ -1390,10 +1479,18 @@ export const allReducers = combineReducers({
   storeTeacherSingleStudentMilestonesReducer,
   toggleTeacherSingleStudentCompReducer,
   storeTeacherMilestonesAssigneesReducer,
+  storeTeacherExistingStudentsReducer,
+  storeTeacherQueueRequestsReducer,
+  toggleTeacherAddStudentFormReducer,
+  storeTeacherAddStudentSearchResultReducer,
+  storeTeacherNotificationsReducer,
+  toggleTeacherNotificationsWindowReducer,
 
   // Student Reducers
   storeStudentUserDataReducer,
   storeStudentTeachersListReducer,
+  toggleStudentNotificationsWindowReducer,
+  storeStudentNotificationsReducer,
   // Profile
   storeStudentProfileFeedPostsReducer,
   storeStudentProfileFeedPostReducer,

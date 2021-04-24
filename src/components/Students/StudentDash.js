@@ -11,6 +11,7 @@ import {
 
 import TopBar from "./TopBar";
 import Footer from "./Footer";
+import "./StudentDash.css";
 import { users_Collection } from "../../utils/firebase";
 import { firebaseLooper } from "../../utils/tools";
 
@@ -19,14 +20,6 @@ export default function StudentDash() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  // States
-
-  const onLogOut = () => {
-    dispatch(storeAccountTypeAction(""));
-    dispatch(storeStudentAuthIDAction(""));
-    dispatch(isLoggedInAction());
-    history.push("/login");
-  };
   const getStudentUserData = () => {
     users_Collection
       .get()
@@ -57,11 +50,9 @@ export default function StudentDash() {
         <TopBar />
       </div>
 
-      <div style={{ float: "right" }}>
-        <button onClick={onLogOut}>Log Out</button>
+      <div className="content">
+        <h1>Dashboard</h1>
       </div>
-
-      <h1>Dashboard</h1>
 
       {/* Footer */}
       <div>

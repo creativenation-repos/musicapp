@@ -35,7 +35,7 @@ button:focus {
   background-color: white;
   border: 0;
   margin: 0px 0px 0px 5px;
-  color: rgba(0, 0, 0, 0.6);
+  color: black;
 }
 .menu-head {
   padding-top: 15px;
@@ -54,10 +54,12 @@ button:focus {
   color: white;
 }
 .main-name {
-  color: rgba(0, 0, 0, 0.7);
-  font-size: 18px;
+  color: rgba(0, 0, 0, 1);
+  font-size: 20px;
+  font-weight: 900;
   text-align: center;
   margin: 0;
+  letter-spacing: -1px;
 }
 .flex {
   display: flex;
@@ -73,7 +75,7 @@ button:focus {
   position: fixed;
   padding: 15px;
   margin: 0;
-  margin-top: 40px;;
+  margin-top: 40px;
   font-size: 25px;
 }
 .main-list-item > li {
@@ -86,7 +88,7 @@ button:focus {
   width: 100%;
 }
 .Link:hover {
-  color: rgba(0,0,0,0.9);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 /* Dashboard menu */
@@ -154,6 +156,10 @@ button:focus {
   width: 100%;
 }
 #teacherMainMenu {
+  padding: 0 15px;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+#studentMainMenu {
   padding: 0 15px;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
 }

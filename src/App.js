@@ -13,9 +13,11 @@ import StudentsMain from "./components/Teachers/Students/StudentsMain";
 import StudentOverview from "./components/Teachers/Students/StudentOverview";
 import GroupsMain from "./components/Teachers/Groups/GroupsMain";
 import GroupsPage from "./components/Teachers/Groups/GroupsPage";
+import ConnectionsMain from "./components/Teachers/Connections/ConnectionsMain";
 import CoursesMain from "./components/Teachers/Courses/CoursesMain";
-import CourseFullWizard from "./components/Teachers/Courses/CourseFullWizard";
-import CourseEditWizard from "./components/Teachers/Courses/CourseEditWizard";
+import WizardNewCourse from "./components/Teachers/Courses/WizardNewCourse";
+import WizardNewLesson from "./components/Teachers/Courses/WizardNewLesson";
+import WizardNewQuiz from "./components/Teachers/Courses/WizardNewQuiz";
 import AssignmentsMain from "./components/Teachers/Assignments/AssignmentsMain";
 import AssignmentView from "./components/Teachers/Assignments/AssignmentView";
 import AssignmentEdit from "./components/Teachers/Assignments/AssignmentEdit";
@@ -53,7 +55,6 @@ import StudentMessageThreadView from "./components/Students/Messages/StudentMess
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBars,
   faTachometerAlt,
   faChartPie,
   faIdBadge,
@@ -62,17 +63,13 @@ import {
   faChalkboard,
   faBookOpen,
   faSpinner,
-  faComments,
-  faFileAlt,
   faCommentAlt,
   faCalendarAlt,
-  faFileInvoiceDollar,
   faCog,
   faFileVideo,
   faHeadset,
   faArrowRight,
   faArrowLeft,
-  faQuoteLeft,
   faChevronCircleDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { BrowserRouter as Router, Link, Switch, Route } from "react-router-dom";
@@ -289,7 +286,7 @@ export default function App() {
                             </div>
                           </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <Link className="list-item-link" to="/teacher-groups">
                             <div className="dash-links">
                               <div className="dash-icon">
@@ -297,6 +294,21 @@ export default function App() {
                               </div>
                               <div className="dash-text">
                                 <p className="menuText">Groups</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li> */}
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/teacher-connections"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faUsers} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Connections</p>
                               </div>
                             </div>
                           </Link>
@@ -456,110 +468,227 @@ export default function App() {
           {accountTypeState === "Student" ? (
             <div>
               <div id="studentMainMenu">
-                <div>
+                <div className="flex menu-head">
                   <div>
-                    <img src="" alt="" />
-                    <h1>Musicademy</h1>
+                    <h1 className="main-name">Violin Assist</h1>
                   </div>
                   <div>
-                    <button onClick={handleDashMenuText}>
-                      {dashMenuTextState ? "Hide" : "Show"}
+                    <button id="dash-burger-icon" onClick={handleDashMenuText}>
+                      {dashMenuTextState ? (
+                        <FontAwesomeIcon icon={faArrowLeft} />
+                      ) : (
+                        <FontAwesomeIcon icon={faArrowRight} />
+                      )}
                     </button>
                   </div>
                 </div>
-
-                <div>
-                  <ul className="list-item">
-                    <li>
-                      <Link className="list-item-link" to="/studentdash">
-                        <FontAwesomeIcon icon={faTachometerAlt} />
-                        <p className="menuText">Dashboard</p>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="list-item-link" to="/student-statistics">
-                        <img src="" alt="" />
-                        <p className="menuText">Statistics</p>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="list-item-link" to="/student-profile">
-                        <img src="" alt="" />
-                        <p className="menuText">Profile</p>
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-
                 <div>
                   <div>
-                    <h4 className="menu-heading">MAIN</h4>
-                    {dashMenuTextState ? null : <h4 className="dash">-</h4>}
+                    <div>
+                      <ul className="list-item">
+                        <li>
+                          <Link className="list-item-link" to="/studentdash">
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faTachometerAlt} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Dashboard</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/student-statistics"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faChartPie} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Statistics</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/student-profile"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faIdBadge} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Profile</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                  <ul className="list-item">
-                    <li>
-                      <Link
-                        className="list-item-link"
-                        to="/student-connections"
-                      >
-                        <img src="" alt="" />
-                        <p className="menuText">Connections</p>
-                      </Link>
-                      <Link className="list-item-link" to="/student-courses">
-                        <img src="" alt="" />
-                        <p className="menuText">Courses</p>
-                      </Link>
-                      <Link
-                        className="list-item-link"
-                        to="/student-assignments"
-                      >
-                        <img src="" alt="" />
-                        <p className="menuText">Assignments</p>
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
 
-                <div>
                   <div>
-                    <h4 className="menu-heading">GENERAL</h4>
-                    {dashMenuTextState ? null : <h4 className="dash">-</h4>}
+                    <div>
+                      <h4 className="menu-heading">MAIN</h4>
+                      {dashMenuTextState ? null : (
+                        <h4 className="dash">. . .</h4>
+                      )}
+                    </div>
+                    <div>
+                      <ul className="list-item">
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/student-connections"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faUsers} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Connections</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/student-courses"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faChalkboard} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Courses</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/student-assignments"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faBookOpen} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Assignments</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/student-milestones"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faSpinner} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Milestones</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                  <div>
-                    <ul className="list-item">
-                      <li>
-                        <Link className="list-item-link" to="/student-messages">
-                          <img src="" alt="" />
-                          <p className="menuText">Messages</p>
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
 
-                <div>
                   <div>
-                    <h4 className="menu-heading">INFO</h4>
-                    {dashMenuTextState ? null : <h4 className="dash">-</h4>}
+                    <div>
+                      <h4 className="menu-heading">GENERAL</h4>
+                      {dashMenuTextState ? null : (
+                        <h4 className="dash">. . .</h4>
+                      )}
+                    </div>
+                    <div>
+                      <ul className="list-item">
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/student-messages"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faCommentAlt} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Messages</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/student-settings"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faCog} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Settings</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
+
                   <div>
-                    <ul className="list-item">
-                      <li>
-                        <Link
-                          className="list-item-link"
-                          to="/student-tutorials"
-                        >
-                          <img src="" alt="" />
-                          <p className="menuText">Tutorials</p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="list-item-link" to="/student-support">
-                          <img src="" alt="" />
-                          <p className="menuText">Support</p>
-                        </Link>
-                      </li>
-                    </ul>
+                    <div>
+                      <h4 className="menu-heading">INFO</h4>
+                      {dashMenuTextState ? null : (
+                        <h4 className="dash">. . .</h4>
+                      )}
+                    </div>
+                    <div>
+                      <ul className="list-item">
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/student-tutorials"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faFileVideo} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Tutorials</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="list-item-link"
+                            to="/student-support"
+                          >
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faHeadset} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Support</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -610,15 +739,22 @@ export default function App() {
             <Route path="/teacher-group-page">
               <GroupsPage />
             </Route>
+            {/* Connections */}
+            <Route path="/teacher-connections">
+              <ConnectionsMain />
+            </Route>
             {/* Courses */}
             <Route path="/teacher-courses">
               <CoursesMain />
             </Route>
-            <Route path="/teacher-courses-wizard-full">
-              <CourseFullWizard />
+            <Route path="/teacher-new-course">
+              <WizardNewCourse />
             </Route>
-            <Route path="/teacher-courses-wizard-edit">
-              <CourseEditWizard />
+            <Route path="/teacher-new-lesson">
+              <WizardNewLesson />
+            </Route>
+            <Route path="/teacher-new-quiz">
+              <WizardNewQuiz />
             </Route>
             {/* Assignments */}
             <Route path="/teacher-assignments">

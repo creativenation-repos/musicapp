@@ -1,0 +1,22 @@
+#select {
+  color: rgba(0, 0, 0, 0.7);
+}
+#fileName {
+    display: block;
+    background-color: rgba(0,0,0,0.05);
+    border: 0;
+    color: rgba(0,0,0,0.8);
+    width: 25%;
+    border-radius: 30px;
+    padding: 10px;
+}
+#fileName:focus {
+    outline: none;
+}
+.smallDesc {
+    color: rgba(0,0,0,0.7);
+    font-size: 12px;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 3px;
+}

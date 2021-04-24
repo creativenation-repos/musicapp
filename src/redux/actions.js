@@ -149,6 +149,20 @@ export const statisticsObjectAction = (payload) => {
   };
 };
 
+export const storeTeacherNotificationsAction = (payload) => {
+  return {
+    type: "storeTeacherNotificationsAction",
+    payload: payload,
+  };
+};
+
+export const toggleTeacherNotificationsWindowAction = (payload) => {
+  return {
+    type: "toggleTeacherNotificationsWindowAction",
+    payload: payload,
+  };
+};
+
 // Profile Actions
 export const storeProfileFeedPostDataAction = (payload) => {
   return {
@@ -276,6 +290,33 @@ export const storeTeacherSingleStudentMilestonesAction = (payload) => {
 export const toggleTeacherSingleStudentCompAction = (payload) => {
   return {
     type: "toggleTeacherSingleStudentCompAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherExistingStudentsAction = (payload) => {
+  return {
+    type: "storeTeacherExistingStudentsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherQueueRequestsAction = (payload) => {
+  return {
+    type: "storeTeacherQueueRequestsAction",
+    payload: payload,
+  };
+};
+
+export const toggleTeacherAddStudentFormAction = () => {
+  return {
+    type: "toggleTeacherAddStudentFormAction",
+  };
+};
+
+export const storeTeacherAddStudentSearchResultAction = (payload) => {
+  return {
+    type: "storeTeacherAddStudentSearchResultAction",
     payload: payload,
   };
 };
@@ -601,6 +642,19 @@ export const storeStudentUserDataAction = (payload) => {
 export const storeStudentTeachersListAction = (payload) => {
   return {
     type: "storeStudentTeachersListAction",
+    payload: payload,
+  };
+};
+
+export const toggleStudentNotificationsWindowAction = (payload) => {
+  return {
+    type: "toggleStudentNotificationsWindowAction",
+  };
+};
+
+export const storeStudentNotificationsAction = (payload) => {
+  return {
+    type: "storeStudentNotificationsAction",
     payload: payload,
   };
 };

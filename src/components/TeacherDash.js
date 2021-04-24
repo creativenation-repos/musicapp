@@ -17,8 +17,6 @@ import { useHistory } from "react-router-dom";
 import {
   storeTeacherAuthIDAction,
   storeTeacherForumsGeneralInfoAction,
-  storeTeacherArticlesGeneralInfoAction,
-  storeTeacherInvoicesGeneralInfoAction,
   storeTeacherSettingsGeneralInfoAction,
   storeTeacherStatisticsGeneralInfoAction,
   userDataAction,
@@ -29,8 +27,6 @@ import {
 import {
   teachers_Collection,
   groups_Collection,
-  forums_Collection,
-  articles_Collection,
   users_Collection,
 } from "../utils/firebase";
 import { firebaseLooper } from "../utils/tools";
@@ -39,12 +35,10 @@ export default function TeacherDash() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  dispatch(storeTeacherAuthIDAction("jssjmnzsnts"));
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
   const state = useSelector(
     (state) => state.storeTeacherStudentGeneralInfoReducer
   );
-  const today = Date.now();
   // All Data Needed
 
   // Student Collection
@@ -55,6 +49,8 @@ export default function TeacherDash() {
       .then((snapshot) => {
         const data = firebaseLooper(snapshot);
         dispatch(userDataAction(data[0]));
+        dispatch(storeTeacherAuthIDAction(data[0].AuthID));
+       
       })
       .catch((err) => console.log(err));
   };
@@ -67,54 +63,6 @@ export default function TeacherDash() {
       .then((snapshot) => {
         const data = firebaseLooper(snapshot);
         dispatch(storeTeacherStatisticsGeneralInfoAction(data));
-      })
-      .catch((err) => console.log(err));
-  };
-  const getAllForumDiscussionData = () => {
-    groups_Collection
-      .get()
-      .then((snapshot) => {
-        const idArray = [];
-        const data = firebaseLooper(snapshot);
-        data.forEach((d) => {
-          idArray.push(d.id);
-        });
-        const forumData = [];
-        idArray.forEach((groupID) => {
-          forums_Collection
-            .where("GroupID", "==", groupID)
-            .get()
-            .then((snapshot) => {
-              const data = firebaseLooper(snapshot);
-              if (data.length > 0) {
-                forumData.push(data[0]);
-              }
-              dispatch(storeTeacherForumsGeneralInfoAction(forumData));
-            })
-            .catch((err) => console.log(err));
-        });
-      })
-      .catch((err) => console.log(err));
-  };
-  const getAllArticleData = () => {
-    articles_Collection
-      .where("Author", "==", teacherAuthID)
-      .get()
-      .then((snapshot) => {
-        const data = firebaseLooper(snapshot);
-        dispatch(storeTeacherArticlesGeneralInfoAction(data));
-      })
-      .catch((err) => console.log(err));
-  };
-  const getAllInvoiceData = () => {
-    const invoices_Collection = teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Invoices");
-    invoices_Collection
-      .get()
-      .then((snapshot) => {
-        const data = firebaseLooper(snapshot);
-        dispatch(storeTeacherInvoicesGeneralInfoAction(data));
       })
       .catch((err) => console.log(err));
   };
@@ -138,9 +86,6 @@ export default function TeacherDash() {
     }
     getAllUserData();
     getAllStatisticData();
-    getAllForumDiscussionData();
-    getAllArticleData();
-    getAllInvoiceData();
     getAllSettingData();
   }, []);
 

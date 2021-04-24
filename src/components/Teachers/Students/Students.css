@@ -1,3 +1,145 @@
+/* Students Main */
+.studListWrapper {
+  background-color: white;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+}
+
+.btnAddStud {
+  -webkit-appearance: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: black;
+  font-size: 15px;
+  padding: 8px;
+  width: 200px;
+  position: absolute;
+  right: 10px;
+  top: 80px;
+  border: 0;
+  border-radius: 30px;
+  font-weight: 600;
+}
+.addStudForm {
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+}
+.addStudDesc {
+  padding: 0;
+  margin: 0;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 10px;
+}
+.flex {
+  display: flex;
+  width: 100%;
+}
+#tbStudSearch {
+  width: 500px;
+  background-color: rgba(0, 0, 0, 0.08);
+  border: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0 15px;
+  min-height: 40px;
+  border-radius: 30px;
+  margin: 0;
+}
+#tbStudSearch:focus {
+  outline: none;
+}
+.btnAddStudForm {
+  -webkit-appearance: none;
+  background-color: #3e00f9;
+  color: white;
+  padding: 0 15px;
+  display: block;
+  margin: 0;
+  min-height: 40px;
+  margin-left: 15px;
+  border-radius: 30px;
+}
+.searchResWrapper {
+  display: flex;
+  margin-top: 20px;
+}
+.reqBox {
+  background-color: rgba(0, 0, 0, 0.08);
+  font-size: 15px;
+  margin: 0;
+  padding: 10px;
+  margin-top: 5px;
+  margin-right: 5px;
+  border-top: 2px solid #3e00f9;
+  height: 20px;
+}
+.btnSendReq {
+  -webkit-appearance: none;
+  margin: 0;
+  margin-top: 5px;
+  padding: 0 20px;
+  color: white;
+  background-color: rgba(0, 0, 255, 0.9);
+  border-radius: 30px;
+  font-size: 15px;
+  margin-left: 15px;
+}
+.studListBlock {
+  display: flex;
+  width: 98%;
+  background-color: rgba(0, 0, 0, 0.03);
+  margin-bottom: 5px;
+  padding: 10px;
+}
+.studListBlock:hover {
+  opacity: 0.7;
+}
+.studListComp {
+  font-size: 15px;
+  color: black;
+  border-radius: 3px;
+  padding: 5px;
+  margin: auto 0;
+}
+.studName {
+  font-size: 17px;
+}
+.studID {
+  margin-left: 50px;
+}
+.studEmail {
+  margin-left: 75px;
+}
+.btnStudList {
+  -webkit-appearance: none;
+  display: block;
+  border: 0;
+}
+.rightSide {
+  margin-left: auto;
+}
+.btnStudOver {
+  background-color: rgba(0, 0, 0, 0.1);
+  margin: 0;
+  margin-right: 10px;
+  color: black;
+  padding: 0 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  
+}
+.btnStudRemove {
+  color: red;
+  background-color: rgba(255, 0, 0, 0.2);
+  margin-left: auto;
+  font-size: 17px;
+  margin: 0;
+  border-radius: 30px;
+  width: 35px;
+  height: 35px;
+}
+
+/* Student Overview */
 .student-block {
   background-color: white;
   padding: 10px;
@@ -38,14 +180,14 @@
   font-size: 13px;
   color: rgba(0, 0, 0, 0.6);
   font-weight: 500;
-  background-color: rgba(0,0,0,0.05);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 .quiz-head {
   font-size: 13px;
   color: rgba(0, 0, 0, 0.7);
   font-weight: 800;
   padding: 5px;
-  background-color: rgba(0,0,0,0.15);
+  background-color: rgba(0, 0, 0, 0.15);
 }
 .comp-table {
   margin-top: 10px;
@@ -70,14 +212,14 @@
   border-radius: 0;
   margin: 0;
   margin-bottom: 10px;
-  color: rgba(0,0,0,0.5);
+  color: rgba(0, 0, 0, 0.5);
   border: 0;
 }
 .btn-comp:hover {
-  background-color: #3E00F9;
+  background-color: #3e00f9;
   color: white;
 }
 .purple-background {
-  background-color: #3E00F9;
+  background-color: #3e00f9;
   color: white;
 }

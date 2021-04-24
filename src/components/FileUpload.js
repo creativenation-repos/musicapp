@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import firebase from "../utils/firebase";
+import "./FileUpload.css";
 
 export const programUpload = () => {
   const file = document.querySelector("#select").files[0];
@@ -47,10 +48,14 @@ export const programUpload = () => {
   }
 };
 
-export default function VideoUpload() {
+export default function FileUpload() {
   return (
     <div>
       <input id="select" type="file" />
+      <p className="smallDesc">
+        Enter an optional custom file name. Leaving the field blank will use the
+        current file name.
+      </p>
       <input id="fileName" type="text" placeholder="Type file name.." />
     </div>
   );

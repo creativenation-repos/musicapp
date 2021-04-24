@@ -79,8 +79,6 @@
   font-size: 13px;
   padding: 10px;
   color: rgba(0, 0, 0, 0.6);
-  min-width: 265px;
-  max-width: 265px;
 }
 .notifDate {
   display: block;
@@ -90,7 +88,6 @@
   padding: 0px;
   color: rgba(0, 0, 0, 0.6);
   min-width: 50px;
-  max-width: 50px;
 }
 .btnsNotifReq {
   display: block;
@@ -140,4 +137,3 @@
   font-size: 15px;
   margin-right: 5px;
 }
-

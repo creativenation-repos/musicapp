@@ -157,7 +157,6 @@ export default function StudentOverview() {
 
   //   HANDLE
   const handleCompType = () => {
-
     if (compType === "lessons") {
       return <div>{handleLessonBlock()}</div>;
     } else if (compType === "exercises") {
@@ -381,7 +380,11 @@ export default function StudentOverview() {
           <td className="list-head">{task.Task}</td>
           <td className="list-head">{task.Desc}</td>
           <td className="list-head">
-            <input id={task.id} onChange={onMilestoneChange} type="checkbox" />
+            <input
+              id={`${milestones[milestoneIdx].id}-${task.id}`}
+              onChange={onMilestoneChange}
+              type="checkbox"
+            />
           </td>
         </tr>
       );
@@ -390,8 +393,25 @@ export default function StudentOverview() {
 
   // POST
   const onMilestoneChange = (event) => {
-    const taskID = event.target.getAttribute("id");
+    const cbID = event.target.getAttribute("id");
+    const idArr = event.target.getAttribute("id").split("-");
     // Change the isComplete to true and mark it as complete in their milestones page.
+    const segID = idArr[0];
+    const taskID = idArr[1];
+
+    const cbStatus = document.querySelector(`#${cbID}`).checked;
+
+    // Mark as complete in DB
+    students_Collection
+      .doc(student.id)
+      .collection("Milestones")
+      .doc(segID)
+      .collection("MilestoneTasks")
+      .doc(taskID)
+      .update({
+        isComplete: cbStatus,
+      })
+      .catch((err) => console.log(err));
   };
 
   const rerender = () => {
@@ -423,6 +443,7 @@ export default function StudentOverview() {
 
       {/* Content */}
       <div className="content">
+      <h1>Student Overview</h1>
         <button style={{ display: "none" }} onClick={rerender()}>
           Rerender
         </button>
