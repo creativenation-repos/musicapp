@@ -13,11 +13,24 @@
   border-radius: 30px;
   font-weight: 600;
 }
+.courseTop {
+  background-color: white;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+}
+.courseContent {
+  background-color: white;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+}
 .courseListWrapper {
   background-color: white;
   padding: 15px;
   margin-top: 15px;
   border-radius: 5px;
+  display: flex;
 }
 .searchHead {
   padding: 0;
@@ -34,6 +47,68 @@
   min-height: 40px;
   border-radius: 30px;
   margin: 0;
+}
+
+.courseListBlock {
+  background-color: white;
+  box-shadow: 0px 0px 5px 6px rgba(0, 0, 0, 0.06);
+  padding: 0;
+  margin: 15px;
+  border-radius: 5px;
+  width: 275px;
+  padding-bottom: 15px;
+  height: auto;
+}
+
+.thumb {
+  display: block;
+  min-height: 175px;
+  max-height: 175px;
+}
+.courseListName {
+  display: block;
+  padding: 5px 15px;
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  min-height: 50px;
+}
+.courseListDesc {
+  display: block;
+  padding: 10px 15px;
+  font-size: 12px;
+  margin: 0;
+  min-height: 70px;
+  color: rgba(0, 0, 0, 0.7);
+}
+.btnEdit {
+  display: block;
+  -webkit-appearance: none;
+  background-color: rgba(0, 0, 0, 0.07);
+  color: black;
+  border-radius: 30px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 5px;
+  margin-bottom: 5px;
+  border: 0;
+}
+.btnEdit:hover {
+  opacity: 0.7;
+}
+.btnRemove {
+  display: block;
+  -webkit-appearance: none;
+  background-color: red;
+  color: white;
+  border-radius: 30px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 5px;
+  border: 0;
+}
+.btnRemove:hover {
+  opacity: 0.7;
 }
 
 /* Wizard New Course */
@@ -111,7 +186,7 @@
 
 /* Wizard New Quiz */
 .compPanel {
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   background-color: white;
   width: 250px;
   text-align: center;
@@ -119,6 +194,7 @@
   border-radius: 5px;
   position: fixed;
   right: 30px;
+  top: 65px;
 }
 .compPanel > button {
   display: block;
@@ -138,4 +214,161 @@
   letter-spacing: -1px;
   color: rgba(0, 0, 0, 0.7);
   font-size: 20px;
+}
+
+.comps {
+  margin-top: 25px;
+  padding: 20px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 70%;
+}
+.comps h2 {
+  padding: 0;
+  margin: 0;
+}
+.question {
+  width: 50%;
+}
+.tbComp {
+  background-color: rgba(0, 0, 0, 0.07);
+  border: 0;
+  font-size: 15px;
+  padding: 10px;
+  border-radius: 30px;
+}
+.tbComp:focus {
+  outline: none;
+}
+.compLabel {
+  font-size: 14px;
+  margin-bottom: 10px;
+  padding: 0;
+  font-weight: 600;
+}
+.opt {
+  display: block;
+  margin-bottom: 3px;
+  width: 30%;
+}
+.answer {
+  width: 40%;
+}
+.compDel {
+  margin-left: auto;
+  margin-right: 0;
+  -webkit-appearance: none;
+  background-color: rgba(255, 0, 0, 0.2);
+  color: red;
+  border-radius: 30px;
+  border: none;
+  height: 35px;
+  width: 35px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.prompt {
+  width: 70%;
+}
+.short {
+  width: 50%;
+}
+.long {
+  width: 70%;
+}
+
+.ras {
+  margin-top: 25px;
+}
+.raGroup {
+  display: flex;
+}
+.raGroup > label {
+  margin: 0;
+  padding: 5px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.ra {
+  margin: 5px;
+  padding: 0;
+}
+
+/* Course oVERVIEW */
+.compAccordion {
+  margin-bottom: 0px;
+}
+.btnAccordion {
+  border: 0;
+  text-align: left;
+  width: 100%;
+  margin: 0;
+  font-size: 18px;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+}
+.accordIcon {
+  font-size: 20px;
+  margin-right: 15px;
+  padding: 0;
+  max-width: 15px;
+}
+.lessonBlock {
+  display: flex;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 5px;
+}
+.lessonBlock > * {
+  margin: 0;
+  padding: 5px;
+}
+.btnListEdit {
+  -webkit-appearance: none;
+  border: 0;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 30px;
+  width: 70px;
+  font-size: 15px;
+  margin-left: auto;
+  margin-right: 0;
+}
+.btnListEdit:hover {
+  opacity: 0.7;
+}
+.sortIcon {
+  font-size: 20px;
+  margin-right: 20px;
+  color: rgba(0, 0, 0, 0.7);
+}
+.lessonListName {
+  color: rgba(0,0,0,0.7);
+  font-family: inherit;
+  font-size: 18px;
+}
+
+.purple-border {
+  border-top: 7px solid #3e00f9;
+}
+.red-border {
+  border-top: 7px solid #f9003e;
+}
+.yellow-border {
+  border-top: 7px solid #bbf900;
+}
+.aqua-border {
+  border-top: 7px solid #00f9ba;
+}
+.orange-border {
+  border-top: 7px solid #f93e00;
+}
+.pink-border {
+  border-top: 7px solid #f900bb;
+}
+.green-border {
+  border-top: 7px solid #00f93e;
 }

@@ -1,0 +1,111 @@
+.btnCreate {
+  -webkit-appearance: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: black;
+  font-size: 15px;
+  padding: 8px;
+  width: 260px;
+  position: absolute;
+  right: 10px;
+  top: 80px;
+  border: 0;
+  border-radius: 30px;
+  font-weight: 600;
+}
+.btnCreate:hover {
+  opacity: 0.7;
+}
+
+#tbAssSearch {
+  width: 500px;
+  background-color: rgba(0, 0, 0, 0.08);
+  border: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0 15px;
+  min-height: 40px;
+  border-radius: 30px;
+  margin: 0;
+}
+
+#tbAssSearch:focus {
+  outline: none;
+}
+.searchHead {
+  padding: 0;
+  margin: 0;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 10px;
+}
+.searchWrapper {
+  background-color: white;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+}
+
+.assWrapper {
+  background-color: white;
+  padding: 15px;
+  margin-top: 5px;
+  border-radius: 5px;
+}
+.assListBlock {
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 10px 15px;
+  display: flex;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+.assListBlock:hover {
+  opacity: 0.7;
+}
+.assGrid {
+  display: grid;
+  grid-template-columns: 6fr 2fr 2fr;
+  column-gap: 30px;
+}
+.assName {
+  font-size: 18px;
+  margin: 0;
+  padding: 10px 0;
+}
+.assAssigned {
+  font-size: 13px;
+  margin: 0;
+  padding: 10px 0;
+  color: rgba(0, 0, 0, 0.7);
+}
+.assDue {
+  font-size: 13px;
+  margin: 0;
+  padding: 10px 0;
+  color: rgba(0, 0, 0, 0.7);
+}
+.btnGroup {
+  display: flex;
+  margin-left: auto;
+  margin-right: 0;
+}
+.btnAssView {
+  -webkit-appearance: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: black;
+  border-radius: 30px;
+  border: none;
+  height: 35px;
+  width: 100px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+}
+.btnAssRemove {
+  -webkit-appearance: none;
+  background-color: rgba(255, 0, 0, 0.2);
+  color: red;
+  border-radius: 30px;
+  border: none;
+  height: 35px;
+  width: 35px;
+  font-size: 18px;
+  font-weight: 800;
+}

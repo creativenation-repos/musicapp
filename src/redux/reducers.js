@@ -813,6 +813,102 @@ export const storeSingleCourseExerReducer = (state = {}, action) => {
   }
 };
 
+export const storeTeacherQuizComponentsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherQuizComponentsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherAllCoursesReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherAllCoursesAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherSingleCourseReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherSingleCourseAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherSingleCourseLessonsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherSingleCourseLessonsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherSingleCourseQuizzesReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherSingleCourseQuizzesAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const toggleTeacherSingleCourseLessonsListReducer = (
+  state = false,
+  action
+) => {
+  switch (action.type) {
+    case "toggleTeacherSingleCourseLessonsListAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const toggleTeacherSingleCourseQuizzesListReducer = (
+  state = false,
+  action
+) => {
+  switch (action.type) {
+    case "toggleTeacherSingleCourseQuizzesListAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherSingleCourseLessonReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeTeacherSingleCourseLessonAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherSingleCourseQuizReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeTeacherSingleCourseQuizAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // Assignment Reducers
 export const storeTeacherSingleAssignmentReducer = (state = {}, action) => {
   switch (action.type) {
@@ -1406,7 +1502,6 @@ export const allReducers = combineReducers({
   // Teacher Reducers
   storeTeacherStudentGeneralInfoReducer,
   storeTeacherGroupGeneralInfoReducer,
-  storeTeacherCourseGeneralInfoReducer,
   storeTeacherAssignmentsGeneralInfoReducer,
   storeTeacherMilestonesGeneralInfoReducer,
   storeTeacherForumsGeneralInfoReducer,
@@ -1485,6 +1580,15 @@ export const allReducers = combineReducers({
   storeTeacherAddStudentSearchResultReducer,
   storeTeacherNotificationsReducer,
   toggleTeacherNotificationsWindowReducer,
+  storeTeacherQuizComponentsReducer,
+  storeTeacherAllCoursesReducer,
+  storeTeacherSingleCourseReducer,
+  storeTeacherSingleCourseLessonsReducer,
+  storeTeacherSingleCourseQuizzesReducer,
+  toggleTeacherSingleCourseLessonsListReducer,
+  toggleTeacherSingleCourseQuizzesListReducer,
+  storeTeacherSingleCourseLessonReducer,
+  storeTeacherSingleCourseQuizReducer,
 
   // Student Reducers
   storeStudentUserDataReducer,

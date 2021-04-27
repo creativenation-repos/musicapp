@@ -842,6 +842,67 @@ export const storeStudentNextLessonAction = (payload) => {
   };
 };
 
+export const storeTeacherQuizComponentsAction = (payload) => {
+  return {
+    type: "storeTeacherQuizComponentsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherAllCoursesAction = (payload) => {
+  return {
+    type: "storeTeacherAllCoursesAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseLessonsAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseLessonsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseQuizzesAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseQuizzesAction",
+    payload: payload,
+  };
+};
+
+export const toggleTeacherSingleCourseLessonsListAction = () => {
+  return {
+    type: "toggleTeacherSingleCourseLessonsListAction",
+  };
+};
+
+export const toggleTeacherSingleCourseQuizzesListAction = () => {
+  return {
+    type: "toggleTeacherSingleCourseQuizzesListAction",
+  };
+};
+
+export const storeTeacherSingleCourseLessonAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseLessonAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseQuizAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseQuizAction",
+    payload: payload,
+  };
+};
+
 // Assignments
 export const storeStudentAssignmentsAction = (payload) => {
   return {

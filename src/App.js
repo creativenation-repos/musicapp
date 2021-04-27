@@ -18,6 +18,8 @@ import CoursesMain from "./components/Teachers/Courses/CoursesMain";
 import WizardNewCourse from "./components/Teachers/Courses/WizardNewCourse";
 import WizardNewLesson from "./components/Teachers/Courses/WizardNewLesson";
 import WizardNewQuiz from "./components/Teachers/Courses/WizardNewQuiz";
+import CourseOverview from "./components/Teachers/Courses/CourseOverview";
+import WizardEditLesson from "./components/Teachers/Courses/WizardEditLesson";
 import AssignmentsMain from "./components/Teachers/Assignments/AssignmentsMain";
 import AssignmentView from "./components/Teachers/Assignments/AssignmentView";
 import AssignmentEdit from "./components/Teachers/Assignments/AssignmentEdit";
@@ -755,6 +757,12 @@ export default function App() {
             </Route>
             <Route path="/teacher-new-quiz">
               <WizardNewQuiz />
+            </Route>
+            <Route path="/teacher-course-overview">
+              <CourseOverview />
+            </Route>
+            <Route path="/teacher-edit-lesson">
+              <WizardEditLesson />
             </Route>
             {/* Assignments */}
             <Route path="/teacher-assignments">

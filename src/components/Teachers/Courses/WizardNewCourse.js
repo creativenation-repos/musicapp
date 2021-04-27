@@ -3,18 +3,66 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import DashFooter from "../Dash/DashFooter";
 import TopBar from "../Dash/TopBar";
-import FileUpload from "../../FileUpload";
+import FileUpload, { programUpload } from "../../FileUpload";
+import RandomString from "../../RandomString";
+import { courses_Collection } from "../../../utils/firebase";
+import {
+  storeTeacherAllCoursesAction,
+  storeTeacherSingleCourseAction,
+} from "../../../redux/actions";
 
 export default function WizardNewCourse() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const courses = useSelector((state) => state.storeTeacherAllCoursesReducer);
+
+  // POST
+  const saveCourseDetails = () => {
+    const rand1 = RandomString();
+    const rand2 = RandomString();
+    const courseID = `Course${rand1}${rand2}`;
+
+    // Variables
+    const courseName = document.querySelector("#tbCourseName").value;
+    const courseDesc = document.querySelector("#taCourseDesc").value;
+    const courseThumb = programUpload();
+
+    // Save in DB
+    courses_Collection.doc(courseID).set({
+      Name: courseName,
+      Desc: courseDesc,
+      Thumbnail: courseThumb,
+    });
+
+    // Dispatch
+    const allCourses = [...courses];
+    allCourses.push({
+      id: courseID,
+      Name: courseName,
+      Desc: courseDesc,
+      Thumbnail: courseThumb,
+    });
+
+    dispatch(storeTeacherAllCoursesAction(allCourses));
+    dispatch(
+      storeTeacherSingleCourseAction({
+        id: courseID,
+        Name: courseName,
+        Desc: courseDesc,
+        Thumbnail: courseThumb,
+      })
+    );
+  };
+
   //   NAV
   const navCreateLesson = () => {
+    saveCourseDetails();
     history.push("/teacher-new-lesson");
   };
   const navSaveExit = () => {
+    saveCourseDetails();
     history.push("/teacher-courses");
   };
 

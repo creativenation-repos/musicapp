@@ -3,12 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import firebase from "../utils/firebase";
 import "./FileUpload.css";
+import RandomString from "./RandomString";
 
 export const programUpload = () => {
-  const file = document.querySelector("#select").files[0];
+  const file = document.querySelector(`#select`).files[0];
 
   if (file) {
-    let name = document.querySelector("#fileName").value;
+    let name = document.querySelector(`#fileName`).value;
     if (name === "") {
       name = file.name;
     }
@@ -24,10 +25,20 @@ export const programUpload = () => {
       if (name !== file.name) {
         name = name + ".mp4";
       }
+    } else if (file.type === "audio/mpeg") {
+      ref = firebase.storage().ref("Audio/");
+      if (name !== file.name) {
+        name = name + ".mp3";
+      }
     } else if (file.type === "image/jpeg") {
       ref = firebase.storage().ref("Images/");
       if (name !== file.name) {
         name = name + ".jpg";
+      }
+    } else if (file.type === "image/png") {
+      ref = firebase.storage().ref("Images/");
+      if (name !== file.name) {
+        name = name + ".png";
       }
     } else if (file.type === "application/pdf") {
       ref = firebase.storage().ref("PDF/");
@@ -51,7 +62,7 @@ export const programUpload = () => {
 export default function FileUpload() {
   return (
     <div>
-      <input id="select" type="file" />
+      <input id={`select`} type="file" />
       <p className="smallDesc">
         Enter an optional custom file name. Leaving the field blank will use the
         current file name.

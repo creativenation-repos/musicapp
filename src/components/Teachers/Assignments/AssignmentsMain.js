@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 import TopBar from "../Dash/TopBar";
 import DashFooter from "../Dash/DashFooter";
+import "./Assignments.css";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -12,6 +13,8 @@ import {
   storeTeacherAssignmentsGeneralInfoAction,
   storeTeacherSingleAssignmentAction,
 } from "../../../redux/actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export default function AssignmentsMain() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
@@ -40,18 +43,28 @@ export default function AssignmentsMain() {
     if (assignments.length > 0) {
       return assignments.map((ass, i) => {
         return (
-          <div key={i}>
-            <h3>{ass.Name}</h3>
+          <div className="assListBlock" key={i}>
+            <div className="assGrid"><h3 className="assName">{ass.Name}</h3>
             {ass.Date ? (
-              <p>Assigned: {ass.Date.toDate().toString().substr(4, 11)}</p>
+              <p className="assAssigned">
+                Assigned: {ass.Date.toDate().toString().substr(4, 11)}
+              </p>
             ) : null}
             {ass.Due ? (
-              <p>Due: {ass.Due.toDate().toString().substr(4, 11)}</p>
-            ) : null}
-            <button id={ass.id} onClick={navAssignmentView}>
+              <p className="assDue">
+                Due: {ass.Due.toDate().toString().substr(4, 11)}
+              </p>
+            ) : null}</div>
+            <div className="btnGroup"><button
+              className="btnAssView"
+              id={ass.id}
+              onClick={navAssignmentView}
+            >
               View
             </button>
-            <button class="btn-salmon">Remove</button>
+            <button className="btnAssRemove">
+              <FontAwesomeIcon icon={faTimes} />
+            </button></div>
           </div>
         );
       });
@@ -92,17 +105,19 @@ export default function AssignmentsMain() {
       </div>
 
       {/* Content */}
-      <div>
+      <div className="content">
+        <h1>Assignments</h1>
         {/* Search */}
-        <div>
+        <div className="searchWrapper">
+          <p className="searchHead">Search for assignments.</p>
           <input id="tbAssSearch" type="text" placeholder="Search" />
-          <button className="btn-navy" onClick={navAssignmentNew}>
+          <button className="btnCreate" onClick={navAssignmentNew}>
             Create New Assignment
           </button>
         </div>
         <br />
         {/* Assignment List */}
-        <div>{handleAssignmentList()}</div>
+        <div className="assWrapper">{handleAssignmentList()}</div>
       </div>
 
       {/* Footer */}

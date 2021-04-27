@@ -3,18 +3,50 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import TopBar from "../Dash/TopBar";
 import DashFooter from "../Dash/DashFooter";
-import FileUpload from "../../FileUpload";
+import FileUpload, { programUpload } from "../../FileUpload";
+import { courses_Collection } from "../../../utils/firebase";
+import RandomString from "../../RandomString";
 
 export default function WizardNewLesson() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const course = useSelector((state) => state.storeTeacherSingleCourseReducer);
+
+  // POST
+  const saveLesson = () => {
+    const rand1 = RandomString();
+    const rand2 = RandomString();
+    const lessonID = `Lesson${rand1}${rand2}`;
+
+    // Variables
+    const lessonName = document.querySelector("#tbLessonName").value;
+    const lessonDesc = document.querySelector("#taLessonDesc").value;
+    const lessonVideo = programUpload();
+    const lessonText = document.querySelector("#taLessonText").value;
+
+    // Save to DB
+    courses_Collection
+      .doc(course.id)
+      .collection("Lessons")
+      .doc(lessonID)
+      .set({
+        Name: lessonName,
+        Desc: lessonDesc,
+        Video: lessonVideo,
+        Text: lessonText,
+      })
+      .catch((err) => console.log(err));
+  };
+
   //   NAV
   const navCreateQuiz = () => {
+    saveLesson();
     history.push("/teacher-new-quiz");
   };
   const navSaveExit = () => {
+    saveLesson();
     history.push("/teacher-courses");
   };
 
@@ -69,7 +101,7 @@ export default function WizardNewLesson() {
             </p>
             <textarea
               className="ta"
-              id="taLessonDesc"
+              id="taLessonText"
               placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dolor risus, euismod accumsan laoreet in, luctus eu mauris. Mauris purus lorem, commodo ut ante et, scelerisque congue mauris. Quisque consectetur purus vel tellus vulputate malesuada. Fusce a nisi sit amet erat porta blandit. Cras ultricies malesuada ultrices. Quisque libero purus, finibus sed ante quis, tincidunt sodales ex. Nulla ut ligula quam."
             ></textarea>
           </div>
