@@ -20,6 +20,7 @@ import WizardNewLesson from "./components/Teachers/Courses/WizardNewLesson";
 import WizardNewQuiz from "./components/Teachers/Courses/WizardNewQuiz";
 import CourseOverview from "./components/Teachers/Courses/CourseOverview";
 import WizardEditLesson from "./components/Teachers/Courses/WizardEditLesson";
+import WizardEditQuiz from "./components/Teachers/Courses/WizardEditQuiz";
 import AssignmentsMain from "./components/Teachers/Assignments/AssignmentsMain";
 import AssignmentView from "./components/Teachers/Assignments/AssignmentView";
 import AssignmentEdit from "./components/Teachers/Assignments/AssignmentEdit";
@@ -46,10 +47,6 @@ import SupportMain from "./components/Teachers/Support/SupportMain";
 import StudentDash from "./components/Students/StudentDash";
 import StudentProfileMain from "./components/Students/Profile/StudentProfileMain";
 import StudentCoursesMain from "./components/Students/Courses/StudentCoursesMain";
-import StudentCoursePreview from "./components/Students/Courses/StudentCoursePreview";
-import StudentCourseLesson from "./components/Students/Courses/StudentCourseLesson";
-import StudentCourseExercise from "./components/Students/Courses/StudentCourseExercise";
-import StudentCourseQuiz from "./components/Students/Courses/StudentCourseQuiz";
 import StudentAssignmentsMain from "./components/Students/Assignments/StudentAssignmentsMain";
 import StudentAssignmentView from "./components/Students/Assignments/StudentAssignmentView";
 import StudentMessagesMain from "./components/Students/Messages/StudentMessagesMain";
@@ -764,6 +761,9 @@ export default function App() {
             <Route path="/teacher-edit-lesson">
               <WizardEditLesson />
             </Route>
+            <Route path="/teacher-edit-quiz">
+              <WizardEditQuiz />
+            </Route>
             {/* Assignments */}
             <Route path="/teacher-assignments">
               <AssignmentsMain />
@@ -847,18 +847,6 @@ export default function App() {
             {/* Courses */}
             <Route path="/student-courses">
               <StudentCoursesMain />
-            </Route>
-            <Route path="/student-course-preview">
-              <StudentCoursePreview />
-            </Route>
-            <Route path="/student-course-lesson">
-              <StudentCourseLesson />
-            </Route>
-            <Route path="/student-course-exercise">
-              <StudentCourseExercise />
-            </Route>
-            <Route path="/student-course-quiz">
-              <StudentCourseQuiz />
             </Route>
             {/* Assignments */}
             <Route path="/student-assignments">

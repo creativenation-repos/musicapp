@@ -909,6 +909,68 @@ export const storeTeacherSingleCourseQuizReducer = (state = {}, action) => {
   }
 };
 
+export const storeTeacherSingleCourseQuizComponentsReducer = (
+  state = [],
+  action
+) => {
+  switch (action.type) {
+    case "storeTeacherSingleCourseQuizComponentsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherSingleCourseLessonCountReducer = (
+  state = 0,
+  action
+) => {
+  switch (action.type) {
+    case "storeTeacherSingleCourseLessonCountAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherSingleCourseQuizCountReducer = (state = 0, action) => {
+  switch (action.type) {
+    case "storeTeacherSingleCourseQuizCountAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherSingleCourseAssignedStudsReducer = (
+  state = [],
+  action
+) => {
+  switch (action.type) {
+    case "storeTeacherSingleCourseAssignedStudsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherSingleCourseAssigneesReducer = (
+  state = [],
+  action
+) => {
+  switch (action.type) {
+    case "storeTeacherSingleCourseAssigneesAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // Assignment Reducers
 export const storeTeacherSingleAssignmentReducer = (state = {}, action) => {
   switch (action.type) {
@@ -1589,6 +1651,11 @@ export const allReducers = combineReducers({
   toggleTeacherSingleCourseQuizzesListReducer,
   storeTeacherSingleCourseLessonReducer,
   storeTeacherSingleCourseQuizReducer,
+  storeTeacherSingleCourseQuizComponentsReducer,
+  storeTeacherSingleCourseLessonCountReducer,
+  storeTeacherSingleCourseQuizCountReducer,
+  storeTeacherSingleCourseAssignedStudsReducer,
+  storeTeacherSingleCourseAssigneesReducer,
 
   // Student Reducers
   storeStudentUserDataReducer,

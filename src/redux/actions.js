@@ -503,6 +503,20 @@ export const storeSingleCourseExerAction = (payload) => {
   };
 };
 
+export const storeTeacherSingleCourseAssignedStudsAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseAssignedStudsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseAssigneesAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseAssigneesAction",
+    payload: payload,
+  };
+};
+
 // Assignments
 export const storeTeacherSingleAssignmentAction = (payload) => {
   return {
@@ -899,6 +913,27 @@ export const storeTeacherSingleCourseLessonAction = (payload) => {
 export const storeTeacherSingleCourseQuizAction = (payload) => {
   return {
     type: "storeTeacherSingleCourseQuizAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseQuizComponentsAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseQuizComponentsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseLessonCountAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseLessonCountAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseQuizCountAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseQuizCountAction",
     payload: payload,
   };
 };

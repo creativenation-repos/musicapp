@@ -5,7 +5,10 @@ import { useHistory } from "react-router-dom";
 import TopBar from "../Dash/TopBar";
 import DashFooter from "../Dash/DashFooter";
 
-import { storeTeacherQuizComponentsAction } from "../../../redux/actions";
+import {
+  storeTeacherQuizComponentsAction,
+  storeTeacherSingleCourseQuizCountAction,
+} from "../../../redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import RandomString from "../../RandomString";
@@ -17,10 +20,26 @@ export default function WizardNewQuiz() {
   const dispatch = useDispatch();
 
   const course = useSelector((state) => state.storeTeacherSingleCourseReducer);
+  const quizCount = useSelector(
+    (state) => state.storeTeacherSingleCourseQuizCountReducer
+  );
 
   const components = useSelector(
     (state) => state.storeTeacherQuizComponentsReducer
   );
+
+  // GET
+  const getQuizCount = () => {
+    courses_Collection
+      .doc(course.id)
+      .collection("Quizzes")
+      .get()
+      .then((snapshot) => {
+        const quizCount = snapshot.size;
+        dispatch(storeTeacherSingleCourseQuizCountAction(quizCount));
+      })
+      .catch((err) => console.log(err));
+  };
 
   // HANDLE
   const handleComponents = () => {
@@ -76,6 +95,14 @@ export default function WizardNewQuiz() {
               type="text"
               placeholder="Answer"
             />
+
+            <p className="compLabel">Points:</p>
+            <input
+              className="tbComp points"
+              id={`tbPoints${i}`}
+              type="text"
+              placeholder="# of Points"
+            />
           </div>
         );
       } else if (comp.Type === "short") {
@@ -102,6 +129,14 @@ export default function WizardNewQuiz() {
               type="text"
               placeholder="Answer"
             />
+
+            <p className="compLabel">Points:</p>
+            <input
+              className="tbComp points"
+              id={`tbPoints${i}`}
+              type="text"
+              placeholder="# of Points"
+            />
           </div>
         );
       } else if (comp.Type === "long") {
@@ -127,6 +162,14 @@ export default function WizardNewQuiz() {
               id={`taLongAns${i}`}
               placeholder="Answer"
             ></textarea>
+
+            <p className="compLabel">Points:</p>
+            <input
+              className="tbComp points"
+              id={`tbPoints${i}`}
+              type="text"
+              placeholder="# of Points"
+            />
           </div>
         );
       } else if (comp.Type === "trueFalse") {
@@ -169,6 +212,14 @@ export default function WizardNewQuiz() {
                 <label for="male">False</label>
               </div>
             </div>
+
+            <p className="compLabel">Points:</p>
+            <input
+              className="tbComp points"
+              id={`tbPoints${i}`}
+              type="text"
+              placeholder="# of Points"
+            />
             <br />
           </div>
         );
@@ -239,6 +290,14 @@ export default function WizardNewQuiz() {
               type="text"
               placeholder="Answer"
             />
+
+            <p className="compLabel">Points:</p>
+            <input
+              className="tbComp points"
+              id={`tbPoints${i}`}
+              type="text"
+              placeholder="# of Points"
+            />
           </div>
         );
       } else if (comp.Type === "video") {
@@ -308,6 +367,14 @@ export default function WizardNewQuiz() {
               type="text"
               placeholder="Answer"
             />
+
+            <p className="compLabel">Points:</p>
+            <input
+              className="tbComp points"
+              id={`tbPoints${i}`}
+              type="text"
+              placeholder="# of Points"
+            />
           </div>
         );
       } else if (comp.Type === "image") {
@@ -376,6 +443,14 @@ export default function WizardNewQuiz() {
               id={`tbAnswer${i}`}
               type="text"
               placeholder="Answer"
+            />
+
+            <p className="compLabel">Points:</p>
+            <input
+              className="tbComp points"
+              id={`tbPoints${i}`}
+              type="text"
+              placeholder="# of Points"
             />
           </div>
         );
@@ -474,34 +549,43 @@ export default function WizardNewQuiz() {
           options.push(opt);
         }
         const answer = document.querySelector(`#tbAnswer${i}`).value;
+        const points = document.querySelector(`#tbPoints${i}`).value;
 
         const tempObj = {
           Type: "multiple",
           Question: question,
           Options: options,
           Answer: answer,
+          Order: i + 1,
+          Points: points,
         };
 
         allComponents.push(tempObj);
       } else if (comp.Type === "short") {
         const prompt = document.querySelector(`#tbShortPrompt${i}`).value;
         const answer = document.querySelector(`#tbShortAns${i}`).value;
+        const points = document.querySelector(`#tbPoints${i}`).value;
 
         const tempObj = {
           Type: "short",
           Prompt: prompt,
           Answer: answer,
+          Order: i + 1,
+          Points: points,
         };
 
         allComponents.push(tempObj);
       } else if (comp.Type === "long") {
         const prompt = document.querySelector(`#tbLongPrompt${i}`).value;
         const answer = document.querySelector(`#taLongAns${i}`).value;
+        const points = document.querySelector(`#tbPoints${i}`).value;
 
         const tempObj = {
           Type: "long",
           Prompt: prompt,
           Answer: answer,
+          Order: i + 1,
+          Points: points,
         };
 
         allComponents.push(tempObj);
@@ -509,6 +593,7 @@ export default function WizardNewQuiz() {
         const prompt = document.querySelector(`#tbTrueFalsePrompt${i}`).value;
         const raTrue = document.querySelector(`#raTrue${i}`).checked;
         const raFalse = document.querySelector(`#raFalse${i}`).checked;
+        const points = document.querySelector(`#tbPoints${i}`).value;
 
         let res = false;
         if (raTrue) {
@@ -519,6 +604,8 @@ export default function WizardNewQuiz() {
           Type: "trueFalse",
           Prompt: prompt,
           Answer: res,
+          Order: i + 1,
+          Points: points,
         };
 
         allComponents.push(tempObj);
@@ -532,6 +619,7 @@ export default function WizardNewQuiz() {
           options.push(opt);
         }
         const answer = document.querySelector(`#tbAnswer${i}`).value;
+        const points = document.querySelector(`#tbPoints${i}`).value;
 
         const tempObj = {
           Type: "audio",
@@ -539,6 +627,8 @@ export default function WizardNewQuiz() {
           Question: question,
           Options: options,
           Answer: answer,
+          Order: i + 1,
+          Points: points,
         };
 
         allComponents.push(tempObj);
@@ -552,6 +642,7 @@ export default function WizardNewQuiz() {
           options.push(opt);
         }
         const answer = document.querySelector(`#tbAnswer${i}`).value;
+        const points = document.querySelector(`#tbPoints${i}`).value;
 
         const tempObj = {
           Type: "video",
@@ -559,6 +650,8 @@ export default function WizardNewQuiz() {
           Question: question,
           Options: options,
           Answer: answer,
+          Order: i + 1,
+          Points: points,
         };
 
         allComponents.push(tempObj);
@@ -572,6 +665,7 @@ export default function WizardNewQuiz() {
           options.push(opt);
         }
         const answer = document.querySelector(`#tbAnswer${i}`).value;
+        const points = document.querySelector(`#tbPoints${i}`).value;
 
         const tempObj = {
           Type: "image",
@@ -579,6 +673,8 @@ export default function WizardNewQuiz() {
           Question: question,
           Options: options,
           Answer: answer,
+          Order: i + 1,
+          Points: points,
         };
 
         allComponents.push(tempObj);
@@ -597,6 +693,7 @@ export default function WizardNewQuiz() {
       .set({
         Name: quizName,
         Desc: quizDesc,
+        Order: quizCount + 1,
       })
       .catch((err) => console.log(err));
 
@@ -617,6 +714,8 @@ export default function WizardNewQuiz() {
             Question: comp.Question,
             Options: comp.Options,
             Answer: comp.Answer,
+            Points: comp.Points,
+            Order: comp.Order,
           })
           .catch((err) => console.log(err));
       } else if (comp.Type === "short") {
@@ -628,8 +727,10 @@ export default function WizardNewQuiz() {
           .doc(compID)
           .set({
             Type: "short",
+            Order: comp.Order,
             Prompt: comp.Prompt,
             Answer: comp.Answer,
+            Points: comp.Points,
           })
           .catch((err) => console.log(err));
       } else if (comp.Type === "long") {
@@ -643,6 +744,8 @@ export default function WizardNewQuiz() {
             Type: "long",
             Prompt: comp.Prompt,
             Answer: comp.Answer,
+            Points: comp.Points,
+            Order: comp.Order,
           })
           .catch((err) => console.log(err));
       } else if (comp.Type === "trueFalse") {
@@ -656,6 +759,8 @@ export default function WizardNewQuiz() {
             Type: "trueFalse",
             Prompt: comp.Prompt,
             Answer: comp.Answer,
+            Points: comp.Points,
+            Order: comp.Order,
           })
           .catch((err) => console.log(err));
       } else if (comp.Type === "audio") {
@@ -671,6 +776,8 @@ export default function WizardNewQuiz() {
             Question: comp.Question,
             Options: comp.Options,
             Answer: comp.Answer,
+            Points: comp.Points,
+            Order: comp.Order,
           })
           .catch((err) => console.log(err));
       } else if (comp.Type === "video") {
@@ -686,6 +793,8 @@ export default function WizardNewQuiz() {
             Question: comp.Question,
             Options: comp.Options,
             Answer: comp.Answer,
+            Points: comp.Points,
+            Order: comp.Order,
           })
           .catch((err) => console.log(err));
       } else if (comp.Type === "image") {
@@ -701,6 +810,8 @@ export default function WizardNewQuiz() {
             Question: comp.Question,
             Options: comp.Options,
             Answer: comp.Answer,
+            Points: comp.Points,
+            Order: comp.Order,
           })
           .catch((err) => console.log(err));
       }
@@ -779,6 +890,8 @@ export default function WizardNewQuiz() {
       history.push("/teacherdash");
       return;
     }
+
+    getQuizCount();
   }, []);
   return (
     <div>
@@ -788,7 +901,7 @@ export default function WizardNewQuiz() {
       </div>
 
       <div className="content">
-        <h1>New Course: Quiz Details</h1>
+        <h1>Quiz Details</h1>
 
         {/* Quiz Components Panel */}
         <div className="compPanel">

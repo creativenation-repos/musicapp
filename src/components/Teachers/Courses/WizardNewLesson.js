@@ -6,6 +6,7 @@ import DashFooter from "../Dash/DashFooter";
 import FileUpload, { programUpload } from "../../FileUpload";
 import { courses_Collection } from "../../../utils/firebase";
 import RandomString from "../../RandomString";
+import { storeTeacherSingleCourseLessonCountAction } from "../../../redux/actions";
 
 export default function WizardNewLesson() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
@@ -13,6 +14,22 @@ export default function WizardNewLesson() {
   const dispatch = useDispatch();
 
   const course = useSelector((state) => state.storeTeacherSingleCourseReducer);
+  const lessonCount = useSelector(
+    (state) => state.storeTeacherSingleCourseLessonCountReducer
+  );
+
+  // GET
+  const getLessonCount = () => {
+    courses_Collection
+      .doc(course.id)
+      .collection("Lessons")
+      .get()
+      .then((snapshot) => {
+        const lessonCount = snapshot.size;
+        dispatch(storeTeacherSingleCourseLessonCountAction(lessonCount));
+      })
+      .catch((err) => console.log(err));
+  };
 
   // POST
   const saveLesson = () => {
@@ -36,6 +53,7 @@ export default function WizardNewLesson() {
         Desc: lessonDesc,
         Video: lessonVideo,
         Text: lessonText,
+        Order: lessonCount + 1,
       })
       .catch((err) => console.log(err));
   };
@@ -55,6 +73,8 @@ export default function WizardNewLesson() {
       history.push("/teacherdash");
       return;
     }
+
+    getLessonCount();
   }, []);
   return (
     <div>
@@ -64,7 +84,7 @@ export default function WizardNewLesson() {
       </div>
 
       <div className="content">
-        <h1>New Course: Lesson Details</h1>
+        <h1>Lesson Details</h1>
 
         <div className="bodyWrapper">
           <div className="wizardPair">
