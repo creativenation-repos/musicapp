@@ -2,25 +2,8 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import TopBar from "../Dash/TopBar";
-import DashFooter from "../Dash/DashFooter";
-import RandomString from "../../RandomString";
-import GetToday from "../../GetToday";
-import {
-  connectionReqQueue_Collection,
-  students_Collection,
-  teachers_Collection,
-  users_Collection,
-} from "../../../utils/firebase";
-import {
-  storeAllSearchUsersAction,
-  storeTeacherAllConnectionsAction,
-  userDataAction,
-  storeAllConnReqsAction,
-} from "../../../redux/actions";
-import { firebaseLooper } from "../../../utils/tools";
-
-import "./Connections.css";
+import TopBar from "../TopBar";
+import Footer from "../Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
@@ -28,27 +11,49 @@ import {
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function ConnectionsMain() {
-  const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+import "./Connections.css";
+import {
+  students_Collection,
+  users_Collection,
+  connectionReqQueue_Collection,
+  teachers_Collection,
+} from "../../../utils/firebase";
+import {
+  storeStudentAllConnectionsAction,
+  storeStudentUserDataAction,
+  storeStudentAllSearchUsersAction,
+  storeStudentAllConnReqsAction,
+} from "../../../redux/actions";
+import { firebaseLooper } from "../../../utils/tools";
+import RandomString from "../../RandomString";
+import GetToday from "../../GetToday";
+
+export default function StudentCoursesMain() {
+  const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
+  const user = useSelector((state) => state.storeStudentUserDataReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const allUsers = useSelector((state) => state.storeAllSearchUsersReducer);
   const connections = useSelector(
-    (state) => state.storeTeacherAllConnectionsReducer
+    (state) => state.storeStudentAllConnectionsReducer
   );
-  const userState = useSelector((state) => state.userDataReducer);
-  const allConnReqs = useSelector((state) => state.storeAllConnReqsReducer);
+  const allSearchUsers = useSelector(
+    (state) => state.storeStudentAllSearchUsersReducer
+  );
+  const userState = useSelector((state) => state.storeStudentUserDataReducer);
+  const allConnReqs = useSelector(
+    (state) => state.storeStudentAllConnReqsReducer
+  );
 
   // GET
   const getAllConnections = () => {
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Connections")
       .get()
       .then((snapshot) => {
         const connData = firebaseLooper(snapshot);
-        dispatch(storeTeacherAllConnectionsAction(connData));
+        dispatch(storeStudentAllConnectionsAction(connData));
       })
       .catch((err) => console.log(err));
   };
@@ -57,18 +62,18 @@ export default function ConnectionsMain() {
       .get()
       .then((snapshot) => {
         const queueData = firebaseLooper(snapshot);
-        dispatch(storeAllConnReqsAction(queueData));
+        dispatch(storeStudentAllConnReqsAction(queueData));
       })
       .catch((err) => console.log(err));
   };
   const getMyUserData = () => {
     users_Collection
-      .where("AuthID", "==", teacherAuthID)
+      .where("AuthID", "==", studentAuthID)
       .get()
       .then((snapshot) => {
         const myData = firebaseLooper(snapshot);
         myData.forEach((me) => {
-          dispatch(userDataAction(me));
+          dispatch(storeStudentUserDataAction(me));
         });
       })
       .catch((err) => console.log(err));
@@ -93,11 +98,7 @@ export default function ConnectionsMain() {
             >
               Profile
             </button>
-            <button
-              onClick={removeConnection}
-              id={conn.id}
-              className="btnConnRemove"
-            >
+            <button id={conn.id} className="btnConnRemove">
               <FontAwesomeIcon icon={faTimesCircle} />
             </button>
           </div>
@@ -106,7 +107,7 @@ export default function ConnectionsMain() {
     });
   };
   const handleSearchList = () => {
-    return allUsers.map((user, i) => {
+    return allSearchUsers.map((user, i) => {
       return (
         <div className="searchResBlock" key={i}>
           <p className="searchResName">
@@ -169,7 +170,7 @@ export default function ConnectionsMain() {
           const usersFirst = firebaseLooper(snapshot);
           if (usersFirst.length > 0) {
             // Found some first names
-            dispatch(storeAllSearchUsersAction(usersFirst));
+            dispatch(storeStudentAllSearchUsersAction(usersFirst));
           } else {
             // Did  not find first names
             users_Collection
@@ -179,10 +180,10 @@ export default function ConnectionsMain() {
                 const usersAuth = firebaseLooper(snapshot);
                 if (usersAuth.length > 0) {
                   // Found some usernames
-                  dispatch(storeAllSearchUsersAction(usersAuth));
+                  dispatch(storeStudentAllSearchUsersAction(usersAuth));
                 } else {
                   // Found nothing!
-                  dispatch(storeAllSearchUsersAction([]));
+                  dispatch(storeStudentAllSearchUsersAction([]));
                 }
               })
               .catch((err) => console.log(err));
@@ -211,7 +212,7 @@ export default function ConnectionsMain() {
                 fullUsers.push(u);
               }
               if (i + 1 === userCount) {
-                dispatch(storeAllSearchUsersAction(fullUsers));
+                dispatch(storeStudentAllSearchUsersAction(fullUsers));
                 document
                   .querySelector("#searchListBlock")
                   .classList.remove("hide");
@@ -219,7 +220,7 @@ export default function ConnectionsMain() {
             });
           } else {
             // Did not find last name
-            dispatch(storeAllSearchUsersAction([]));
+            dispatch(storeStudentAllSearchUsersAction([]));
           }
         })
         .catch((err) => console.log(err));
@@ -230,77 +231,73 @@ export default function ConnectionsMain() {
   const sendRequest = (event) => {
     const authID = event.target.getAttribute("id");
 
-    users_Collection
-      .where("AuthID", "==", teacherAuthID)
-      .get()
-      .then((snapshot) => {
-        const myData = firebaseLooper(snapshot);
-        myData.forEach((me) => {
-          allUsers.forEach((u) => {
-            if (u.AuthID === authID) {
-              // First store request in req queue
-              const rand1 = RandomString();
-              const rand2 = RandomString();
-              const connReqID = `ConnReq${rand1}${rand2}`;
-
-              connectionReqQueue_Collection
-                .doc(connReqID)
-                .set({
-                  ConnID: u.AuthID,
-                  SenderID: teacherAuthID,
-                  CFirstName: userState.FirstName,
-                  CLastName: userState.LastName,
-                })
-                .catch((err) => console.log(err));
-
-              if (u.AccountType === "Student") {
-                // User is Student
-                // Send Notification
-                const notifID = `Notif${rand1}${rand2}`;
-
-                students_Collection
-                  .doc(u.AuthID)
-                  .collection("Notifications")
-                  .doc(notifID)
-                  .set({
-                    Action: "connrequest",
-                    Text: `You have received a request from ${me.FirstName} ${me.LastName} to connect.`,
-                    Date: GetToday(),
-                    Icon: "faUser",
-                  })
-                  .catch((err) => console.log(err));
-              } else if (u.AccountType === "Teacher") {
-                // User is Teacher
-                // Send Notification
-                const notifID = `Notif${rand1}${rand2}`;
-
-                teachers_Collection
-                  .doc(u.AuthID)
-                  .collection("Notifications")
-                  .doc(notifID)
-                  .set({
-                    Action: "connrequest",
-                    Text: `You have received a request from ${me.FirstName} ${me.LastName} to connect.`,
-                    Date: GetToday(),
-                    Icon: "faUser",
-                  })
-                  .catch((err) => console.log(err));
-              }
-
-              // Dispatch
-              const allReqs = [...allConnReqs];
-              allReqs.push({
+    users_Collection.where('AuthID','==',studentAuthID).get().then((snapshot) => {
+      const myData = firebaseLooper(snapshot);
+      myData.forEach(me => {
+        allSearchUsers.forEach((u) => {
+          if (u.AuthID === authID) {
+            // First store request in req queue
+            const rand1 = RandomString();
+            const rand2 = RandomString();
+            const connReqID = `ConnReq${rand1}${rand2}`;
+    
+            connectionReqQueue_Collection
+              .doc(connReqID)
+              .set({
                 ConnID: u.AuthID,
-                SenderID: teacherAuthID,
+                SenderID: studentAuthID,
                 CFirstName: userState.FirstName,
                 CLastName: userState.LastName,
-              });
-              dispatch(storeAllConnReqsAction(allReqs));
+              })
+              .catch((err) => console.log(err));
+    
+            if (u.AccountType === "Student") {
+              // User is Student
+              // Send Notification
+              const notifID = `Notif${rand1}${rand2}`;
+    
+              students_Collection
+                .doc(u.AuthID)
+                .collection("Notifications")
+                .doc(notifID)
+                .set({
+                  Action: "connrequest",
+                  Text: `You have received a request from ${me.FirstName} ${me.LastName} to connect.`,
+                  Date: GetToday(),
+                  Icon: "faUser",
+                })
+                .catch((err) => console.log(err));
+            } else if (u.AccountType === "Teacher") {
+              // User is Teacher
+              // Send Notification
+              const notifID = `Notif${rand1}${rand2}`;
+    
+              teachers_Collection
+                .doc(u.AuthID)
+                .collection("Notifications")
+                .doc(notifID)
+                .set({
+                  Action: "connrequest",
+                  Text: `You have received a request from ${me.FirstName} ${me.LastName} to connect.`,
+                  Date: GetToday(),
+                  Icon: "faUser",
+                })
+                .catch((err) => console.log(err));
             }
-          });
+    
+            // Dispatch
+            const allReqs = [...allConnReqs];
+            allReqs.push({
+              ConnID: u.AuthID,
+              SenderID: studentAuthID,
+              CFirstName: userState.FirstName,
+              CLastName: userState.LastName,
+            });
+            dispatch(storeStudentAllConnReqsAction(allReqs));
+          }
         });
       })
-      .catch((err) => console.log(err));
+    }).catch(err => console.log(err));
   };
 
   // NAV
@@ -311,47 +308,27 @@ export default function ConnectionsMain() {
       .where("AuthID", "==", authID)
       .get()
       .then((snapshot) => {
-        const usersData = firebaseLooper(snapshot);
-        usersData.forEach((user) => {
-          dispatch(userDataAction(user));
+        const userData = firebaseLooper(snapshot);
+        userData.forEach((user) => {
+          dispatch(storeStudentUserDataAction(user));
         });
       })
       .catch((err) => console.log(err));
 
-    history.push("/teacher-profile");
-  };
-
-  // REMOVE
-  const removeConnection = (event) => {
-    const connID = event.target.getAttribute("id");
-    console.log(connID);
-
-    teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Connections")
-      .doc(connID)
-      .delete()
-      .catch((err) => console.log(err));
-
-    // Dispatch
-    const allConnections = [...connections];
-    const filtered = allConnections.filter((conn) => conn.id !== connID);
-
-    dispatch(storeTeacherAllConnectionsAction(filtered));
+    history.push("/student-profile");
   };
 
   useEffect(() => {
-    if (!teacherAuthID) {
-      history.push("/teacherdash");
+    if (!studentAuthID) {
+      history.push("/studentdash");
       return;
     }
 
     getAllConnections();
-    getMyUserData();
     getAllConnRequests();
+    getMyUserData();
     document.querySelector("#searchListBlock").classList.add("hide");
   }, []);
-
   return (
     <div>
       {/* Top Bar */}
@@ -362,22 +339,21 @@ export default function ConnectionsMain() {
       <div className="content">
         <h1>Connections</h1>
 
-        {/* Main Content */}
         <div className="white-background">
           <h3 className="headSearch">Search for Connections</h3>
           <input
             className="tbConnSearch"
             id="tbConnSearch"
             type="text"
-            placeholder="Type Name or ID here.  'Jack Milton' or 'jckmltn'"
+            placeholder="Type Name or ID here.  'Jack Milton' or 'jckmltn"
           />
           <button className="btnConnSearch" onClick={searchUser}>
             <FontAwesomeIcon icon={faSearch} />
           </button>
+          {/* Search List */}
           <div id="searchListBlock" className="searchListBlock">
             <FontAwesomeIcon
               onClick={() => {
-                dispatch(storeAllSearchUsersAction([]));
                 document
                   .querySelector("#searchListBlock")
                   .classList.add("hide");
@@ -390,13 +366,11 @@ export default function ConnectionsMain() {
         </div>
 
         <div className="white-background">{handleConnectionsList()}</div>
-
-        {/* END */}
       </div>
 
       {/* Footer */}
       <div>
-        <DashFooter />
+        <Footer />
       </div>
     </div>
   );

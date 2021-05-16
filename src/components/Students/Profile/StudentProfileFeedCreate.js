@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { storeProfileFeedPostDataAction } from "../../../redux/actions";
+import {
+  storeStudentProfileFeedPostAction,
+  storeStudentProfileFeedPostsAction,
+} from "../../../redux/actions";
 import {
   students_Collection,
   teachers_Collection,
@@ -11,17 +14,15 @@ import { firebaseLooper } from "../../../utils/tools";
 import GetToday from "../../GetToday";
 import RandomString from "../../RandomString";
 
-import "./Profile.css";
-
-export default function ProfileFeedCreate() {
-  const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+export default function StudentProfileFeedCreate() {
+  const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
+  const user = useSelector((state) => state.storeStudentUserDataReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
   const allPostsState = useSelector(
-    (state) => state.storeProfileFeedPostDataReducer
+    (state) => state.storeStudentProfileFeedPostsReducer
   );
-  const profileUser = useSelector((state) => state.userDataReducer);
 
   // POST
   const savePost = () => {
@@ -32,7 +33,7 @@ export default function ProfileFeedCreate() {
 
     // Search for Connection
     users_Collection
-      .where("AuthID", "==", teacherAuthID)
+      .where("AuthID", "==", studentAuthID)
       .get()
       .then((snapshot) => {
         const myData = firebaseLooper(snapshot);
@@ -42,7 +43,7 @@ export default function ProfileFeedCreate() {
           const fullName = `${me.FirstName} ${me.LastName}`;
 
           users_Collection
-            .where("AuthID", "==", profileUser.AuthID)
+            .where("AuthID", "==", user.AuthID)
             .get()
             .then((snapshot) => {
               const userData = firebaseLooper(snapshot);
@@ -87,7 +88,7 @@ export default function ProfileFeedCreate() {
                   Likes: 0,
                 });
                 allPosts.sort((a, b) => b.Date - a.Date);
-                dispatch(storeProfileFeedPostDataAction(allPosts));
+                dispatch(storeStudentProfileFeedPostsAction(allPosts));
               });
             })
             .catch((err) => console.log(err));
@@ -95,7 +96,7 @@ export default function ProfileFeedCreate() {
       })
       .catch((err) => console.log(err));
 
-    history.push("/teacher-profile/feed");
+    history.push("/student-profile/feed");
   };
 
   // HANDLE
@@ -112,13 +113,15 @@ export default function ProfileFeedCreate() {
     let galleryBtn = document.querySelector("#link-gallery");
     galleryBtn.classList.remove("navy-back");
 
-    let reviewsBtn = document.querySelector("#link-reviews");
-    reviewsBtn.classList.remove("navy-back");
+    if (user.AccountType === "Teacher") {
+      let reviewsBtn = document.querySelector("#link-reviews");
+      reviewsBtn.classList.remove("navy-back");
+    }
   };
 
   useEffect(() => {
-    if (!teacherAuthID) {
-      history.push("/teacherdash");
+    if (!studentAuthID) {
+      history.push("/studentdash");
       return;
     }
 
@@ -128,7 +131,7 @@ export default function ProfileFeedCreate() {
     <div className="post-form-wrapper">
       <button
         className="btn-back"
-        onClick={() => history.push("/teacher-profile/feed")}
+        onClick={() => history.push("/student-profile/feed")}
       >
         Back
       </button>

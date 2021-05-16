@@ -1,46 +1,44 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+
+import {
+  storeStudentProfileFeedPostsAction,
+  storeStudentProfileFeedPostAction,
+  storeStudentMeDataAction,
+} from "../../../redux/actions";
+import { firebaseLooper } from "../../../utils/tools";
 import {
   students_Collection,
   teachers_Collection,
   users_Collection,
 } from "../../../utils/firebase";
-import { firebaseLooper } from "../../../utils/tools";
-import {
-  storeProfileFeedPostDataAction,
-  storeProfileFeedSinglePostDataAction,
-  storeTeacherMeDataAction,
-} from "../../../redux/actions";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import "./Profile.css";
-import { faEllipsisV, faPen, faPlus } from "@fortawesome/free-solid-svg-icons";
-
-export default function ProfileFeedView() {
-  const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+export default function StudentProfileFeedView() {
+  const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
+  const user = useSelector((state) => state.storeStudentUserDataReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
   //   States
-  const posts = useSelector((state) => state.storeProfileFeedPostDataReducer);
-  const userDataState = useSelector((state) => state.userDataReducer);
-  const meData = useSelector((state) => state.storeTeacherMeDataReducer);
+  const posts = useSelector(
+    (state) => state.storeStudentProfileFeedPostsReducer
+  );
+  const meData = useSelector((state) => state.storeStudentMeDataReducer);
 
   // GET
   const getProfileFeedData = () => {
     let feed_Collection;
 
-    if (userDataState.AccountType === "Student") {
+    if (user.AccountType === "Student") {
       feed_Collection = students_Collection
-        .doc(userDataState.AuthID)
+        .doc(user.AuthID)
         .collection("Profile")
         .doc("Feed")
         .collection("Posts");
-    } else if (userDataState.AccountType === "Teacher") {
+    } else if (user.AccountType === "Teacher") {
       feed_Collection = teachers_Collection
-        .doc(userDataState.AuthID)
+        .doc(user.AuthID)
         .collection("Profile")
         .doc("Feed")
         .collection("Posts");
@@ -51,29 +49,27 @@ export default function ProfileFeedView() {
       .get()
       .then((snapshot) => {
         const data = firebaseLooper(snapshot);
-        console.log(data);
-        dispatch(storeProfileFeedPostDataAction(data));
+        dispatch(storeStudentProfileFeedPostsAction(data));
       })
       .catch((err) => console.log(err));
   };
   const storeSinglePost = (event) => {
     const postID = event.target.getAttribute("id");
-    console.log(postID);
     posts.forEach((post) => {
       if (post.id === postID) {
-        dispatch(storeProfileFeedSinglePostDataAction(post));
-        history.push("/teacher-profile/edit-feed");
+        dispatch(storeStudentProfileFeedPostAction(post));
+        history.push("/student-profile/feed-edit");
       }
     });
   };
   const getMeData = () => {
     users_Collection
-      .where("AuthID", "==", teacherAuthID)
+      .where("AuthID", "==", studentAuthID)
       .get()
       .then((snapshot) => {
         const myData = firebaseLooper(snapshot);
         myData.forEach((me) => {
-          dispatch(storeTeacherMeDataAction(me));
+          dispatch(storeStudentMeDataAction(me));
         });
       })
       .catch((err) => console.log(err));
@@ -93,7 +89,7 @@ export default function ProfileFeedView() {
     let galleryBtn = document.querySelector("#link-gallery");
     galleryBtn.classList.remove("navy-back");
 
-    if (userDataState.AccountType === "Teacher") {
+    if (user.AccountType === "Teacher") {
       let reviewsBtn = document.querySelector("#link-reviews");
       reviewsBtn.classList.remove("navy-back");
     }
@@ -131,26 +127,26 @@ export default function ProfileFeedView() {
   };
 
   useEffect(() => {
-    if (!teacherAuthID) {
-      history.push("/teacherdash");
+    if (!studentAuthID) {
+      history.push("/studentdash");
       return;
     }
+
     getProfileFeedData();
     handleCurrPage();
     getMeData();
   }, [posts]);
-
   return (
     <div>
-      <button
-        className="btn-newPost"
-        onClick={() => history.push("/teacher-profile/new-feed")}
-      >
-        Create Post
-      </button>
-      <div className="white-background">
+      <div>
+        <button
+          className="btn-newPost"
+          onClick={() => history.push("/student-profile/feed-create")}
+        >
+          Create Post
+        </button>
         <br />
-        <div>{handlePostList()}</div>
+        <div className="white-background">{handlePostList()}</div>
       </div>
     </div>
   );

@@ -44,27 +44,35 @@ export default function AssignmentsMain() {
       return assignments.map((ass, i) => {
         return (
           <div className="assListBlock" key={i}>
-            <div className="assGrid"><h3 className="assName">{ass.Name}</h3>
-            {ass.Date ? (
-              <p className="assAssigned">
-                Assigned: {ass.Date.toDate().toString().substr(4, 11)}
-              </p>
-            ) : null}
-            {ass.Due ? (
-              <p className="assDue">
-                Due: {ass.Due.toDate().toString().substr(4, 11)}
-              </p>
-            ) : null}</div>
-            <div className="btnGroup"><button
-              className="btnAssView"
-              id={ass.id}
-              onClick={navAssignmentView}
-            >
-              View
-            </button>
-            <button className="btnAssRemove">
-              <FontAwesomeIcon icon={faTimes} />
-            </button></div>
+            <div className="assGrid">
+              <h3 className="assName">{ass.Name}</h3>
+              {ass.Date ? (
+                <p className="assAssigned">
+                  Assigned: {ass.Date.toDate().toString().substr(4, 11)}
+                </p>
+              ) : null}
+              {ass.Due ? (
+                <p className="assDue">
+                  Due: {ass.Due.toDate().toString().substr(4, 11)}
+                </p>
+              ) : null}
+            </div>
+            <div className="btnGroup">
+              <button
+                className="btnAssView"
+                id={ass.id}
+                onClick={navAssignmentView}
+              >
+                View
+              </button>
+              <button
+                id={ass.id}
+                onClick={removeAssignment}
+                className="btnAssRemove"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
           </div>
         );
       });
@@ -86,6 +94,24 @@ export default function AssignmentsMain() {
   };
   const navAssignmentNew = () => {
     history.push("/teacher-assignment-new");
+  };
+
+  // REMOVE
+  const removeAssignment = (event) => {
+    const assID = event.target.getAttribute("id");
+
+    teachers_Collection
+      .doc(teacherAuthID)
+      .collection("Assignments")
+      .doc(assID)
+      .delete()
+      .catch((err) => console.log(err));
+
+    // Duspatch
+    const allAssignments = [...assignments];
+    const filtered = allAssignments.filter((a) => a.id !== assID);
+
+    dispatch(storeTeacherAssignmentsGeneralInfoAction(filtered));
   };
 
   useEffect(() => {

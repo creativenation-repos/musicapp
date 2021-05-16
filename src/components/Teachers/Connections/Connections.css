@@ -1,0 +1,177 @@
+.connBlock {
+  background-color: rgba(0, 0, 0, 0.08);
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  padding: 10px;
+  padding-left: 15px;
+}
+.connName {
+  font-weight: 800;
+  font-size: 18px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.connEmail {
+  margin-left: 20px;
+  font-size: 15px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.btnsConn {
+  display: flex;
+  margin-left: auto;
+  margin-right: 0;
+}
+.btnsConn > button {
+  padding: 8px;
+}
+.btnsConn > button:hover {
+  opacity: 0.7;
+}
+.btnConnMessage {
+  background-color: #3e00f9;
+  border: 0;
+  border-radius: 30px;
+  width: 120px;
+  font-size: 15px;
+  color: white;
+}
+.btnConnProfile {
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 0;
+  border-radius: 30px;
+  width: 100px;
+  font-size: 15px;
+}
+.btnConnRemove {
+  background-color: rgba(255, 0, 0, 0.15);
+  color: red;
+  border: 0;
+  border-radius: 30px;
+  font-size: 18px;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 42px;
+  height: auto;
+}
+
+.tbConnSearch {
+  border-radius: 30px;
+  border: 0;
+  background-color: rgba(0, 0, 0, 0.08);
+  width: 60%;
+  font-size: 15px;
+  padding: 12px;
+  margin: 0;
+}
+.tbConnSearch:focus {
+  outline: none;
+}
+
+.headSearch {
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 25px;
+}
+
+.btnConnSearch {
+  border-radius: 30px;
+  font-size: 15px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: 0;
+  width: 60px;
+  padding: 8px;
+  margin-left: 15px;
+}
+
+.btnConnSearch:hover {
+  opacity: 0.8;
+}
+.searchListBlock {
+  position: absolute;
+  background-color: white;
+  margin-top: 10px;
+  width: 600px;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 10px 10px 7px rgba(0, 0, 0, 0.08);
+}
+.searchResBlock {
+  display: flex;
+  margin: 0;
+  padding: 8px;
+  margin-bottom: 5px;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.searchResName {
+  margin: 0;
+  padding: 0;
+  margin-left: 10px;
+  font-size: 15px;
+  font-weight: 800;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.searchResAuth {
+  margin: 0;
+  padding: 0;
+  margin-left: 30px;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 14px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.searchResType {
+  margin: 0;
+  padding: 0;
+  margin-left: 30px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 13px;
+  height: fit-content;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.btnSearchResReq {
+  -webkit-appearance: none;
+  background-color: #3e00f9;
+  color: white;
+  border-radius: 30px;
+  border: 0;
+  font-size: 13px;
+  margin: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  width: 140px;
+  padding: 8px;
+}
+.btnSearchResReq:hover {
+  opacity: 0.7;
+}
+.closeSearchList {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 0.8);
+}
+.closeSearchList:hover {
+  opacity: 0.7;
+}
+.reqSent {
+  margin: 0;
+  margin-left: auto;
+  border-radius: 30px;
+  background-color: rgba(0,0,0,0.1);
+  color: rgba(0,0,0,0.5);
+  padding: 8px;
+  width: 120px;
+  text-align: center;
+  font-size: 13px;
+  font-family: inherit;
+}

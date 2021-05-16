@@ -28,49 +28,89 @@ export default function AssignmentNew() {
     if (assTypeState === "textual") {
       return (
         <div>
-          <h2>Textual Assignment</h2>
-          <p>
+          <h2 className="ass-form-head">Textual Assignment</h2>
+          <p className="ass-small-text">
             Insert short description of how the textual assignment will be
             displayed to the student.
           </p>
-          <h3>Prompt</h3>
-          <textarea id="taAssTextualPrompt" placeholder="Prompt"></textarea>
+          <h3 className="ass-form-sub-head">Prompt</h3>
+          <textarea
+            className="ta"
+            id="taAssTextualPrompt"
+            placeholder="Prompt"
+          ></textarea>
         </div>
       );
     } else if (assTypeState === "practice") {
       return (
         <div>
-          <h2>Practice Form</h2>
-          <p>
+          <h2 className="ass-form-head">Practice Assignment</h2>
+          <p className="ass-small-text">
             Insert short description of how the pratice assignment will be
             displayed to the student.
           </p>
-          <h3>Prompt</h3>
-          <textarea id="taAssPracticePrompt" placeholder="Prompt"></textarea>
-          <h3>Repertoire</h3>
-          <p style={{ color: "rgba(0,0,0,0.4)", fontStyle: "italic" }}>
+          <h3 className="ass-form-sub-head">Prompt</h3>
+          <textarea
+            className="ta"
+            id="taAssPracticePrompt"
+            placeholder="Prompt"
+          ></textarea>
+          <h3 className="ass-form-sub-head">Repertoire</h3>
+          <p
+            className="ass-small-desc"
+            style={{ color: "rgba(0,0,0,0.4)", fontStyle: "italic" }}
+          >
             "Violin Concerto in D Major, G Major Scale (3 Octaves), Etude No.
             12, Excerpt No. 1 Symphony No. 3"
           </p>
-          <input id="tbAssPracticeReper" type="text" placeholder="Repertoire" />
-          <h3>Composer (optional)</h3>
-          <p style={{ color: "rgba(0,0,0,0.4)", fontStyle: "italic" }}>
+          <input
+            className="tb"
+            id="tbAssPracticeReper"
+            type="text"
+            placeholder="Repertoire"
+          />
+          <h3 className="ass-form-sub-head">Composer (optional)</h3>
+          <p
+            className="ass-small-desc"
+            style={{ color: "rgba(0,0,0,0.4)", fontStyle: "italic" }}
+          >
             "Johann Sebastian Bach, Wolfgang Amadeus Mozart, Ludwig Van
             Beethoven, Philip Glass"
           </p>
-          <input id="tbAssPracticeComp" type="text" placeholder="Composer" />
-          <h3>Tempo</h3>
-          <p style={{ color: "rgba(0,0,0,0.4)", fontStyle: "italic" }}>
+          <input
+            className="tb"
+            id="tbAssPracticeComp"
+            type="text"
+            placeholder="Composer"
+          />
+          <h3 className="ass-form-sub-head">Tempo</h3>
+          <p
+            className="ass-small-desc"
+            style={{ color: "rgba(0,0,0,0.4)", fontStyle: "italic" }}
+          >
             "144bpm, 60bpm-100bpm, 60bpm.70bpm.80bpm"
           </p>
-          <input id="tbAssPracticeTempo" type="text" placeholder="Tempo" />
-          <h3>Max Time for Completion</h3>
-          <p>
+          <input
+            className="tb"
+            id="tbAssPracticeTempo"
+            type="text"
+            placeholder="Tempo"
+          />
+          <h3 className="ass-form-sub-head">Max Time for Completion</h3>
+          <p
+            className="ass-small-desc"
+            style={{ color: "rgba(0,0,0,0.4)", fontStyle: "italic" }}
+          >
             Students will not be shown this number. However, if the student
             exceeds the maximum amount of practice for this assignment, the
             teacher will be notified. Please enter in number form.
           </p>
-          <input id="tbAssPracticeMax" type="text" placeholder="Max Time" />{" "}
+          <input
+            className="tb"
+            id="tbAssPracticeMax"
+            type="text"
+            placeholder="Max Time"
+          />{" "}
           minutes
         </div>
       );
@@ -194,51 +234,73 @@ export default function AssignmentNew() {
       <div>
         <TopBar />
       </div>
-      <div>
+
+      <div className="content">
         <h1>Create New Assignment</h1>
-        <br />
 
         {/* Form */}
         <div>
-          <div>
-            <h3>Assignment Name:</h3>
-            <input id="tbAssName" type="text" placeholder="Name" />
-          </div>
-          <div>
-            <h3>Description:</h3>
-            <textarea id="taAssDesc" placeholder="Description"></textarea>
-          </div>
-          <div>
-            <h3>Assignment Type:</h3>
+        <button
+              onClick={() => history.push("/teacher-assignments")}
+              className="btn-back"
+            >
+              Back
+            </button>
+          <div className="white-background">
+            
+            <h3 className="edit-ass-head">Assignment Name:</h3>
             <input
-              onChange={OnAssType}
-              type="radio"
-              id="raTextual"
-              name="raAssType"
-              value="Textual"
+              className="tb"
+              id="tbAssName"
+              type="text"
+              placeholder="Name"
             />
-            <label>Textual</label>
-            <input
-              onChange={OnAssType}
-              type="radio"
-              id="raPractice"
-              name="raAssType"
-              value="Practice"
-            />
-            <label>Practice</label>
-            <br />
-            {handleAssTypeForm()}
+
+            <h3 className="edit-ass-head">Description:</h3>
+            <textarea
+              className="ta"
+              id="taAssDesc"
+              placeholder="Description"
+            ></textarea>
           </div>
-          <div>
-            <h3>Due Date:</h3>
+          <div className="white-background">
+            <h3 className="edit-ass-head">Assignment Type:</h3>
+            <div className="ra-ass-group">
+              <input
+                onChange={OnAssType}
+                type="radio"
+                id="raTextual"
+                name="raAssType"
+                value="Textual"
+              />
+              <label>Textual</label>
+            </div>
+            <div className="ra-ass-group">
+              {" "}
+              <input
+                onChange={OnAssType}
+                type="radio"
+                id="raPractice"
+                name="raAssType"
+                value="Practice"
+              />
+              <label>Practice</label>
+            </div>
+            <div className="ass-type-form">{handleAssTypeForm()}</div>
+          </div>
+          <div className="white-background">
+            <h3 className="edit-ass-head">Due Date:</h3>
             <input
+              className="dt"
               id="daAssDue"
               type="date"
               defaultValue={InputDateFormatter(GetToday())}
             />
           </div>
           <div>
-            <button onClick={saveNewAssignment}>Save Assignment</button>
+            <button className="btnSaveChanges" onClick={saveNewAssignment}>
+              Save Assignment
+            </button>
           </div>
         </div>
       </div>

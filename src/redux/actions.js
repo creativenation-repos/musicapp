@@ -237,6 +237,20 @@ export const storeReviewListAction = (payload) => {
   };
 };
 
+export const storeTeacherMeDataAction = (payload) => {
+  return {
+    type: "storeTeacherMeDataAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherAllReviewsAction = (payload) => {
+  return {
+    type: "storeTeacherAllReviewsAction",
+    payload: payload,
+  };
+};
+
 // Student Actions
 export const storeTeacherStudentGeneralInfoAction = (payload) => {
   return {
@@ -517,6 +531,110 @@ export const storeTeacherSingleCourseAssigneesAction = (payload) => {
   };
 };
 
+export const storeTeacherQuizComponentsAction = (payload) => {
+  return {
+    type: "storeTeacherQuizComponentsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherAllCoursesAction = (payload) => {
+  return {
+    type: "storeTeacherAllCoursesAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseLessonsAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseLessonsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseQuizzesAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseQuizzesAction",
+    payload: payload,
+  };
+};
+
+export const toggleTeacherSingleCourseLessonsListAction = () => {
+  return {
+    type: "toggleTeacherSingleCourseLessonsListAction",
+  };
+};
+
+export const toggleTeacherSingleCourseQuizzesListAction = () => {
+  return {
+    type: "toggleTeacherSingleCourseQuizzesListAction",
+  };
+};
+
+export const storeTeacherSingleCourseLessonAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseLessonAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseQuizAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseQuizAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseQuizComponentsAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseQuizComponentsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseLessonCountAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseLessonCountAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleCourseQuizCountAction = (payload) => {
+  return {
+    type: "storeTeacherSingleCourseQuizCountAction",
+    payload: payload,
+  };
+};
+
+// Connections
+export const storeTeacherAllConnectionsAction = (payload) => {
+  return {
+    type: "storeTeacherAllConnectionsAction",
+    payload: payload,
+  };
+};
+
+export const storeAllSearchUsersAction = (payload) => {
+  return {
+    type: "storeAllSearchUsersAction",
+    payload: payload,
+  };
+};
+
+export const storeAllConnReqsAction = (payload) => {
+  return {
+    type: "storeAllConnReqsAction",
+    payload: payload,
+  };
+};
+
 // Assignments
 export const storeTeacherSingleAssignmentAction = (payload) => {
   return {
@@ -740,6 +858,20 @@ export const toggleStudentNewCertFormAction = () => {
   };
 };
 
+export const storeStudentMeDataAction = (payload) => {
+  return {
+    type: "storeStudentMeDataAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentSingleReviewAction = (payload) => {
+  return {
+    type: "storeStudentSingleReviewAction",
+    payload: payload,
+  };
+};
+
 // Courses
 export const flagStudentTeacherConnectionAction = (payload) => {
   return {
@@ -856,84 +988,115 @@ export const storeStudentNextLessonAction = (payload) => {
   };
 };
 
-export const storeTeacherQuizComponentsAction = (payload) => {
+export const storeStudentAllCoursesAction = (payload) => {
   return {
-    type: "storeTeacherQuizComponentsAction",
+    type: "storeStudentAllCoursesAction",
     payload: payload,
   };
 };
 
-export const storeTeacherAllCoursesAction = (payload) => {
+export const storeStudentCourseProgressAction = (payload) => {
   return {
-    type: "storeTeacherAllCoursesAction",
+    type: "storeStudentCourseProgressAction",
     payload: payload,
   };
 };
 
-export const storeTeacherSingleCourseAction = (payload) => {
+export const storeStudentSingleCourseLessonsAction = (payload) => {
   return {
-    type: "storeTeacherSingleCourseAction",
+    type: "storeStudentSingleCourseLessonsAction",
     payload: payload,
   };
 };
 
-export const storeTeacherSingleCourseLessonsAction = (payload) => {
+export const storeStudentSingleCourseQuizzesAction = (payload) => {
   return {
-    type: "storeTeacherSingleCourseLessonsAction",
+    type: "storeStudentSingleCourseQuizzesAction",
     payload: payload,
   };
 };
 
-export const storeTeacherSingleCourseQuizzesAction = (payload) => {
+export const storeStudentSingleCourseOrderNumAction = (payload) => {
   return {
-    type: "storeTeacherSingleCourseQuizzesAction",
+    type: "storeStudentSingleCourseOrderNumAction",
     payload: payload,
   };
 };
 
-export const toggleTeacherSingleCourseLessonsListAction = () => {
+export const storeStudentUpNextAction = (payload) => {
   return {
-    type: "toggleTeacherSingleCourseLessonsListAction",
-  };
-};
-
-export const toggleTeacherSingleCourseQuizzesListAction = () => {
-  return {
-    type: "toggleTeacherSingleCourseQuizzesListAction",
-  };
-};
-
-export const storeTeacherSingleCourseLessonAction = (payload) => {
-  return {
-    type: "storeTeacherSingleCourseLessonAction",
+    type: "storeStudentUpNextAction",
     payload: payload,
   };
 };
 
-export const storeTeacherSingleCourseQuizAction = (payload) => {
+export const toggleStudentSingleCourseLessonsListAction = (payload) => {
   return {
-    type: "storeTeacherSingleCourseQuizAction",
+    type: "toggleStudentSingleCourseLessonsListAction",
     payload: payload,
   };
 };
 
-export const storeTeacherSingleCourseQuizComponentsAction = (payload) => {
+export const toggleStudentSingleCourseQuizzesListAction = (payload) => {
   return {
-    type: "storeTeacherSingleCourseQuizComponentsAction",
+    type: "toggleStudentSingleCourseQuizzesListAction",
     payload: payload,
   };
 };
 
-export const storeTeacherSingleCourseLessonCountAction = (payload) => {
+export const storeStudentSingleCourseLessonAction = (payload) => {
   return {
-    type: "storeTeacherSingleCourseLessonCountAction",
+    type: "storeStudentSingleCourseLessonAction",
     payload: payload,
   };
 };
 
-export const storeTeacherSingleCourseQuizCountAction = (payload) => {
+export const storeStudentTimeAction = (payload) => {
   return {
-    type: "storeTeacherSingleCourseQuizCountAction",
+    type: "storeStudentTimeAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentSingleCourseQuizAction = (payload) => {
+  return {
+    type: "storeStudentSingleCourseQuizAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentSingleCourseQuizComponentsAction = (payload) => {
+  return {
+    type: "storeStudentSingleCourseQuizComponentsAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentQuizFinalResultsAction = (payload) => {
+  return {
+    type: "storeStudentQuizFinalResultsAction",
+    payload: payload,
+  };
+};
+
+// Connections
+export const storeStudentAllConnectionsAction = (payload) => {
+  return {
+    type: "storeStudentAllConnectionsAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentAllSearchUsersAction = (payload) => {
+  return {
+    type: "storeStudentAllSearchUsersAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentAllConnReqsAction = (payload) => {
+  return {
+    type: "storeStudentAllConnReqsAction",
     payload: payload,
   };
 };

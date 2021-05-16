@@ -5,8 +5,7 @@ import firebase from "firebase/app";
 // Add the Firebase services that you want to use
 import "firebase/auth";
 import "firebase/firestore";
-import 'firebase/storage';
-
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAPSLS3bcx62CEWuOOc-NXKO_3Ys_H-HQk",
@@ -35,6 +34,7 @@ export const articles_Collection = db.collection("Articles");
 export const courses_Collection = db.collection("Courses");
 export const studentReqQueue_Collection = db.collection("StudentReqQueue");
 export const groupReqQueue_Collection = db.collection("GroupReqQueue");
+export const connectionReqQueue_Collection = db.collection("ConnectionReqQueue");
 
 ////////////////////////////////
 export default firebase;

@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { teachers_Collection } from "../../../utils/firebase";
+import {
+  students_Collection,
+  teachers_Collection,
+} from "../../../utils/firebase";
 import {
   storeAwardListAction,
   storeCertListAction,
@@ -12,22 +15,43 @@ export default function ProfileAwardsView() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
   const history = useHistory();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.userDataReducer);
+  const meData = useSelector((state) => state.storeTeacherMeDataReducer);
 
   const awards = useSelector((state) => state.storeAwardListReducer);
   const certs = useSelector((state) => state.storeCertListReducer);
 
   // GET
   const getAllAwards = () => {
-    const awards_Collection = teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Profile")
-      .doc("Awards")
-      .collection("AwardList");
-    const cert_Collection = teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Profile")
-      .doc("Awards")
-      .collection("CertificationList");
+    let awards_Collection;
+    if (user.AccountType === "Student") {
+      awards_Collection = students_Collection
+        .doc(user.AuthID)
+        .collection("Profile")
+        .doc("Awards")
+        .collection("AwardBlocks");
+    } else if (user.AccountType === "Teacher") {
+      awards_Collection = teachers_Collection
+        .doc(user.AuthID)
+        .collection("Profile")
+        .doc("Awards")
+        .collection("AwardList");
+    }
+
+    let cert_Collection;
+    if (user.AccountType === "Student") {
+      cert_Collection = students_Collection
+        .doc(user.AuthID)
+        .collection("Profile")
+        .doc("Awards")
+        .collection("CertBlocks");
+    } else if (user.AccountType === "Teacher") {
+      cert_Collection = teachers_Collection
+        .doc(user.AuthID)
+        .collection("Profile")
+        .doc("Awards")
+        .collection("CertificationList");
+    }
 
     awards_Collection
       .get()
@@ -60,8 +84,10 @@ export default function ProfileAwardsView() {
     let galleryBtn = document.querySelector("#link-gallery");
     galleryBtn.classList.remove("navy-back");
 
-    let reviewsBtn = document.querySelector("#link-reviews");
-    reviewsBtn.classList.remove("navy-back");
+    if (user.AccountType === "Teacher") {
+      let reviewsBtn = document.querySelector("#link-reviews");
+      reviewsBtn.classList.remove("navy-back");
+    }
   };
 
   useEffect(() => {
@@ -75,36 +101,43 @@ export default function ProfileAwardsView() {
   return (
     <div>
       <div>
-        <button
-          onClick={() => {
-            history.push("/teacher-profile/edit-awards");
-          }}
-        >
-          Edit
-        </button>
+        {user.AuthID === meData.AuthID ? (
+          <button
+            className="btn-newPost"
+            onClick={() => {
+              history.push("/teacher-profile/edit-awards");
+            }}
+          >
+            Edit
+          </button>
+        ) : null}
       </div>
-      <div>
-        <h2>Awards</h2>
+      <div className="white-background">
+        <h2 className="award-head">Awards</h2>
         {awards.map((award, i) => {
           return (
             <div key={i}>
-              <h3>{award.Name}</h3>
-              <p>Location: {award.Location}</p>
-              <p>Date: {award.Date.toDate().toString().substr(4, 11)}</p>
-              <p>Description: {award.Desc}</p>
+              <h3 className="award-name">{award.Name}</h3>
+              <p className="award-location">{award.Location}</p>
+              <p className="award-date">
+                Awarded on {award.Date.toDate().toString().substr(4, 11)}
+              </p>
+              <p className="award-desc">{award.Desc}</p>
             </div>
           );
         })}
       </div>
-      <div>
-        <h2>Certifications</h2>
+      <div className="white-background">
+        <h2 className="award-head">Certifications</h2>
         {certs.map((cert, i) => {
           return (
             <div key={i}>
-              <h3>{cert.Name}</h3>
-              <p>Location: {cert.Location}</p>
-              <p>Date: {cert.Date.toDate().toString().substr(4, 11)}</p>
-              <p>Description: {cert.Desc}</p>
+              <h3 className="award-name">{cert.Name}</h3>
+              <p className="award-location">{cert.Location}</p>
+              <p className="award-date">
+                Awarded on {cert.Date.toDate().toString().substr(4, 11)}
+              </p>
+              <p className="award-desc">{cert.Desc}</p>
             </div>
           );
         })}

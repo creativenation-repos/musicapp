@@ -6,8 +6,10 @@ import {
   storeProfileExperienceDataAction,
   storeProfileAboutDataAction,
   toggleNewInstrumentFormAction,
+  storeStudentAboutAction,
+  storeStudentExpAction,
 } from "../../../redux/actions";
-import { teachers_Collection } from "../../../utils/firebase";
+import { students_Collection } from "../../../utils/firebase";
 import firebase from "../../../utils/firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,13 +18,14 @@ import {
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function ProfileAboutEdit() {
-  const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+export default function StudentProfileAboutEdit() {
+  const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
+  const user = useSelector((state) => state.storeStudentUserDataReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const about = useSelector((state) => state.storeProfileAboutDataReducer);
-  const exp = useSelector((state) => state.storeProfileExperienceDataReducer);
+  const about = useSelector((state) => state.storeStudentAboutReducer);
+  const exp = useSelector((state) => state.storeStudentExpReducer);
 
   const toggleExpState = useSelector(
     (state) => state.toggleNewExperienceFormReducer
@@ -30,8 +33,8 @@ export default function ProfileAboutEdit() {
   const toggleInsState = useSelector(
     (state) => state.toggleNewInstrumentFormReducer
   );
-  const user = useSelector((state) => state.userDataReducer);
-  const meData = useSelector((state) => state.storeTeacherMeDataReducer);
+
+  const meData = useSelector((state) => state.storeStudentMeDataReducer);
 
   const saveAllChanges = () => {
     // About Section
@@ -79,8 +82,8 @@ export default function ProfileAboutEdit() {
     }
 
     // Save to DB
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Profile")
       .doc("About")
       .update({
@@ -93,8 +96,8 @@ export default function ProfileAboutEdit() {
       .catch((err) => console.log(err));
 
     newExperienceArray.forEach((ex) => {
-      teachers_Collection
-        .doc(teacherAuthID)
+      students_Collection
+        .doc(studentAuthID)
         .collection("Profile")
         .doc("Experience")
         .collection("ExpBlocks")
@@ -119,10 +122,10 @@ export default function ProfileAboutEdit() {
 
     const tempExp = [...newExperienceArray];
 
-    dispatch(storeProfileAboutDataAction(tempAbout));
-    dispatch(storeProfileExperienceDataAction(tempExp));
+    dispatch(storeStudentAboutAction(tempAbout));
+    dispatch(storeStudentExpAction(tempExp));
 
-    history.push("/teacher-profile/about");
+    history.push("/student-profile/about");
   };
 
   const applyNewExperience = () => {
@@ -146,8 +149,8 @@ export default function ProfileAboutEdit() {
     );
 
     // Save to database
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Profile")
       .doc("Experience")
       .collection("ExpBlocks")
@@ -180,8 +183,8 @@ export default function ProfileAboutEdit() {
   const removeExperience = (event) => {
     const exID = event.target.getAttribute("id");
 
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Profile")
       .doc("Experience")
       .collection("ExpBlocks")
@@ -208,8 +211,8 @@ export default function ProfileAboutEdit() {
     };
 
     // Remove from DB
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Profile")
       .doc("About")
       .update({
@@ -224,8 +227,8 @@ export default function ProfileAboutEdit() {
     const newIns = document.querySelector("#tbNewInsText").value;
 
     // Add to DB
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Profile")
       .doc("About")
       .update({
@@ -267,19 +270,20 @@ export default function ProfileAboutEdit() {
   };
 
   useEffect(() => {
-    if (!teacherAuthID) {
-      history.push("/teacherdash");
+    if (!studentAuthID) {
+      history.push("/studentdash");
       return;
     }
 
     handleCurrPage();
   }, []);
+
   return (
     <div>
       <div>
         <button
           className="btn-back maroon-back"
-          onClick={() => history.push("/teacher-profile/about")}
+          onClick={() => history.push("/student-profile/about")}
         >
           Back
         </button>
@@ -405,10 +409,15 @@ export default function ProfileAboutEdit() {
         <div className="white-background">
           <h2 className="about-edit-head">Personal</h2>
           <p className="about-personal-head">Email:</p>
-          <input className="tbEmailText" id="tbEmailText" type="text" defaultValue={about.Email} />
+          <input
+            className="tbEmailText"
+            id="tbEmailText"
+            type="text"
+            defaultValue={about.Email}
+          />
           <p className="about-personal-head">Location:</p>
           <input
-          className="tbLocationText"
+            className="tbLocationText"
             id="tbLocationText"
             type="text"
             defaultValue={about.Location}
@@ -419,12 +428,16 @@ export default function ProfileAboutEdit() {
                 return (
                   <div key={i}>
                     <input
-                    className="tbInstruments"
+                      className="tbInstruments"
                       id={`tbInstruments${i}`}
                       type="text"
                       defaultValue={ins}
                     />
-                    <button className="btnRemIns" id={ins} onClick={removeInstrument}>
+                    <button
+                      className="btnRemIns"
+                      id={ins}
+                      onClick={removeInstrument}
+                    >
                       <FontAwesomeIcon icon={faMinus} />
                     </button>
                   </div>
@@ -457,7 +470,7 @@ export default function ProfileAboutEdit() {
                 </div>
               ) : (
                 <button
-                className="btnAddIns"
+                  className="btnAddIns"
                   onClick={() => {
                     dispatch(toggleNewInstrumentFormAction());
                   }}
@@ -472,7 +485,9 @@ export default function ProfileAboutEdit() {
             </div>
           ) : null}
         </div>
-        <button className="btnSaveChanges" onClick={saveAllChanges}>Save All Changes</button>
+        <button className="btnSaveChanges" onClick={saveAllChanges}>
+          Save All Changes
+        </button>
       </div>
     </div>
   );

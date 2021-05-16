@@ -14,6 +14,8 @@ import {
   students_Collection,
   teachers_Collection,
 } from "../../../utils/firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight, faMinus } from "@fortawesome/free-solid-svg-icons";
 
 export default function AssignmentEdit() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
@@ -29,47 +31,56 @@ export default function AssignmentEdit() {
     if (assignment.Type === "Textual") {
       return (
         <div>
-          <h3>Assignment Prompt:</h3>
-          <textarea id="taAssText" defaultValue={assignment.Text}></textarea>
+          <h3 className="edit-ass-head">Assignment Prompt:</h3>
+          <textarea
+            className="ta"
+            id="taAssText"
+            defaultValue={assignment.Text}
+          ></textarea>
         </div>
       );
     } else if (assignment.Type === "Practice") {
       return (
         <div>
           <div>
-            <h3>Assignment Prompt:</h3>
+            <h3 className="edit-ass-head">Assignment Prompt:</h3>
             <textarea
+              className="ta"
               id="taAssPracText"
               defaultValue={assignment.Text}
             ></textarea>
           </div>
           <div>
-            <h3>Repertoire:</h3>
+            <h3 className="edit-ass-head">Repertoire:</h3>
             <input
+              className="tb"
               id="tbPracReper"
               type="text"
               defaultValue={assignment.Repertoire}
             />
           </div>
           <div>
-            <h3>Composer:</h3>
+            <h3 className="edit-ass-head">Composer:</h3>
             <input
+              className="tb"
               id="tbPracComp"
               type="text"
               defaultValue={assignment.Composer}
             />
           </div>
           <div>
-            <h3>Tempo</h3>
+            <h3 className="edit-ass-head">Tempo</h3>
             <input
+              className="tb"
               id="tbPracTempo"
               type="text"
               defaultValue={assignment.Tempo}
             />
           </div>
           <div>
-            <h3>Max Time</h3>
+            <h3 className="edit-ass-head">Max Time</h3>
             <input
+              className="tb"
               id="tbPracMaxTime"
               type="text"
               defaultValue={assignment.MaxTime}
@@ -83,10 +94,18 @@ export default function AssignmentEdit() {
     if (assignment.Assignees) {
       return assignment.Assignees.map((stud, i) => {
         return (
-          <div key={i}>
-            <p>{stud}</p>
-            <button id={stud} class="btn-salmon" onClick={removeAssignee}>
-              -
+          <div className="assignee-list" key={i}>
+            <FontAwesomeIcon
+              style={{ margin: "0", padding: "0", color: "#3E00F9" }}
+              icon={faArrowRight}
+            />
+            <p className="assignee-stud">{stud}</p>
+            <button
+              id={stud}
+              class="btn-remove-assignee"
+              onClick={removeAssignee}
+            >
+              <FontAwesomeIcon icon={faMinus} />
             </button>
           </div>
         );
@@ -205,47 +224,52 @@ export default function AssignmentEdit() {
         <TopBar />
       </div>
 
-      <div>
+      <div className="content">
         <div>
-          <h1>Edit</h1>
+          <h1>Edit Asignment</h1>
           <button
-            class="btn-lime"
+            class="btn-back"
             onClick={() => history.push("teacher-assignment-view")}
           >
             Back
           </button>
         </div>
-        <hr />
 
         {/* Edit content here */}
 
-        <div>
+        <div className="white-background">
           <div>
-            <h3>Assignment Name: </h3>
-            <input id="tbAssName" type="text" defaultValue={assignment.Name} />
+            <h3 className="edit-ass-head">Assignment Name: </h3>
+            <input
+              className="tb"
+              id="tbAssName"
+              type="text"
+              defaultValue={assignment.Name}
+            />
           </div>
           <div>
-            <h3>Due Date: </h3>
+            <h3 className="edit-ass-head">Due Date: </h3>
             {assignment.Due ? (
               <input
+                className="dt"
                 id={`daAssDue`}
                 type="date"
                 defaultValue={InputDateFormatter(assignment.Due)}
               />
             ) : null}
           </div>
-          <div>{handleAssignment()}</div>
+          <div className="ass-type-block">{handleAssignment()}</div>
 
           {/* Assignees */}
           <div>
-            <h3>Assignees:</h3>
+            <h3 className="edit-ass-head">Assignees:</h3>
             {handleAssignees()}
           </div>
           <br />
-          <button class="btn-navy" onClick={saveAllChanges}>
-            Save All Changes
-          </button>
         </div>
+        <button class="btnSaveChanges" onClick={saveAllChanges}>
+          Save All Changes
+        </button>
       </div>
 
       {/* Footer */}

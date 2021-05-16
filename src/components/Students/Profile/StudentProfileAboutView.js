@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
-  storeProfileAboutDataAction,
-  storeProfileExperienceDataAction,
+  storeStudentAboutAction,
+  storeStudentExpAction,
 } from "../../../redux/actions";
 import {
   students_Collection,
@@ -11,16 +11,16 @@ import {
 } from "../../../utils/firebase";
 import { firebaseLooper } from "../../../utils/tools";
 
-export default function ProfileAboutView() {
-  const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+export default function StudentProfileAboutView() {
+  const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
+  const user = useSelector((state) => state.storeStudentUserDataReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const about = useSelector((state) => state.storeProfileAboutDataReducer);
-  const exp = useSelector((state) => state.storeProfileExperienceDataReducer);
+  const about = useSelector((state) => state.storeStudentAboutReducer);
+  const exp = useSelector((state) => state.storeStudentExpReducer);
 
-  const user = useSelector((state) => state.userDataReducer);
-  const meData = useSelector((state) => state.storeTeacherMeDataReducer);
+  const meData = useSelector((state) => state.storeStudentMeDataReducer);
 
   // GET
   const getAllAboutData = () => {
@@ -42,7 +42,7 @@ export default function ProfileAboutView() {
         const data = firebaseLooper(snapshot);
         data.forEach((d) => {
           if (d.id === "About") {
-            dispatch(storeProfileAboutDataAction(d));
+            dispatch(storeStudentAboutAction(d));
           }
         });
       })
@@ -69,7 +69,7 @@ export default function ProfileAboutView() {
       .get()
       .then((snapshot) => {
         const data = firebaseLooper(snapshot);
-        dispatch(storeProfileExperienceDataAction(data));
+        dispatch(storeStudentExpAction(data));
       })
       .catch((err) => console.log(err));
   };
@@ -95,21 +95,21 @@ export default function ProfileAboutView() {
   };
 
   useEffect(() => {
-    if (!teacherAuthID) {
-      history.push("/teacherdash");
+    if (!studentAuthID) {
+      history.push("/studentdash");
       return;
     }
-    window.scrollTo(0, 0);
+
     getAllAboutData();
     getAllExperienceData();
     handleCurrPage();
-  }, []);
+  }, [about, exp]);
   return (
     <div>
-      {user.AuthID === teacherAuthID ? (
+      {user.AuthID === meData.AuthID ? (
         <button
           className="btn-newPost"
-          onClick={() => history.push("/teacher-profile/edit-about")}
+          onClick={() => history.push("/student-profile/about-edit")}
         >
           Edit
         </button>

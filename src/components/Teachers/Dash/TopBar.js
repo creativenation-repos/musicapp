@@ -13,7 +13,7 @@ import {
   faStar,
   faExclamationCircle,
   faTimes,
-  faTimesCircle,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   storeAccountTypeAction,
@@ -21,12 +21,19 @@ import {
   isLoggedInAction,
   storeTeacherNotificationsAction,
   toggleTeacherNotificationsWindowAction,
-  storeTeacherAddStudentSearchResultAction,
+  storeTeacherMeDataAction,
 } from "../../../redux/actions";
 
 import "./TopBar.css";
-import { teachers_Collection } from "../../../utils/firebase";
+import {
+  connectionReqQueue_Collection,
+  students_Collection,
+  teachers_Collection,
+  users_Collection,
+} from "../../../utils/firebase";
 import { firebaseLooper } from "../../../utils/tools";
+import RandomString from "../../RandomString";
+import GetToday from "../../GetToday";
 
 export default function TopBar() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
@@ -40,6 +47,7 @@ export default function TopBar() {
   const notifications = useSelector(
     (state) => state.storeTeacherNotificationsReducer
   );
+  const meData = useSelector((state) => state.storeTeacherMeDataReducer);
 
   // GET
   const getAllNotifications = () => {
@@ -51,6 +59,18 @@ export default function TopBar() {
       .then((snapshot) => {
         const notifData = firebaseLooper(snapshot);
         dispatch(storeTeacherNotificationsAction(notifData));
+      })
+      .catch((err) => console.log(err));
+  };
+  const getMeData = () => {
+    users_Collection
+      .where("AuthID", "==", teacherAuthID)
+      .get()
+      .then((snapshot) => {
+        const myData = firebaseLooper(snapshot);
+        myData.forEach((me) => {
+          dispatch(storeTeacherMeDataAction(me));
+        });
       })
       .catch((err) => console.log(err));
   };
@@ -68,6 +88,8 @@ export default function TopBar() {
                   ? faBell
                   : notif.Icon === "faUser"
                   ? faUser
+                  : notif.Icon === "faUsers"
+                  ? faUsers
                   : notif.Icon === "faStar"
                   ? faStar
                   : notif.Icon === "faExclamationCircle"
@@ -79,15 +101,31 @@ export default function TopBar() {
             <p className="notifDate">
               {notif.Date ? notif.Date.toDate().toString().substr(4, 11) : null}
             </p>
-            <button className="notifDel">
+            <button
+              id={notif.id}
+              onClick={removeNotification}
+              className="notifDel"
+            >
               <FontAwesomeIcon className="notifDelIcon" icon={faTimes} />
             </button>
           </div>
           <div className="bottomPanel">
-            {notif.Action === "request" ? (
+            {notif.Action === "connrequest" ? (
               <div className="btnsNotifReq">
-                <button className="btnReq reqAccept">Accept</button>
-                <button className="btnReq reqDecline">Decline</button>
+                <button
+                  id={notif.id}
+                  onClick={onAcceptConnRequest}
+                  className="btnReq reqAccept"
+                >
+                  Accept
+                </button>
+                <button
+                  id={notif.id}
+                  onClick={onDeclineConnRequest}
+                  className="btnReq reqDecline"
+                >
+                  Decline
+                </button>
               </div>
             ) : notif.Action === "navigate" ? (
               <div className="btnNotifNav">
@@ -100,6 +138,161 @@ export default function TopBar() {
     });
   };
 
+  // REQUESTS
+  const onAcceptConnRequest = (event) => {
+    const notifID = event.target.getAttribute("id");
+
+    // Get my data
+    users_Collection
+      .where("AuthID", "==", teacherAuthID)
+      .get()
+      .then((snapshot) => {
+        const myData = firebaseLooper(snapshot);
+        myData.forEach((me) => {
+          connectionReqQueue_Collection
+            .where("ConnID", "==", teacherAuthID)
+            .get()
+            .then((snapshot) => {
+              const connData = firebaseLooper(snapshot);
+              connData.forEach((s) => {
+                users_Collection
+                  .where("AuthID", "==", s.SenderID)
+                  .get()
+                  .then((snapshot) => {
+                    const senderUserData = firebaseLooper(snapshot);
+                    senderUserData.forEach((sender) => {
+                      const rand1 = RandomString();
+                      const rand2 = RandomString();
+                      const newNotifID = `Notif${rand1}${rand2}`;
+                      const connID = `Conn${rand1}${rand2}`;
+
+                      if (sender.AccountType === "Student") {
+                        students_Collection
+                          .doc(sender.AuthID)
+                          .collection("Notifications")
+                          .doc(newNotifID)
+                          .set({
+                            Action: "",
+                            Icon: "faUser",
+                            Text: `${me.FirstName} ${me.LastName} has accepted your request to connect.`,
+                            Date: GetToday(),
+                          })
+                          .catch((err) => console.log(err));
+
+                        students_Collection
+                          .doc(sender.AuthID)
+                          .collection("Connections")
+                          .doc(connID)
+                          .set({
+                            FirstName: me.FirstName,
+                            LastName: me.LastName,
+                            Email: me.Email,
+                            AuthID: me.AuthID,
+                          })
+                          .catch((err) => console.log(err));
+                      } else if (sender.AccountType === "Teacher") {
+                        teachers_Collection
+                          .doc(sender.AuthID)
+                          .collection("Notifications")
+                          .doc(newNotifID)
+                          .set({
+                            Action: "",
+                            Icon: "faUser",
+                            Text: `${me.FirstName} ${me.LastName} has accepted your request to connect.`,
+                            Date: GetToday(),
+                          })
+                          .catch((err) => console.log(err));
+
+                        teachers_Collection
+                          .doc(sender.AuthID)
+                          .collection("Connections")
+                          .doc(connID)
+                          .set({
+                            FirstName: me.FirstName,
+                            LastName: me.LastName,
+                            Email: me.Email,
+                            AuthID: me.AuthID,
+                          })
+                          .catch((err) => console.log(err));
+                      }
+
+                      teachers_Collection
+                        .doc(teacherAuthID)
+                        .collection("Connections")
+                        .doc(connID)
+                        .set({
+                          FirstName: sender.FirstName,
+                          LastName: sender.LastName,
+                          Email: sender.Email,
+                          AuthID: sender.AuthID,
+                        })
+                        .catch((err) => console.log(err));
+                    });
+                  })
+                  .catch((err) => console.log(err));
+
+                connectionReqQueue_Collection
+                  .where("ConnID", "==", teacherAuthID)
+                  .get()
+                  .then((snapshot) => {
+                    const myConnData = firebaseLooper(snapshot);
+                    myConnData.forEach((myConn) => {
+                      connectionReqQueue_Collection
+                        .doc(myConn.id)
+                        .delete()
+                        .catch((err) => console.log(err));
+                    });
+                  })
+                  .catch((err) => console.log(err));
+              });
+            })
+            .catch((err) => console.log(err));
+        });
+      })
+      .catch((err) => console.log(err));
+
+    // Remove Notification
+    teachers_Collection
+      .doc(teacherAuthID)
+      .collection("Notifications")
+      .doc(notifID)
+      .delete()
+      .catch((err) => console.log(err));
+
+    // Dispatch
+    const allNotifs = [...notifications];
+    const filtered = allNotifs.filter((n) => n.id !== notifID);
+    dispatch(storeTeacherNotificationsAction(filtered));
+  };
+  const onDeclineConnRequest = (event) => {
+    const notifID = event.target.getAttribute("id");
+  };
+
+  // REMOVE
+  const removeNotification = (event) => {
+    const notifID = event.target.getAttribute("id");
+
+    notifications.forEach((n) => {
+      if (n.id === notifID) {
+        if (n.Action === "") {
+          teachers_Collection
+            .doc(teacherAuthID)
+            .collection("Notifications")
+            .doc(n.id)
+            .delete()
+            .catch((err) => console.log(err));
+        } else if (n.Action === "connrequest") {
+          // What to do if you close conn req
+        }
+      }
+    });
+
+    const allNotifs = [...notifications];
+    const filtered = allNotifs.filter((n) => n.id !== notifID);
+
+    dispatch(storeTeacherNotificationsAction(filtered));
+  };
+
   useEffect(() => {
     if (!teacherAuthID) {
       history.push("/teacherdash");
@@ -107,6 +300,7 @@ export default function TopBar() {
     }
 
     getAllNotifications();
+    getMeData();
   }, []);
 
   const onLogOut = () => {
@@ -148,8 +342,10 @@ export default function TopBar() {
         ) : null}
       </div>
       <div className="topbar-user">
-        <p>Jesus Jimenez</p>
-        <p>Teacher</p>
+        <p>
+          {meData.FirstName} {meData.LastName}
+        </p>
+        <p>{meData.AccountType}</p>
       </div>
       <div>
         <button onClick={onLogOut} class="btn-topbar red">

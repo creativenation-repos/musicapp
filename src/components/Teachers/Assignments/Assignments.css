@@ -68,18 +68,27 @@
   font-size: 18px;
   margin: 0;
   padding: 10px 0;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 .assAssigned {
   font-size: 13px;
   margin: 0;
   padding: 10px 0;
   color: rgba(0, 0, 0, 0.7);
+  display: block;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 .assDue {
   font-size: 13px;
   margin: 0;
   padding: 10px 0;
   color: rgba(0, 0, 0, 0.7);
+  display: block;
+  margin-top: auto;
+
+  margin-bottom: auto;
 }
 .btnGroup {
   display: flex;
@@ -108,4 +117,197 @@
   width: 35px;
   font-size: 18px;
   font-weight: 800;
+}
+
+.btn-edit-ass {
+  background-color: #3e00f9;
+  border-radius: 30px;
+  border: 0;
+  color: white;
+  padding: 8px;
+  width: 160px;
+  font-size: 15px;
+}
+.btn-edit-ass:hover {
+  opacity: 0.7;
+}
+
+.ass-name {
+  font-size: 40px;
+  margin: 0;
+  padding: 0;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-top: 20px;
+}
+.ass-assigned-on {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  padding: 0;
+  margin-top: 10px;
+  letter-spacing: -1px;
+}
+.ass-date {
+  margin-left: 15px;
+  color: rgba(0, 0, 0, 0.7);
+}
+.ass-type {
+  background-color: rgba(0, 0, 255, 0.3);
+  width: fit-content;
+  border-radius: 30px;
+  padding: 8px 20px;
+}
+
+.ass-assignee {
+  display: flex;
+}
+.ass-assignee > * {
+  margin: 0;
+  padding: 0;
+}
+.add-assignee {
+  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: black;
+  border: 0;
+  padding: 5px;
+  width: 140px;
+  font-size: 13px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+.add-assignee:hover {
+  opacity: 0.7;
+}
+
+.assignee-id {
+  position: absolute;
+  left: 450px;
+}
+.assignee-line {
+  font-size: 15px;
+  margin: 0;
+  padding: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.assignee-block {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.06);
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+.btnAssignee-add {
+  border-radius: 30px;
+  width: 100px;
+  border: 0;
+  background-color: #3e00f9;
+  color: white;
+  margin: 0;
+  margin-left: auto;
+  margin-right: 10px;
+  font-size: 15px;
+  padding: 5px;
+}
+.btnAssignee-add:hover {
+  opacity: 0.7;
+}
+
+.ass-block {
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 13px;
+  border-radius: 10px;
+}
+.ass-type-head {
+  margin: 0;
+  padding: 0;
+  font-size: 22px;
+}
+.ass-type-text {
+  margin: 0;
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.edit-ass-head {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.assignee-list {
+  display: flex;
+}
+.btn-remove-assignee {
+  background-color: rgba(255, 0, 0, 0);
+  border-radius: 30px;
+  color: red;
+  border: 0;
+  margin: 0;
+  margin-left: 10px;
+}
+.assignee-stud {
+  margin: 0;
+  padding: 0;
+  margin-left: 10px;
+  font-weight: 800;
+}
+.btn-remove-assignee:hover {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.ass-type-block {
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.ra-ass-group {
+  display: flex;
+}
+.ra-ass-group > * {
+  margin: 0;
+  padding: 0;
+  margin-left: 10px;
+}
+
+.ass-type-form {
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.ass-form-head {
+  margin: 0;
+  padding: 0;
+}
+.ass-small-text {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.7);
+}
+.ass-form-sub-head {
+  margin: 0;
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+.ass-small-desc {
+  margin: 0;
+  padding: 0;
+  margin-top: 2px;
+  margin-bottom: 8px;
+  font-size: 14px;
 }

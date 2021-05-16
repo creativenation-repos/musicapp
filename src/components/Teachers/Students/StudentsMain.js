@@ -218,7 +218,7 @@ export default function StudentsMain() {
         Action: "request",
         Date: GetToday(),
         Icon: "faUser",
-        Text: `You have received a request from ${user.FirstName} ${user.LastName}.`,
+        Text: `You have received a request from ${user.FirstName} ${user.LastName} as your instructor.`,
       })
       .catch((err) => console.log(err));
 

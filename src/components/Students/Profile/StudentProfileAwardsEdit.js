@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
-  storeAwardListAction,
-  storeCertListAction,
+  storeStudentAwardsAction,
+  storeStudentCertsAction,
   toggleNewAwardFormAction,
   toggleNewCertFormAction,
 } from "../../../redux/actions";
-import { teachers_Collection } from "../../../utils/firebase";
+import { students_Collection } from "../../../utils/firebase";
 
 import InputDateFormatter from "../../InputDateFormatter";
 import RandomString from "../../RandomString";
@@ -15,19 +15,19 @@ import FirebaseDate from "../../FirebaseDate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
-export default function ProfileAwardsEdit() {
-  const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+export default function StudentProfileAwardsEdit() {
+  const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
+  const user = useSelector((state) => state.storeStudentUserDataReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const awards = useSelector((state) => state.storeAwardListReducer);
-  const certs = useSelector((state) => state.storeCertListReducer);
+  const awards = useSelector((state) => state.storeStudentAwardsReducer);
+  const certs = useSelector((state) => state.storeStudentCertsReducer);
 
   const toggleAwardForm = useSelector(
     (state) => state.toggleNewAwardFormReducer
   );
   const toggleCertForm = useSelector((state) => state.toggleNewCertFormReducer);
-  const user = useSelector((state) => state.userDataReducer);
   const meData = useSelector((state) => state.storeTeacherMeDataReducer);
 
   const applyNewAward = () => {
@@ -41,8 +41,8 @@ export default function ProfileAwardsEdit() {
     const awardID = `Award${rand1}${rand2}`;
 
     // Save to DB
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Profile")
       .doc("Awards")
       .collection("AwardList")
@@ -65,7 +65,7 @@ export default function ProfileAwardsEdit() {
       Desc: awardDesc,
     });
 
-    dispatch(storeAwardListAction(allAwards));
+    dispatch(storeStudentAwardsAction(allAwards));
     dispatch(toggleNewAwardFormAction());
   };
 
@@ -80,8 +80,8 @@ export default function ProfileAwardsEdit() {
     const certID = `Cert${rand1}${rand2}`;
 
     // Save to DB
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Profile")
       .doc("Awards")
       .collection("CertificationList")
@@ -104,7 +104,7 @@ export default function ProfileAwardsEdit() {
       Desc: certDesc,
     });
 
-    dispatch(storeCertListAction(allCerts));
+    dispatch(storeStudentCertsAction(allCerts));
     dispatch(toggleNewCertFormAction());
   };
 
@@ -112,8 +112,8 @@ export default function ProfileAwardsEdit() {
   const removeAward = (event) => {
     const awardID = event.target.getAttribute("id");
 
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Profile")
       .doc("Awards")
       .collection("AwardList")
@@ -124,13 +124,13 @@ export default function ProfileAwardsEdit() {
     const allAwards = [...awards];
     const filteredAwards = allAwards.filter((a) => a.id !== awardID);
 
-    dispatch(storeAwardListAction(filteredAwards));
+    dispatch(storeStudentAwardsAction(filteredAwards));
   };
   const removeCert = (event) => {
     const certID = event.target.getAttribute("id");
 
-    teachers_Collection
-      .doc(teacherAuthID)
+    students_Collection
+      .doc(studentAuthID)
       .collection("Profile")
       .doc("Awards")
       .collection("CertificationList")
@@ -141,7 +141,7 @@ export default function ProfileAwardsEdit() {
     const allCerts = [...certs];
     const filteredCerts = allCerts.filter((c) => c.id !== certID);
 
-    dispatch(storeCertListAction(filteredCerts));
+    dispatch(storeStudentCertsAction(filteredCerts));
   };
 
   const saveAllChanges = () => {
@@ -175,11 +175,11 @@ export default function ProfileAwardsEdit() {
     }
 
     allAwards.forEach((a, i) => {
-      teachers_Collection
-        .doc(teacherAuthID)
+      students_Collection
+        .doc(studentAuthID)
         .collection("Profile")
         .doc("Awards")
-        .collection("AwardList")
+        .collection("AwardBlocks")
         .doc(awards[i].id)
         .update({
           Name: a.Name,
@@ -191,11 +191,11 @@ export default function ProfileAwardsEdit() {
     });
 
     allCerts.forEach((c, i) => {
-      teachers_Collection
-        .doc(teacherAuthID)
+      students_Collection
+        .doc(studentAuthID)
         .collection("Profile")
         .doc("Awards")
-        .collection("CertificationList")
+        .collection("CertBlocks")
         .doc(certs[i].id)
         .update({
           Name: c.Name,
@@ -207,10 +207,10 @@ export default function ProfileAwardsEdit() {
     });
 
     // Dispatch
-    dispatch(storeAwardListAction(allAwards));
-    dispatch(storeCertListAction(allCerts));
+    dispatch(storeStudentAwardsAction(allAwards));
+    dispatch(storeStudentCertsAction(allCerts));
 
-    history.push("/teacher-profile/awards");
+    history.push("/student-profile/awards");
   };
 
   // HANDLE
@@ -234,8 +234,8 @@ export default function ProfileAwardsEdit() {
   };
 
   useEffect(() => {
-    if (!teacherAuthID) {
-      history.push("/teacherdash");
+    if (!studentAuthID) {
+      history.push("/studentdash");
       return;
     }
 
@@ -247,7 +247,7 @@ export default function ProfileAwardsEdit() {
         <button
           className="btn-back"
           onClick={() => {
-            history.push("/teacher-profile/awards");
+            history.push("/student-profile/awards");
           }}
         >
           Back

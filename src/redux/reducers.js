@@ -7,8 +7,7 @@ const courses = [
     img: "", // Leave these blank
     alt: "", // Leave these blank
     name: "Music Theory",
-    desc:
-      "Learn the fundamentals of Music Theory from Beginner, to Advanced (College Level).", // Description of the course. Like a sales pitch.
+    desc: "Learn the fundamentals of Music Theory from Beginner, to Advanced (College Level).", // Description of the course. Like a sales pitch.
     price: "$19.99", // Just put random price
     keywords: [
       // These keywords are used for the search. Make sure they are one word at a time.
@@ -410,6 +409,26 @@ export const toggleNewCertFormReducer = (state = false, action) => {
 export const storeReviewListReducer = (state = [], action) => {
   switch (action.type) {
     case "storeReviewListAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherMeDataReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeTeacherMeDataAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeTeacherAllReviewsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherAllReviewsAction":
       state = action.payload;
       return state;
     default:
@@ -971,6 +990,37 @@ export const storeTeacherSingleCourseAssigneesReducer = (
   }
 };
 
+// Connections
+export const storeTeacherAllConnectionsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeTeacherAllConnectionsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeAllSearchUsersReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeAllSearchUsersAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeAllConnReqsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeAllConnReqsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // Assignment Reducers
 export const storeTeacherSingleAssignmentReducer = (state = {}, action) => {
   switch (action.type) {
@@ -1303,6 +1353,26 @@ export const toggleStudentNewCertFormReducer = (state = false, action) => {
   }
 };
 
+export const storeStudentMeDataReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeStudentMeDataAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentSingleReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeStudentSingleReviewAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 // Courses
 export const flagStudentTeacherConnectionReducer = (state = false, action) => {
   switch (action.type) {
@@ -1467,6 +1537,179 @@ export const storeStudentQuizResultsReducer = (state = [], action) => {
 export const storeStudentNextLessonReducer = (state = {}, action) => {
   switch (action.type) {
     case "storeStudentNextLessonAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentAllCoursesReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentAllCoursesAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentCourseProgressReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentCourseProgressAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentSingleCourseLessonsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentSingleCourseLessonsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentSingleCourseQuizzesReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentSingleCourseQuizzesAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentSingleCourseOrderNumReducer = (state = 0, action) => {
+  switch (action.type) {
+    case "storeStudentSingleCourseOrderNumAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentUpNextReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeStudentUpNextAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const toggleStudentSingleCourseLessonsListReducer = (
+  state = false,
+  action
+) => {
+  switch (action.type) {
+    case "toggleStudentSingleCourseLessonsListAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const toggleStudentSingleCourseQuizzesListReducer = (
+  state = false,
+  action
+) => {
+  switch (action.type) {
+    case "toggleStudentSingleCourseQuizzesListAction":
+      state = !state;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentSingleCourseLessonReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeStudentSingleCourseLessonAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentTimeReducer = (state = 0, action) => {
+  switch (action.type) {
+    case "storeStudentTimeAction":
+      state = state + 1;
+      if (action.payload) {
+        state = action.payload;
+      }
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentSingleCourseQuizReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "storeStudentSingleCourseQuizAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentSingleCourseQuizComponentsReducer = (
+  state = [],
+  action
+) => {
+  switch (action.type) {
+    case "storeStudentSingleCourseQuizComponentsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentQuizFinalResultsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentQuizFinalResultsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+// Connections
+export const storeStudentAllConnectionsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentAllConnectionsAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentAllSearchUsersReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentAllSearchUsersAction":
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+export const storeStudentAllConnReqsReducer = (state = [], action) => {
+  switch (action.type) {
+    case "storeStudentAllConnReqsAction":
       state = action.payload;
       return state;
     default:
@@ -1656,6 +1899,11 @@ export const allReducers = combineReducers({
   storeTeacherSingleCourseQuizCountReducer,
   storeTeacherSingleCourseAssignedStudsReducer,
   storeTeacherSingleCourseAssigneesReducer,
+  storeTeacherAllConnectionsReducer,
+  storeAllSearchUsersReducer,
+  storeAllConnReqsReducer,
+  storeTeacherMeDataReducer,
+  storeTeacherAllReviewsReducer,
 
   // Student Reducers
   storeStudentUserDataReducer,
@@ -1673,6 +1921,8 @@ export const allReducers = combineReducers({
   storeStudentCertsReducer,
   toggleStudentNewAwardFormReducer,
   toggleStudentNewCertFormReducer,
+  storeStudentMeDataReducer,
+  storeStudentSingleReviewReducer,
   // Courses
   flagStudentTeacherConnectionReducer,
   storeStudentTeacherListReducer,
@@ -1691,6 +1941,23 @@ export const allReducers = combineReducers({
   toggleStudentQuizResultsReducer,
   storeStudentQuizResultsReducer,
   storeStudentNextLessonReducer,
+  storeStudentAllCoursesReducer,
+  storeStudentCourseProgressReducer,
+  storeStudentSingleCourseLessonsReducer,
+  storeStudentSingleCourseQuizzesReducer,
+  storeStudentSingleCourseOrderNumReducer,
+  storeStudentUpNextReducer,
+  toggleStudentSingleCourseLessonsListReducer,
+  toggleStudentSingleCourseQuizzesListReducer,
+  storeStudentSingleCourseLessonReducer,
+  storeStudentTimeReducer,
+  storeStudentSingleCourseQuizReducer,
+  storeStudentSingleCourseQuizComponentsReducer,
+  storeStudentQuizFinalResultsReducer,
+  // Connections
+  storeStudentAllConnectionsReducer,
+  storeStudentAllSearchUsersReducer,
+  storeStudentAllConnReqsReducer,
   // Assignments
   storeStudentAssignmentsReducer,
   storeStudentAssignmentsInfoReducer,

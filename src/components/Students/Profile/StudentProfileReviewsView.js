@@ -3,7 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { storeTeacherAllReviewsAction } from "../../../redux/actions";
+import {
+  storeTeacherAllReviewsAction,
+  storeStudentSingleReviewAction,
+} from "../../../redux/actions";
 
 import {
   students_Collection,
@@ -11,14 +14,13 @@ import {
 } from "../../../utils/firebase";
 import { firebaseLooper } from "../../../utils/tools";
 
-export default function ProfileReviewsView() {
-  const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+export default function StudentProfileReviewsView() {
+  const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
+  const user = useSelector((state) => state.storeStudentUserDataReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.userDataReducer);
-  const meData = useSelector((state) => state.storeTeacherMeDataReducer);
-
+  const meData = useSelector((state) => state.storeStudentMeDataReducer);
   const reviews = useSelector((state) => state.storeTeacherAllReviewsReducer);
 
   // GET
@@ -54,6 +56,9 @@ export default function ProfileReviewsView() {
     return reviews.map((rev, i) => {
       return (
         <div className="rev-block" key={i}>
+          <button onClick={navReviewEdit} id={rev.id} className="rev-edit">
+            Edit
+          </button>
           <p className="rev-rating">{rev.Rating}.0</p>
           <p className="rev-reviewer">{rev.Reviewer}</p>
           <p className="rev-date">
@@ -64,14 +69,58 @@ export default function ProfileReviewsView() {
       );
     });
   };
+  const handleCurrPage = () => {
+    let feedBtn = document.querySelector("#link-feed");
+    feedBtn.classList.remove("navy-back");
+
+    let aboutBtn = document.querySelector("#link-about");
+    aboutBtn.classList.remove("navy-back");
+
+    let awardsBtn = document.querySelector("#link-awards");
+    awardsBtn.classList.remove("navy-back");
+
+    let galleryBtn = document.querySelector("#link-gallery");
+    galleryBtn.classList.remove("navy-back");
+
+    if (user.AccountType === "Teacher") {
+      let reviewsBtn = document.querySelector("#link-reviews");
+      reviewsBtn.classList.add("navy-back");
+    }
+  };
+
+  // NAV
+  const navReviewEdit = (event) => {
+    const revID = event.target.getAttribute("id");
+
+    reviews.forEach((rev) => {
+      if (rev.id === revID) {
+        dispatch(storeStudentSingleReviewAction(rev));
+      }
+    });
+
+    history.push("/student-profile/reviews-edit");
+  };
 
   useEffect(() => {
-    if (!teacherAuthID) {
-      history.push("/teacherdash");
+    if (!studentAuthID) {
+      history.push("/studentdash");
       return;
     }
 
     getAllReviews();
-  }, []);
-  return <div className="white-background">{handleAllReviews()}</div>;
+    handleCurrPage();
+  }, [reviews]);
+  return (
+    <div>
+      {meData.AccountType === "Student" ? (
+        <button
+          className="btn-newPost"
+          onClick={() => history.push("/student-profile/reviews-create")}
+        >
+          Create Review
+        </button>
+      ) : null}
+      <div className="white-background">{handleAllReviews()}</div>
+    </div>
+  );
 }

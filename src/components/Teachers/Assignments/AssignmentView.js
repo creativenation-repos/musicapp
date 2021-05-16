@@ -17,6 +17,8 @@ import {
 } from "../../../redux/actions";
 import RandomString from "../../RandomString";
 import firebase from "../../../utils/firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function AssignmentView() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
@@ -42,18 +44,38 @@ export default function AssignmentView() {
     return (
       <div>
         {assignment.Date ? (
-          <p>Assigned: {assignment.Date.toDate().toString().substr(4, 11)}</p>
+          <p className="ass-assigned-on">
+            Created on:{" "}
+            <span className="ass-date">
+              {assignment.Date.toDate().toString().substr(4, 11)}
+            </span>
+          </p>
         ) : null}
         {assignment.Due ? (
-          <p>Due: {assignment.Due.toDate().toString().substr(4, 11)}</p>
+          <p className="ass-assigned-on">
+            Due on:{" "}
+            <span className="ass-date">
+              {assignment.Due.toDate().toString().substr(4, 11)}
+            </span>
+          </p>
         ) : null}
-        <p>Assignment Type: {assignment.Type}</p>
+        <p className="ass-type">{assignment.Type} Assignment</p>
         <div>{handleAssignmentType()}</div>
         <div>
           <h3>Assignees:</h3>
           {assignment.Assignees
             ? assignees.map((stud, i) => {
-                return <p key={i}>{stud}</p>;
+                return (
+                  <div key={i} className="ass-assignee">
+                    <FontAwesomeIcon
+                      style={{ color: "#3E00F9" }}
+                      icon={faArrowRight}
+                    />
+                    <p style={{ marginLeft: "10px", fontWeight: "800" }}>
+                      {stud}
+                    </p>
+                  </div>
+                );
               })
             : null}
         </div>
@@ -63,33 +85,33 @@ export default function AssignmentView() {
   const handleAssignmentType = () => {
     if (assignment.Type === "Textual") {
       return (
-        <div>
-          <h3>Assignment:</h3>
-          <p>{assignment.Text}</p>
+        <div className="ass-block">
+          <h3 className="ass-type-head">Assignment:</h3>
+          <p className="ass-type-text">{assignment.Text}</p>
         </div>
       );
     } else if (assignment.Type === "Practice") {
       return (
-        <div>
+        <div className="ass-block">
           <div>
-            <h3>Assignment:</h3>
-            <p>{assignment.Text}</p>
+            <h3 className="ass-type-head">Assignment:</h3>
+            <p className="ass-type-text">{assignment.Text}</p>
           </div>
           <div>
-            <h3>Repertoire:</h3>
-            <p>{assignment.Repertoire}</p>
+            <h3 className="ass-type-head">Repertoire:</h3>
+            <p className="ass-type-text">{assignment.Repertoire}</p>
           </div>
           <div>
-            <h3>Composer:</h3>
-            <p>{assignment.Composer}</p>
+            <h3 className="ass-type-head">Composer:</h3>
+            <p className="ass-type-text">{assignment.Composer}</p>
           </div>
           <div>
-            <h3>Tempo:</h3>
-            <p>{assignment.Tempo}</p>
+            <h3 className="ass-type-head">Tempo:</h3>
+            <p className="ass-type-text">{assignment.Tempo}</p>
           </div>
           <div>
-            <h3>Max Practice Time</h3>
-            <p>{assignment.MaxTime}</p>
+            <h3 className="ass-type-head">Max Practice Time</h3>
+            <p className="ass-type-text">{assignment.MaxTime}</p>
           </div>
         </div>
       );
@@ -98,13 +120,22 @@ export default function AssignmentView() {
   const handleAssigneeForm = () => {
     if (assignees.length > 0) {
       const studs = [...students];
-      const distinct = studs.filter((item) => !assignees.includes(item.id));
+      const distinct = studs.filter(
+        (item) => !assignees.includes(`${item.FirstName} ${item.LastName}`)
+      );
 
       return distinct.map((dis, i) => {
         return (
-          <div key={i}>
-            <p>{dis.id}</p>
-            <button onClick={addAssignee} id={dis.id}>
+          <div className="assignee-block" key={i}>
+            <p className="assignee-line">
+              {dis.FirstName} {dis.LastName}{" "}
+              <span className="assignee-id">{dis.id}</span>
+            </p>
+            <button
+              className="btnAssignee-add"
+              onClick={addAssignee}
+              id={`${dis.FirstName} ${dis.LastName} ${dis.id}`}
+            >
               Assign
             </button>
           </div>
@@ -113,9 +144,16 @@ export default function AssignmentView() {
     } else {
       return students.map((stud, i) => {
         return (
-          <div key={i}>
-            <p>{stud.id}</p>
-            <button onClick={addAssignee} id={stud.id}>
+          <div className="assignee-block" key={i}>
+            <p className="assignee-line">
+              {stud.FirstName} {stud.LastName}{" "}
+              <span className="assignee-id">{stud.id}</span>
+            </p>
+            <button
+              className="btnAssignee-add"
+              onClick={addAssignee}
+              id={`${stud.FirstName} ${stud.LastName} ${stud.id}`}
+            >
               Assign
             </button>
           </div>
@@ -140,7 +178,10 @@ export default function AssignmentView() {
   // POST
   const addAssignee = (event) => {
     let valid = true;
-    const studID = event.target.getAttribute("id");
+    const studArr = event.target.getAttribute("id").split(" ");
+    const studID = studArr[2];
+    const studFull = `${studArr[0]} ${studArr[1]}`;
+
     assignees.forEach((assignee) => {
       if (studID === assignee) {
         valid = false;
@@ -172,12 +213,12 @@ export default function AssignmentView() {
         .collection("Assignments")
         .doc(assignment.id)
         .update({
-          Assignees: firebase.firestore.FieldValue.arrayUnion(studID),
+          Assignees: firebase.firestore.FieldValue.arrayUnion(studFull),
         })
         .catch((err) => console.log(err));
 
       const allAssignees = [...assignment.Assignees];
-      allAssignees.push(studID);
+      allAssignees.push(studFull);
       dispatch(storeTeacherAssignmentAssigneesAction(allAssignees));
 
       const tempObj = {
@@ -208,24 +249,32 @@ export default function AssignmentView() {
       <div>
         <TopBar />
       </div>
-      <button
-        className="btn-lime"
-        onClick={() => history.push("/teacher-assignments")}
-      >
-        Back
-      </button>
-      <button onClick={navAssignmentEdit}>Edit Assignment</button>
-      <h1>{assignment.Name}</h1>
-      <div>{handleAssignment()}</div>
-      <br />
-      <div>
-        <button
-          onClick={() => dispatch(toggleAssigneeFormAction())}
-          className="btn-navy"
-        >
-          {toggleAssigneeForm ? "Close" : "Add Assignee"}
-        </button>
-        {toggleAssigneeForm ? handleAssigneeForm() : null}
+
+      <div className="content">
+        <div className="white-background">
+          <button
+            className="btn-back"
+            onClick={() => history.push("/teacher-assignments")}
+          >
+            Back
+          </button>
+          <button className="btn-edit-ass" onClick={navAssignmentEdit}>
+            Edit Assignment
+          </button>
+          <p className="ass-name">{assignment.Name}</p>
+          <p>{assignment.Desc}</p>
+          <div>{handleAssignment()}</div>
+          <br />
+          <div>
+            <button
+              onClick={() => dispatch(toggleAssigneeFormAction())}
+              className="add-assignee"
+            >
+              {toggleAssigneeForm ? "Close" : "Add Assignee"}
+            </button>
+            {toggleAssigneeForm ? handleAssigneeForm() : null}
+          </div>
+        </div>
       </div>
 
       {/* Footer */}

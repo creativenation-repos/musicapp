@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
-  storeProfileFeedPostDataAction,
-  storeTeacherMeDataAction,
+  storeStudentMeDataAction,
+  storeStudentProfileFeedPostsAction,
 } from "../../../redux/actions";
 import {
   students_Collection,
@@ -13,30 +13,30 @@ import {
 import GetToday from "../../GetToday";
 import { firebaseLooper } from "../../../utils/tools";
 
-export default function ProfileFeedEdit() {
-  const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+export default function StudentProfileFeedEdit() {
+  const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
+  const user = useSelector((state) => state.storeStudentUserDataReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
   //   States
   const singlePostState = useSelector(
-    (state) => state.storeProfileFeedSinglePostDataReducer
+    (state) => state.storeStudentProfileFeedPostReducer
   );
   const allPostsState = useSelector(
-    (state) => state.storeProfileFeedPostDataReducer
+    (state) => state.storeStudentProfileFeedPostsReducer
   );
-  const userState = useSelector((state) => state.userDataReducer);
-  const meData = useSelector((state) => state.storeTeacherMeDataReducer);
+  const meData = useSelector((state) => state.storeStudentMeDataReducer);
 
   // GET
   const getMeData = () => {
     users_Collection
-      .where("AuthID", "==", teacherAuthID)
+      .where("AuthID", "==", studentAuthID)
       .get()
       .then((snapshot) => {
         const myData = firebaseLooper(snapshot);
         myData.forEach((me) => {
-          dispatch(storeTeacherMeDataAction(me));
+          dispatch(storeStudentMeDataAction(me));
         });
       })
       .catch((err) => console.log(err));
@@ -46,14 +46,15 @@ export default function ProfileFeedEdit() {
 
     const postObj = {
       ...singlePostState,
-      Poster: `${meData.FirstName} ${meData.LastName}`,
+      Poster: `${meData.Firstname} ${meData.LastName}`,
       Text: postText,
       Date: GetToday(),
     };
+
     // Save to DB
-    if (userState.AccountType === "Student") {
+    if (user.AccountType === "Student") {
       students_Collection
-        .doc(userState.AuthID)
+        .doc(user.AuthID)
         .collection("Profile")
         .doc("Feed")
         .collection("Posts")
@@ -65,9 +66,9 @@ export default function ProfileFeedEdit() {
           Date: GetToday(),
         })
         .catch((err) => console.log(err));
-    } else if (userState.AccountType === "Teacher") {
+    } else if (user.AccountType === "Teacher") {
       teachers_Collection
-        .doc(userState.AuthID)
+        .doc(user.AuthID)
         .collection("Profile")
         .doc("Feed")
         .collection("Posts")
@@ -86,29 +87,29 @@ export default function ProfileFeedEdit() {
         post = {
           ...postObj,
         };
-        dispatch(storeProfileFeedPostDataAction(allPostsState));
+        dispatch(storeStudentProfileFeedPostsAction(allPostsState));
       }
     });
 
-    history.push("/teacher-profile/feed");
+    history.push("/student-profile/feed");
   };
 
   // REMOVE
   const removeSinglePost = () => {
     const postID = singlePostState.id;
 
-    if (userState.AccountType === "Student") {
+    if (user.AccountType === "Student") {
       students_Collection
-        .doc(userState.AuthID)
+        .doc(user.AuthID)
         .collection("Profile")
         .doc("Feed")
         .collection("Posts")
         .doc(postID)
         .delete()
         .catch((err) => console.log(err));
-    } else if (userState.AccountType === "Teacher") {
+    } else if (user.AccountType === "Teacher") {
       teachers_Collection
-        .doc(userState.AuthID)
+        .doc(user.AuthID)
         .collection("Profile")
         .doc("Feed")
         .collection("Posts")
@@ -117,11 +118,12 @@ export default function ProfileFeedEdit() {
         .catch((err) => console.log(err));
     }
 
-    const all = [...allPostsState];
-    const newArray = all.filter((post) => post.id !== postID);
-    newArray.sort((a, b) => b.Date - a.Date);
-    dispatch(storeProfileFeedPostDataAction(newArray));
-    history.push("/teacher-profile/feed");
+    const allPosts = [...allPostsState];
+    const filtered = allPosts.filter((p) => p.id !== postID);
+    filtered.sort((a, b) => b.Date - a.Date);
+    dispatch(storeStudentProfileFeedPostsAction(filtered));
+
+    history.push("/student-profile/feed");
   };
 
   // HANDLE
@@ -138,13 +140,15 @@ export default function ProfileFeedEdit() {
     let galleryBtn = document.querySelector("#link-gallery");
     galleryBtn.classList.remove("navy-back");
 
-    let reviewsBtn = document.querySelector("#link-reviews");
-    reviewsBtn.classList.remove("navy-back");
+    if (user.AccountType === "Teacher") {
+      let reviewsBtn = document.querySelector("#link-reviews");
+      reviewsBtn.classList.remove("navy-back");
+    }
   };
 
   useEffect(() => {
-    if (!teacherAuthID) {
-      history.push("/teacherdash");
+    if (!studentAuthID) {
+      history.push("/studentdash");
       return;
     }
 
@@ -157,7 +161,7 @@ export default function ProfileFeedEdit() {
       <button
         className="btn-back maroon-back"
         onClick={() => {
-          history.push("/teacher-profile/feed");
+          history.push("/student-profile/feed");
         }}
       >
         Back

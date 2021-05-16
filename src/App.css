@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
 /* Button Styles */
@@ -118,6 +119,10 @@ button:focus {
 }
 .dash-links > div:hover {
   padding: 8px;
+}
+.dash-icon {
+  color: #3E00F9;
+  
 }
 
 .menu-heading {

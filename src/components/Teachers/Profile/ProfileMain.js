@@ -22,21 +22,19 @@ import DashFooter from "../Dash/DashFooter";
 
 import "./Profile.css";
 
-
 export default function ProfileMain() {
   let { url } = useRouteMatch();
   const dispatch = useDispatch();
   const history = useHistory();
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
-  const userDataState = useSelector((state) => state.userDataReducer);
 
+  const userDataState = useSelector((state) => state.userDataReducer);
 
   useEffect(() => {
     if (!teacherAuthID) {
       history.push("/teacherdash");
       return;
     }
-
   }, []);
 
   return (
@@ -97,15 +95,17 @@ export default function ProfileMain() {
               </Link>
             </li>
             <br />
-            <li>
-              <Link
-                className="profile-Link"
-                id="link-reviews"
-                to={`${url}/reviews`}
-              >
-                Reviews
-              </Link>
-            </li>
+            {userDataState.AccountType === "Teacher" ? (
+              <li>
+                <Link
+                  className="profile-Link"
+                  id="link-reviews"
+                  to={`${url}/reviews`}
+                >
+                  Reviews
+                </Link>
+              </li>
+            ) : null}
             <br />
           </ul>
         </div>

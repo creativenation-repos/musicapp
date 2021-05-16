@@ -140,4 +140,6 @@
   font-size: 15px;
   margin-right: 5px;
 }
-
+.notifDel:hover {
+  opacity: 0.7;
+}

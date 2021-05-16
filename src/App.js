@@ -46,7 +46,13 @@ import SupportMain from "./components/Teachers/Support/SupportMain";
 // Students
 import StudentDash from "./components/Students/StudentDash";
 import StudentProfileMain from "./components/Students/Profile/StudentProfileMain";
+
 import StudentCoursesMain from "./components/Students/Courses/StudentCoursesMain";
+import StudentCourseOverview from "./components/Students/Courses/StudentCourseOverview";
+import StudentCourseLesson from "./components/Students/Courses/StudentCourseLesson";
+import StudentCourseQuiz from "./components/Students/Courses/StudentCourseQuiz";
+import StudentCourseQuizResults from "./components/Students/Courses/StudentCourseQuizResults";
+import StudentConnectionsMain from "./components/Students/Connections/StudentConnectionsMain";
 import StudentAssignmentsMain from "./components/Students/Assignments/StudentAssignmentsMain";
 import StudentAssignmentView from "./components/Students/Assignments/StudentAssignmentView";
 import StudentMessagesMain from "./components/Students/Messages/StudentMessagesMain";
@@ -77,9 +83,13 @@ import {
   menuAction,
   dashFullMenuAction,
   dashMenuTextAction,
+  userDataAction,
+  storeStudentUserDataAction,
 } from "./redux/actions";
+import { firebaseLooper } from "./utils/tools";
 
 import "./App.css";
+import { users_Collection } from "./utils/firebase";
 
 export default function App() {
   const menuState = useSelector((state) => state.menuReducer);
@@ -92,6 +102,8 @@ export default function App() {
   );
 
   const dispatch = useDispatch();
+  const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
+  const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
 
   const handleDashMenuText = () => {
     dispatch(dashMenuTextAction());
@@ -128,6 +140,33 @@ export default function App() {
       teacherMenu.classList.remove("keep-left-small");
       teacherMenu.classList.add("keep-left");
       mainName.classList.remove("hide");
+    }
+  };
+
+  // NAV
+  const navProfile = () => {
+    if (teacherAuthID) {
+      users_Collection
+        .where("AuthID", "==", teacherAuthID)
+        .get()
+        .then((snapshot) => {
+          const myData = firebaseLooper(snapshot);
+          myData.forEach((me) => {
+            dispatch(userDataAction(me));
+          });
+        })
+        .catch((err) => console.log(err));
+    } else if (studentAuthID) {
+      users_Collection
+        .where("AuthID", "==", studentAuthID)
+        .get()
+        .then((snapshot) => {
+          const myData = firebaseLooper(snapshot);
+          myData.forEach((me) => {
+            dispatch(storeStudentUserDataAction(me));
+          });
+        })
+        .catch((err) => console.log(err));
     }
   };
 
@@ -244,6 +283,7 @@ export default function App() {
                         </li>
                         <li>
                           <Link
+                            onClick={navProfile}
                             className="list-item-link"
                             to="/teacher-profile"
                           >
@@ -514,6 +554,7 @@ export default function App() {
                         </li>
                         <li>
                           <Link
+                          onClick={navProfile}
                             className="list-item-link"
                             to="/student-profile"
                           >
@@ -844,9 +885,26 @@ export default function App() {
             <Route path="/student-profile">
               <StudentProfileMain />
             </Route>
+
             {/* Courses */}
             <Route path="/student-courses">
               <StudentCoursesMain />
+            </Route>
+            <Route path="/student-course-overview">
+              <StudentCourseOverview />
+            </Route>
+            <Route path="/student-course-lesson">
+              <StudentCourseLesson />
+            </Route>
+            <Route path="/student-course-quiz">
+              <StudentCourseQuiz />
+            </Route>
+            <Route path="/student-course-quiz-results">
+              <StudentCourseQuizResults />
+            </Route>
+            {/* Connections */}
+            <Route path="/student-connections">
+              <StudentConnectionsMain />
             </Route>
             {/* Assignments */}
             <Route path="/student-assignments">
