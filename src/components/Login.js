@@ -77,6 +77,7 @@ export default function Login() {
           <div className="login-text">
             <h2>Welcome back!</h2>
             <p>Please log in to begin your musical adventures!</p>
+            <p>Login Creds: Teacher - jssjmnzsnts 123456 ; Student jsgnzlz 123456</p>
           </div>
           <div className="login-form">
             <div>
