@@ -1,18 +1,24 @@
+import {
+  faChevronLeft,
+  faChevronRight,
+  faMinus,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-
-import TopBar from "../Dash/TopBar";
-import DashFooter from "../Dash/DashFooter";
 import GetToday from "../../GetToday";
+import DashFooter from "../Dash/DashFooter";
+import TopBar from "../Dash/TopBar";
 
-import { teachers_Collection } from "../../../utils/firebase";
 import {
-  storeTeacherEventsGeneralInfoAction,
-  storeTodayArrayAction,
-  storeMonthEventsAction,
-  storeSingleMonthEventAction,
+  storeTeacherEventAction,
+  storeTeacherEventCurrentMonthAction,
+  storeTeacherEventsAction,
 } from "../../../redux/actions";
+
+import "./Events.css";
+import { teachers_Collection } from "../../../utils/firebase";
 import { firebaseLooper } from "../../../utils/tools";
 
 export default function EventsMain() {
@@ -20,15 +26,18 @@ export default function EventsMain() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const events = useSelector(
-    (state) => state.storeTeacherEventsGeneralInfoReducer
+  const month = useSelector(
+    (state) => state.storeTeacherEventCurrentMonthReducer
   );
-
-  const todayArray = useSelector((state) => state.storeTodayArrayReducer);
-  const monthEvents = useSelector((state) => state.storeMonthEventsReducer);
+  const events = useSelector((state) => state.storeTeacherEventsReducer);
 
   // GET
-  const getAllEvents = () => {
+  const getTodayMonth = () => {
+    let today = GetToday().toDate().getMonth() + 1;
+    today = getFullByNum(today);
+    dispatch(storeTeacherEventCurrentMonthAction(today));
+
+    // Also dispatch events
     teachers_Collection
       .doc(teacherAuthID)
       .collection("Events")
@@ -36,340 +45,229 @@ export default function EventsMain() {
       .get()
       .then((snapshot) => {
         const eventsData = firebaseLooper(snapshot);
-        dispatch(storeTeacherEventsGeneralInfoAction(eventsData));
+
+        const eveSize = snapshot.size;
+        let eventsArr = [];
+        eventsData.forEach((eve, i) => {
+          let date = eve.Start.toDate().getMonth() + 1;
+
+          date = getFullByNum(date);
+
+          if (date === today) {
+            eventsArr.push(eve);
+          }
+
+          if (i + 1 === eveSize) {
+            dispatch(storeTeacherEventsAction(eventsArr));
+          }
+        });
       })
       .catch((err) => console.log(err));
   };
+  // DATE FORMATS
+  const getFullByNum = (num) => {
+    switch (num) {
+      case 1:
+        return "January";
+      case 2:
+        return "Feburary";
+      case 3:
+        return "March";
+      case 4:
+        return "April";
+      case 5:
+        return "May";
+      case 6:
+        return "June";
+      case 7:
+        return "July";
+      case 8:
+        return "August";
+      case 9:
+        return "September";
+      case 10:
+        return "October";
+      case 11:
+        return "November";
+      case 12:
+        return "December";
+      default:
+        return "Month does not exist.";
+    }
+  };
+  const getNumByFull = (full) => {
+    switch (full) {
+      case "January":
+        return 1;
+      case "February":
+        return 2;
+      case "March":
+        return 3;
+      case "April":
+        return 4;
+      case "May":
+        return 5;
+      case "June":
+        return 6;
+      case "July":
+        return 7;
+      case "August":
+        return 8;
+      case "September":
+        return 9;
+      case "October":
+        return 10;
+      case "November":
+        return 11;
+      case "December":
+        return 12;
+      default:
+        return "Month does not exist.";
+    }
+  };
 
   // HANDLE
-  const handleEventList = () => {
-    return monthEvents.map((eve, i) => {
+  const handleMonth = () => {
+    return <p className="event-curr-month">{month}</p>;
+  };
+  const handleEvents = () => {
+    return events.map((eve, i) => {
       return (
-        <div key={i}>
-          <h3>{eve.Name}</h3>
-          <p>
-            Start:{" "}
-            {eve.Start ? eve.Start.toDate().toString().substr(4, 11) : null}
+        <div
+          className={`eve-block ${
+            eve.Color === "green"
+              ? "eve-block-green"
+              : eve.Color === "blue"
+              ? "eve-block-blue"
+              : eve.Color === "red"
+              ? "eve-block-red"
+              : eve.Color === "purple"
+              ? "eve-block-purple"
+              : eve.Color === "yellow"
+              ? "eve-block-yellow"
+              : null
+          }`}
+          key={i}
+        >
+          <p className="eve-name">{eve.Name}</p>
+          <p className="eve-start">
+            {eve.Start ? eve.Start.toDate().toString().substr(4, 11) : null} -
           </p>
-          <p>
-            End: {eve.End ? eve.End.toDate().toString().substr(4, 11) : null}
+          <p className="eve-end">
+            {eve.End ? eve.End.toDate().toString().substr(4, 11) : null}
           </p>
-          <button id={eve.id} onClick={navEventView}>
+
+          <button id={eve.id} onClick={navEventView} className="btn-eve-view">
             View
           </button>
-          <button id={eve.id} onClick={navEventEdit}>
-            Edit
-          </button>
-          <button id={eve.id} onClick={removeEvent}>
-            Remove
+          <button id={eve.id} onClick={removeEvent} className="btn-eve-del">
+            <FontAwesomeIcon icon={faMinus} />
           </button>
         </div>
       );
     });
   };
 
-  // EVENT STUFFS
-  const turnMonthToNum = (shortMonth) => {
-    switch (shortMonth) {
-      case "Jan":
-        return 1;
-      case "Feb":
-        return 2;
-      case "Mar":
-        return 3;
-      case "Apr":
-        return 4;
-      case "May":
-        return 5;
-      case "Jun":
-        return 6;
-      case "Jul":
-        return 7;
-      case "Aug":
-        return 8;
-      case "Sep":
-        return 9;
-      case "Oct":
-        return 10;
-      case "Nov":
-        return 11;
-      case "Dec":
-        return 12;
-      default:
-        return "No Month Found.";
-    }
-  };
-  const turnMonthToLong = (shortMonth) => {
-    switch (shortMonth) {
-      case "Jan":
-        return "January";
-      case "Feb":
-        return "Feburary";
-      case "Mar":
-        return "March";
-      case "Apr":
-        return "April";
-      case "May":
-        return "May";
-      case "Jun":
-        return "June";
-      case "Jul":
-        return "July";
-      case "Aug":
-        return "August";
-      case "Sep":
-        return "September";
-      case "Oct":
-        return "October";
-      case "Nov":
-        return "November";
-      case "Dec":
-        return "December";
-      default:
-        return "No Month Found.";
-    }
-  };
-  const turnNumToShort = (numMonth) => {
-    switch (numMonth) {
-      case 1:
-        return "Jan";
-      case 2:
-        return "Feb";
-      case 3:
-        return "Mar";
-      case 4:
-        return "Apr";
-      case 5:
-        return "May";
-      case 6:
-        return "Jun";
-      case 7:
-        return "Jul";
-      case 8:
-        return "Aug";
-      case 9:
-        return "Sep";
-      case 10:
-        return "Oct";
-      case 11:
-        return "Nov";
-      case 12:
-        return "Dec";
-      default:
-        return "No Month Found.";
-    }
-  };
-  const turnNumToLong = (numMonth) => {
-    switch (numMonth) {
-      case 1:
-        return "January";
-      case 2:
-        return "February";
-      case 3:
-        return "March";
-      case 4:
-        return "April";
-      case 5:
-        return "May";
-      case 6:
-        return "June";
-      case 7:
-        return "July";
-      case 8:
-        return "August";
-      case 9:
-        return "September";
-      case 10:
-        return "October";
-      case 11:
-        return "November";
-      case 12:
-        return "December";
-      default:
-        return "No Month Found";
-    }
-  };
-
-  const getEventDetails = () => {
-    const today = GetToday().toDate().toString().substr(4, 11).split(" ");
-    const todayArr = [
-      turnMonthToNum(today[0]),
-      parseInt(today[1], 10),
-      parseInt(today[2], 10),
-    ];
-
-    dispatch(storeTodayArrayAction(todayArr));
-
-    const todayMonth = todayArray[0];
-    const todayYear = todayArray[2];
-
-    const currentEvents = [];
-    events.forEach((eve) => {
-      if (eve.Start) {
-        const startArr = eve.Start.toDate().toString().substr(4, 11).split(" ");
-        const endArr = eve.End.toDate().toString().substr(4, 11).split(" ");
-
-        const startMonth = turnMonthToNum(startArr[0]);
-        const startYear = parseInt(startArr[2], 10);
-
-        const endMonth = turnMonthToNum(endArr[0]);
-        const endYear = parseInt(endArr[2], 10);
-
-        if (startMonth === todayMonth) {
-          if (startYear === todayYear) {
-            currentEvents.push(eve);
-          }
-        } else if (endMonth === todayMonth) {
-          if (endYear === todayYear) {
-            currentEvents.push(eve);
-          }
-        }
-      }
-    });
-
-    dispatch(storeMonthEventsAction(currentEvents));
-  };
-
+  // CLICK
   const goBackMonth = () => {
-    let month = todayArray[0];
-    let day = todayArray[1];
-    let year = todayArray[2];
-
-    if (month === 1) {
-      month = 12;
-      year = year - 1;
+    let newMonth = month;
+    let monthNum = getNumByFull(newMonth);
+    if (monthNum === 1) {
+      monthNum = 12;
     } else {
-      month = month - 1;
+      monthNum = monthNum - 1;
     }
+    newMonth = getFullByNum(monthNum);
+    dispatch(storeTeacherEventCurrentMonthAction(newMonth));
 
-    const newTodayArr = [month, day, year];
-
-    dispatch(storeTodayArrayAction(newTodayArr));
-
-    const todayMonth = month;
-    const todayYear = year;
-
-    const currentEvents = [];
-    events.forEach((eve) => {
-      if (eve.Start) {
-        const startArr = eve.Start.toDate().toString().substr(4, 11).split(" ");
-        const endArr = eve.End.toDate().toString().substr(4, 11).split(" ");
-
-        const startMonth = turnMonthToNum(startArr[0]);
-        const startYear = parseInt(startArr[2], 10);
-
-        const endMonth = turnMonthToNum(endArr[0]);
-        const endYear = parseInt(endArr[2], 10);
-
-        if (startMonth === todayMonth) {
-          if (startYear === todayYear) {
-            currentEvents.push(eve);
-          }
-        } else if (endMonth === todayMonth) {
-          if (endYear === todayYear) {
-            currentEvents.push(eve);
-          }
-        }
-      }
-    });
-
-    dispatch(storeMonthEventsAction(currentEvents));
-  };
-  const goForwMonth = () => {
-    let month = todayArray[0];
-    let day = todayArray[1];
-    let year = todayArray[2];
-
-    if (month === 12) {
-      month = 11;
-      year = year + 1;
-    } else {
-      month = month + 1;
-    }
-
-    const newTodayArr = [month, day, year];
-
-    dispatch(storeTodayArrayAction(newTodayArr));
-
-    const todayMonth = month;
-    const todayYear = year;
-
-    const currentEvents = [];
-    events.forEach((eve) => {
-      if (eve.Start) {
-        const startArr = eve.Start.toDate().toString().substr(4, 11).split(" ");
-        const endArr = eve.End.toDate().toString().substr(4, 11).split(" ");
-
-        const startMonth = turnMonthToNum(startArr[0]);
-        const startYear = parseInt(startArr[2], 10);
-
-        const endMonth = turnMonthToNum(endArr[0]);
-        const endYear = parseInt(endArr[2], 10);
-
-        if (startMonth === todayMonth) {
-          if (startYear === todayYear) {
-            currentEvents.push(eve);
-          }
-        } else if (endMonth === todayMonth) {
-          if (endYear === todayYear) {
-            currentEvents.push(eve);
-          }
-        }
-      }
-    });
-
-    dispatch(storeMonthEventsAction(currentEvents));
-  };
-
-  // REMOVE
-  const removeEvent = (event) => {
-    const eventID = event.target.getAttribute("id");
-
-    // Remove from DB
     teachers_Collection
       .doc(teacherAuthID)
       .collection("Events")
-      .doc(eventID)
-      .delete()
+      .orderBy("Start", "asc")
+      .get()
+      .then((snapshot) => {
+        const eventsData = firebaseLooper(snapshot);
+        const eveSize = snapshot.size;
+        let eveArr = [];
+        eventsData.forEach((eve, i) => {
+          const date = eve.Start.toDate().getMonth() + 1;
+          if (date === monthNum) {
+            eveArr.push(eve);
+          }
+
+          if (i + 1 === eveSize) {
+            dispatch(storeTeacherEventsAction(eveArr));
+          }
+        });
+      })
       .catch((err) => console.log(err));
+  };
+  const goForwardMonth = () => {
+    let newMonth = month;
+    let monthNum = getNumByFull(newMonth);
+    if (monthNum === 12) {
+      monthNum = 1;
+    } else {
+      monthNum = monthNum + 1;
+    }
+    newMonth = getFullByNum(monthNum);
+    dispatch(storeTeacherEventCurrentMonthAction(newMonth));
 
-    // Dispatch
+    teachers_Collection
+      .doc(teacherAuthID)
+      .collection("Events")
+      .orderBy("Start", "asc")
+      .get()
+      .then((snapshot) => {
+        const eventsData = firebaseLooper(snapshot);
+        const eveSize = snapshot.size;
+        let eveArr = [];
+        eventsData.forEach((eve, i) => {
+          const date = eve.Start.toDate().getMonth() + 1;
+          if (date === monthNum) {
+            eveArr.push(eve);
+          }
 
-    const allEvents = [...events];
-    const newEves = allEvents.filter((eee) => eee.id !== eventID);
-
-    const allMonthEvents = [...monthEvents];
-    const newMonthEves = allMonthEvents.filter((eee) => eee.id !== eventID);
-
-    dispatch(storeTeacherEventsGeneralInfoAction(newEves));
-    dispatch(storeMonthEventsAction(newMonthEves));
+          if (i + 1 === eveSize) {
+            dispatch(storeTeacherEventsAction(eveArr));
+          }
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   // NAV
   const navEventView = (event) => {
-    const eventID = event.target.getAttribute("id");
+    const eveID = event.currentTarget.getAttribute("id");
 
-    monthEvents.forEach((eve) => {
-      if (eve.id === eventID) {
-        dispatch(storeSingleMonthEventAction(eve));
+    events.forEach((eve) => {
+      if (eve.id === eveID) {
+        dispatch(storeTeacherEventAction(eve));
       }
     });
 
     history.push("/teacher-event-view");
   };
-  const navEventEdit = (event) => {
-    const eventID = event.target.getAttribute("id");
-
-    monthEvents.forEach((eve) => {
-      if (eve.id === eventID) {
-        dispatch(storeSingleMonthEventAction(eve));
-      }
-    });
-
-    history.push("/teacher-event-edit");
+  const naveventCreate = () => {
+    history.push("/teacher-event-create");
   };
-  const navEventNew = () => {
-    history.push("/teacher-event-new");
+
+  // REMOVE
+  const removeEvent = (event) => {
+    const eveID = event.currentTarget.getAttribute("id");
+
+    // Remove from DB
+    teachers_Collection
+      .doc(teacherAuthID)
+      .collection("Events")
+      .doc(eveID)
+      .delete()
+      .catch((err) => console.log(err));
+
+    const allEvents = [...events];
+    const filtered = allEvents.filter((e) => e.id !== eveID);
+
+    dispatch(storeTeacherEventsAction(filtered));
   };
 
   useEffect(() => {
@@ -378,9 +276,9 @@ export default function EventsMain() {
       return;
     }
 
-    getAllEvents();
-    getEventDetails();
+    getTodayMonth();
   }, []);
+
   return (
     <div>
       {/* Top Bar */}
@@ -388,23 +286,26 @@ export default function EventsMain() {
         <TopBar />
       </div>
 
-      {/* Content */}
-      <div>
+      <div className="content">
         <h1>Events</h1>
-        <button className="btn-lime" onClick={navEventNew}>
+        <button onClick={naveventCreate} className="btnCreate">
           Create Event
         </button>
-        <button onClick={() => getEventDetails()}>Rerender</button>
-        <div>
-          {/* Show current month */}
-          <h2>
-            {turnNumToLong(todayArray[0])}, {todayArray[2]}
-          </h2>
-          <button onClick={goBackMonth}>{`<`}</button>
-          <button onClick={goForwMonth}>{`>`}</button>
+        <div className="white-background">
+          <div style={{ display: "flex" }}>
+            {/* Go Back Month */}
+            <button onClick={goBackMonth} className="btn-month-arrow">
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            {/* Go Forward Month */}
+            <button onClick={goForwardMonth} className="btn-month-arrow">
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+            {handleMonth()}
+          </div>
         </div>
 
-        <div>{handleEventList()}</div>
+        <div className="white-background">{handleEvents()}</div>
       </div>
 
       {/* Footer */}

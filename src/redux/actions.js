@@ -706,6 +706,34 @@ export const storeInvoiceServicesAction = (payload) => {
   };
 };
 
+export const storeTeacherMessageConnectionsAction = (payload) => {
+  return {
+    type: "storeTeacherMessageConnectionsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherMessageThreadAction = (payload) => {
+  return {
+    type: "storeTeacherMessageThreadAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherMessageConnectionAction = (payload) => {
+  return {
+    type: "storeTeacherMessageConnectionAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherMessageRecipientAction = (payload) => {
+  return {
+    type: "storeTeacherMessageRecipientAction",
+    payload: payload,
+  };
+};
+
 // Events Actions
 export const storeTodayArrayAction = (payload) => {
   return {
@@ -734,14 +762,35 @@ export const toggleAddEventInviteeAction = () => {
   };
 };
 
-// Milestones Actions
-export const storeTeacherSingleMilestoneSegAction = (payload) => {
+export const storeTeacherEventCurrentMonthAction = (payload) => {
   return {
-    type: "storeTeacherSingleMilestoneSegAction",
+    type: "storeTeacherEventCurrentMonthAction",
     payload: payload,
   };
 };
 
+export const storeTeacherEventsAction = (payload) => {
+  return {
+    type: "storeTeacherEventsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherEventAction = (payload) => {
+  return {
+    type: "storeTeacherEventAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherEventColorAction = (payload) => {
+  return {
+    type: "storeTeacherEventColorAction",
+    payload: payload,
+  };
+};
+
+// Milestones Actions
 export const toggleNewTaskFormAction = () => {
   return {
     type: "toggleNewTaskFormAction",
@@ -758,6 +807,41 @@ export const toggleNewSegmentFormAction = (payload) => {
 export const storeTeacherMilestonesAssigneesAction = (payload) => {
   return {
     type: "storeTeacherMilestonesAssigneesAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherSingleMilestoneSetAction = (payload) => {
+  return {
+    type: "storeTeacherSingleMilestoneSetAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherMilestoneTasksAction = (payload) => {
+  return {
+    type: "storeTeacherMilestoneTasksAction",
+    payload: payload,
+  };
+};
+
+export const toggleStudentMilestoneAddAssigneeFormAction = (payload) => {
+  return {
+    type: "toggleStudentMilestoneAddAssigneeFormAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherMilestoneStudentsAction = (payload) => {
+  return {
+    type: "storeTeacherMilestoneStudentsAction",
+    payload: payload,
+  };
+};
+
+export const storeTeacherMilestoneAssigneesAction = (payload) => {
+  return {
+    type: "storeTeacherMilestoneAssigneesAction",
     payload: payload,
   };
 };
@@ -1130,6 +1214,34 @@ export const storeStudentAssignmentPracticeRatingAction = (payload) => {
   };
 };
 
+export const storeStudentCompletedAssignmentsAction = (payload) => {
+  return {
+    type: "storeStudentCompletedAssignmentsAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentIncompleteAssignmentsAction = (payload) => {
+  return {
+    type: "storeStudentIncompleteAssignmentsAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentAssignmentAction = (payload) => {
+  return {
+    type: "storeStudentAssignmentAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentAssignmentRatingAction = (payload) => {
+  return {
+    type: "storeStudentAssignmentRatingAction",
+    payload: payload,
+  };
+};
+
 // Messages
 export const storeStudentMessagesAction = (payload) => {
   return {
@@ -1148,5 +1260,48 @@ export const storeStudentSingleThreadAction = (payload) => {
 export const toggleStudentNewMessageAction = () => {
   return {
     type: "toggleStudentNewMessageAction",
+  };
+};
+
+// Milestones
+export const storeStudentMilestonesAction = (payload) => {
+  return {
+    type: "storeStudentMilestonesAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentCompleteMilestonesAction = (payload) => {
+  return {
+    type: "storeStudentCompleteMilestonesAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentIncompleteMilestonesAction = (payload) => {
+  return {
+    type: "storeStudentIncompleteMilestonesAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentMilestoneTasksAction = (payload) => {
+  return {
+    type: "storeStudentMilestoneTasksAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentMilestoneViewTasksAction = (payload) => {
+  return {
+    type: "storeStudentMilestoneViewTasksAction",
+    payload: payload,
+  };
+};
+
+export const storeStudentTeacherIDAction = (payload) => {
+  return {
+    type: "storeStudentTeacherIDAction",
+    payload: payload,
   };
 };

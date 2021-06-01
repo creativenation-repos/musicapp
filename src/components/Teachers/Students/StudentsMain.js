@@ -24,6 +24,7 @@ import {
 } from "../../../redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faMinus,
   faSearch,
   faTimes,
   faTimesCircle,
@@ -114,7 +115,7 @@ export default function StudentsMain() {
               Overview
             </button>
             <button className="btnStudList btnStudRemove">
-              <FontAwesomeIcon icon={faTimesCircle} />
+              <FontAwesomeIcon icon={faMinus} />
             </button>
           </div>
         </div>
@@ -215,7 +216,7 @@ export default function StudentsMain() {
       .collection("Notifications")
       .doc(notifID)
       .set({
-        Action: "request",
+        Action: "studrequest",
         Date: GetToday(),
         Icon: "faUser",
         Text: `You have received a request from ${user.FirstName} ${user.LastName} as your instructor.`,

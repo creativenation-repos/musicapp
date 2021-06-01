@@ -23,6 +23,7 @@ import { firebaseLooper } from "../../../utils/tools";
 import "./Connections.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faMinus,
   faSearch,
   faTimes,
   faTimesCircle,
@@ -98,7 +99,7 @@ export default function ConnectionsMain() {
               id={conn.id}
               className="btnConnRemove"
             >
-              <FontAwesomeIcon icon={faTimesCircle} />
+              <FontAwesomeIcon icon={faMinus} />
             </button>
           </div>
         </div>

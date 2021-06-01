@@ -92,7 +92,7 @@ export default function StudentCourseLesson() {
     }
 
     handleLessonVideo();
-  }, []);
+  }, [lesson]);
   return (
     <div>
       {/* Top Bar */}
@@ -112,6 +112,7 @@ export default function StudentCourseLesson() {
         </div>
 
         <div className="btnCourseCompGroup">
+          
           <button onClick={navSaveExit} style={{ backgroundColor: "white" }}>
             Finish &amp; Exit
           </button>

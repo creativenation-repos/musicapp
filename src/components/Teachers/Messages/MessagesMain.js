@@ -1,36 +1,30 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-
-import TopBar from "../Dash/TopBar";
-import DashFooter from "../Dash/DashFooter";
 import {
-  teachers_Collection,
-  students_Collection,
-} from "../../../utils/firebase";
-import {
+  storeTeacherMessageRecipientAction,
   storeTeacherMessagesGeneralInfoAction,
-  storeTeacherSingleThreadAction,
-  toggleTeacherNewMessageAction,
-  storeTeacherStudentGeneralInfoAction,
+  storeTeacherMessageThreadAction,
 } from "../../../redux/actions";
+import { teachers_Collection, users_Collection } from "../../../utils/firebase";
+import DashFooter from "../Dash/DashFooter";
+import TopBar from "../Dash/TopBar";
+
 import { firebaseLooper } from "../../../utils/tools";
-import RandomString from "../../RandomString";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronRight,
+  faMinus,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function MessagesMain() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const toggleNewMessageForm = useSelector(
-    (state) => state.toggleTeacherNewMessageReducer
-  );
-
   const messages = useSelector(
     (state) => state.storeTeacherMessagesGeneralInfoReducer
-  );
-  const students = useSelector(
-    (state) => state.storeTeacherStudentGeneralInfoReducer
   );
 
   // GET
@@ -40,203 +34,160 @@ export default function MessagesMain() {
       .collection("Messages")
       .get()
       .then((snapshot) => {
-        const threads = firebaseLooper(snapshot);
-        const threadCount = snapshot.size;
-        let tempArray = [];
-        threads.forEach((thread, i) => {
+        const messageData = firebaseLooper(snapshot);
+        const messSize = snapshot.size;
+        messageData.forEach((mess, i) => {
+          let allMess = [];
           teachers_Collection
             .doc(teacherAuthID)
             .collection("Messages")
-            .doc(thread.id)
+            .doc(mess.id)
             .collection("MessageBlocks")
-            .orderBy("Date", "asc")
+            .orderBy("Date", "desc")
             .get()
             .then((snapshot) => {
-              const messageBlocks = firebaseLooper(snapshot);
-              thread = {
-                ...thread,
-                Messages: messageBlocks,
-              };
-              tempArray.push(thread);
-              if (i + 1 === threadCount) {
-                dispatch(storeTeacherMessagesGeneralInfoAction(tempArray));
-              }
+              const messBlockData = firebaseLooper(snapshot);
+              const lastMessObj = messBlockData[0];
+
+              users_Collection
+                .where("AuthID", "==", mess.RecipientID)
+                .get()
+                .then((snapshot) => {
+                  const userData = firebaseLooper(snapshot);
+                  userData.forEach((u) => {
+                    mess = {
+                      ...mess,
+                      LastMessage: lastMessObj.Text,
+                      RecipientFullName: `${u.FirstName} ${u.LastName}`,
+                    };
+                    allMess.push(mess);
+                    if (i + 1 === messSize) {
+                      dispatch(storeTeacherMessagesGeneralInfoAction(allMess));
+                    }
+                  });
+                })
+                .catch((err) => console.log(err));
             })
             .catch((err) => console.log(err));
         });
       })
       .catch((err) => console.log(err));
   };
-  const getAllStudentGeneralInfo = () => {
-    const student_Collection = teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Students");
-    student_Collection
-      .get()
-      .then((snapshot) => {
-        const studentData = firebaseLooper(snapshot);
-        const studCount = snapshot.size;
-        // You now have student IDs, now get their data from the student table
-        let studentArray = [];
-        let count = 0;
-
-        studentData.forEach((stud) => {
-          students_Collection
-            .where("StudentID", "==", stud.id)
-            .get()
-            .then((snapshot2) => {
-              const studData = firebaseLooper(snapshot2);
-              studentArray.push(studData[0]);
-
-              if (studCount - 1 === count) {
-                dispatch(storeTeacherStudentGeneralInfoAction(studentArray));
-              }
-              count = count + 1;
-            })
-            .catch((err) => console.log(err));
-        });
-      })
-      .catch((err) => console.log(err));
-  };
-
   // HANDLE
-  const handleThreadList = () => {
+  const handleMessageList = () => {
     return messages.map((mess, i) => {
       return (
-        <div
-          style={{
-            backgroundColor: "rgba(0,0,0,0.05)",
-            padding: "0.1% 3%",
-            borderRadius: "5px",
-            marginBottom: "1%",
-          }}
-          key={i}
-        >
-          <h3>{mess.Recipient}</h3>
-          <p>
-            {mess.Messages[mess.Messages.length - 1]
-              ? mess.Messages[mess.Messages.length - 1].Text
-              : "Empty"}
-          </p>
-          <button id={mess.id} onClick={navThreadView}>
-            View Thread
-          </button>
-          <button id={mess.id} onClick={removeThread} className="btn-salmon">
-            Remove
-          </button>
+        <div className="mess-thread-block" key={i}>
+          <div style={{ display: "flex" }}>
+            <div style={{ marginTop: "auto", marginBottom: "auto" }}>
+              <p className="mess-thread-recipient">{mess.RecipientFullName}</p>
+              <p className="mess-thread-message">{mess.LastMessage}</p>
+            </div>
+            <div class="margin-left">
+              <button
+                id={mess.id}
+                onClick={navMessageView}
+                className="btn-open"
+              >
+                <FontAwesomeIcon icon={faChevronRight} />
+              </button>
+              <button
+                onClick={removeMessage}
+                id={`${mess.RecipientID} ${mess.id}`}
+                className="btn-del-mess"
+              >
+                <FontAwesomeIcon icon={faMinus} />
+              </button>
+            </div>
+          </div>
         </div>
       );
     });
   };
-  const handleNewMessageForm = () => {
-    return (
-      <div>
-        <p>Choose Recipient:</p>
-        {students.map((stud, i) => {
-          return (
-            <button
-              key={i}
-              id={stud.id}
-              onClick={navNewThreadView}
-              className="btn-navy"
-            >
-              {stud.FirstName} {stud.LastName}
-            </button>
-          );
-        })}
-      </div>
-    );
-  };
-
-  // NAV
-  const navThreadView = (event) => {
-    const threadID = event.target.getAttribute("id");
-
-    messages.forEach((thread) => {
-      if (thread.id === threadID) {
-        dispatch(storeTeacherSingleThreadAction(thread));
-      }
-    });
-
-    history.push("/teacher-message-thread");
-  };
-  const navNewThreadView = (event) => {
-    const studID = event.target.getAttribute("id");
-    let found = false;
-    messages.forEach((thread) => {
-      if (thread.Recipient === studID) {
-        found = true;
-      }
-    });
-
-
-    if (found) {
-      messages.forEach((thread) => {
-        if (thread.Recipient === studID) {
-          dispatch(storeTeacherSingleThreadAction(thread));
-        }
-      });
-    } else {
-      const rand1 = RandomString();
-      const rand2 = RandomString();
-      const threadID = `Thread${rand1}${rand2}`;
-
-      teachers_Collection
-        .doc(teacherAuthID)
-        .collection("Messages")
-        .doc(threadID)
-        .set({
-          Recipient: studID,
-        })
-        .catch((err) => console.log(err));
-
-      const tempObj = {
-        id: threadID,
-        Recipient: studID,
-      };
-
-      dispatch(storeTeacherSingleThreadAction(tempObj));
-    }
-    history.push("/teacher-message-thread");
-  };
-
   // REMOVE
-  const removeThread = (event) => {
-    const threadID = event.target.getAttribute("id");
+  const removeMessage = (event) => {
+    const idArr = event.currentTarget.getAttribute("id").split(" ");
+    const recID = idArr[0];
+    const meID = idArr[1];
 
-    // Remove to DB
+    // Remove from DB
     teachers_Collection
       .doc(teacherAuthID)
       .collection("Messages")
-      .doc(threadID)
-      .collection("MessageBlocks")
+      .where("RecipientID", "==", recID)
       .get()
       .then((snapshot) => {
-        const data = firebaseLooper(snapshot);
-        data.forEach((d) => {
+        const messData = firebaseLooper(snapshot);
+        messData.forEach((m) => {
           teachers_Collection
             .doc(teacherAuthID)
             .collection("Messages")
-            .doc(threadID)
+            .doc(m.id)
             .collection("MessageBlocks")
-            .doc(d.id)
+            .get()
+            .then((snapshot) => {
+              const messBlockData = firebaseLooper(snapshot);
+              messBlockData.forEach((mb) => {
+                teachers_Collection
+                  .doc(teacherAuthID)
+                  .collection("Messages")
+                  .doc(m.id)
+                  .collection("MessageBlocks")
+                  .doc(mb.id)
+                  .delete()
+                  .catch((err) => console.log(err));
+              });
+            })
+            .catch((err) => console.log(err));
+
+          teachers_Collection
+            .doc(teacherAuthID)
+            .collection("Messages")
+            .doc(m.id)
             .delete()
             .catch((err) => console.log(err));
         });
       })
       .catch((err) => console.log(err));
-    teachers_Collection
-      .doc(teacherAuthID)
-      .collection("Messages")
-      .doc(threadID)
-      .delete()
-      .catch((err) => console.log(err));
 
     // Dispatch
     const allMess = [...messages];
-    const filtered = allMess.filter((thread) => thread.id !== threadID);
+    const filtered = allMess.filter((m) => m.id !== meID);
 
     dispatch(storeTeacherMessagesGeneralInfoAction(filtered));
+  };
+  // NAV
+  const navMessageView = (event) => {
+    const messID = event.currentTarget.getAttribute("id");
+
+    messages.forEach((mess) => {
+      if (mess.id === messID) {
+        users_Collection
+          .where("AuthID", "==", mess.RecipientID)
+          .get()
+          .then((snapshot) => {
+            const recData = firebaseLooper(snapshot);
+            recData.forEach((re) => {
+              dispatch(storeTeacherMessageRecipientAction(re));
+            });
+          })
+          .catch((err) => console.log(err));
+
+        teachers_Collection
+          .doc(teacherAuthID)
+          .collection("Messages")
+          .doc(mess.id)
+          .collection("MessageBlocks")
+          .get()
+          .then((snapshot) => {
+            const messBlocksData = firebaseLooper(snapshot);
+            dispatch(storeTeacherMessageThreadAction(messBlocksData));
+          })
+          .catch((err) => console.log(err));
+      }
+    });
+
+    history.push("/teacher-message-view");
   };
 
   useEffect(() => {
@@ -245,7 +196,6 @@ export default function MessagesMain() {
       return;
     }
 
-    getAllStudentGeneralInfo();
     getAllMessages();
   }, []);
   return (
@@ -255,20 +205,16 @@ export default function MessagesMain() {
         <TopBar />
       </div>
 
-      <div>
+      <div className="content">
         <h1>Messages</h1>
-        <div>
-          {/* New Message */}
-          <button onClick={() => dispatch(toggleTeacherNewMessageAction())}>
-            {toggleNewMessageForm ? "Close" : "New Message"}
-          </button>
-          {toggleNewMessageForm ? handleNewMessageForm() : null}
-        </div>
-        <br />
-        <div>
-          {/* Threads */}
-          {handleThreadList()}
-        </div>
+        <button
+          onClick={() => history.push("/teacher-message-create")}
+          className="btnCreate"
+        >
+          Create New Message
+        </button>
+
+        <div className="white-background">{handleMessageList()}</div>
       </div>
 
       {/* Footer */}

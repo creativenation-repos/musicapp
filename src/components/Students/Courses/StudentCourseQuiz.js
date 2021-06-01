@@ -628,7 +628,7 @@ export default function StudentCourseQuiz() {
 
     getAllComponents();
     handleMediaComps();
-  }, []);
+  }, [quiz]);
   return (
     <div>
       {/* Top Bar */}

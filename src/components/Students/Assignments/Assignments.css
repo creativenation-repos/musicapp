@@ -1,0 +1,84 @@
+.ass-main-head {
+  margin: 0;
+  padding: 0;
+  font-size: 25px;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 10px;
+}
+.ass-main-block {
+  margin: 0;
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-bottom: 10px;
+  display: flex;
+}
+.ass-main-block:hover {
+  opacity: 0.8;
+}
+.ass-main-name {
+  margin: 0;
+  padding: 0;
+  font-weight: 800;
+  font-size: 18px;
+}
+.ass-main-teach {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.btn-ass-go {
+  -webkit-appearance: none;
+  border: 0;
+  width: 35px;
+  height: 35px;
+  background-color: #3e00f9;
+  color: white;
+  border-radius: 30px;
+  font-size: 15px;
+  margin: 0;
+}
+.ass-view-head {
+  margin: 0;
+  font-weight: 800;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.ass-view-desc {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.btn-ass-rate {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.btn-ass-rate > button {
+  margin: 0;
+  margin-right: 10px;
+  -webkit-appearance: none;
+  border: 0;
+  background-color: #3e00f9;
+  color: white;
+  font-size: 18px;
+  border-radius: 30px;
+  width: 40px;
+  height: 40px;
+}
+.btn-ass-rate > button:hover {
+  opacity: 0.7;
+}
+
+.ass-view-rating {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: rgba(0,0,0,0.7);
+}

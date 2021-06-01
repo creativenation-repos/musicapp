@@ -12,6 +12,8 @@ import {
   storeTeacherAllCoursesAction,
   storeTeacherSingleCourseAction,
 } from "../../../redux/actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus } from "@fortawesome/free-solid-svg-icons";
 
 export default function CoursesMain() {
   const teacherAuthID = useSelector((state) => state.storeTeacherAuthIDReducer);
@@ -44,7 +46,7 @@ export default function CoursesMain() {
               View
             </button>
             <button id={c.id} onClick={removeCourse} className="btnRemove">
-              Remove
+              <FontAwesomeIcon icon={faMinus} />
             </button>
           </div>
         </div>
@@ -62,7 +64,9 @@ export default function CoursesMain() {
         .then(function (url) {
           // Or inserted into an <img> element:
           let img = document.getElementById(`imgThumb${i}`);
-          img.src = url;
+          if (img) {
+            img.src = url;
+          }
         })
         .catch((err) => console.log(err));
     });
@@ -91,87 +95,89 @@ export default function CoursesMain() {
     const courseID = event.target.getAttribute("id");
 
     // Remove from DB
-    courses_Collection
-      .doc(courseID)
-      .collection("Lessons")
-      .get()
-      .then((snapshot) => {
-        const lessonsData = firebaseLooper(snapshot);
-        lessonsData.forEach((less) => {
-          firebase.storage.ref("Videos/").child(less.Video).delete();
+    if (courseID) {
+      courses_Collection
+        .doc(courseID)
+        .collection("Lessons")
+        .get()
+        .then((snapshot) => {
+          const lessonsData = firebaseLooper(snapshot);
+          lessonsData.forEach((less) => {
+            firebase.storage.ref("Videos/").child(less.Video).delete();
 
-          courses_Collection
-            .doc(courseID)
-            .collection("Lessons")
-            .doc(less.id)
-            .delete()
-            .catch((err) => console.log(err));
-        });
-      })
-      .catch((err) => console.log(err));
-
-    courses_Collection
-      .doc(courseID)
-      .collection("Quizzes")
-      .get()
-      .then((snapshot) => {
-        const quizData = firebaseLooper(snapshot);
-        quizData.forEach((q) => {
-          courses_Collection
-            .doc(courseID)
-            .collection("Quizzes")
-            .doc(q.id)
-            .collection("Components")
-            .get()
-            .then((snapshot) => {
-              const compsData = firebaseLooper(snapshot);
-              compsData.forEach((com) => {
-                if (com.Type === "audio") {
-                  firebase.storage.ref("Audio/").child(com.Audio).delete();
-                } else if (com.Type === "video") {
-                  firebase.storage.ref("Videos/").child(com.Video).delete();
-                } else if (com.Type === "image") {
-                  firebase.storage.ref("Images/").child(com.Video).delete();
-                }
-
-                courses_Collection
-                  .doc(courseID)
-                  .collection("Quizzes")
-                  .doc(q.id)
-                  .collection("Components")
-                  .doc(com.id)
-                  .delete()
-                  .catch((err) => console.log(err));
-              });
-            })
-            .catch((err) => console.log(err));
-
-          courses.forEach((c) => {
-            if (c.id === courseID) {
-              firebase.storage.ref("Images/").child(c.Thumbnail).delete();
-            }
+            courses_Collection
+              .doc(courseID)
+              .collection("Lessons")
+              .doc(less.id)
+              .delete()
+              .catch((err) => console.log(err));
           });
+        })
+        .catch((err) => console.log(err));
 
-          courses_Collection
-            .doc(courseID)
-            .collection("Quizzes")
-            .doc(q.id)
-            .delete()
-            .catch((err) => console.log(err));
-        });
-      })
-      .catch((err) => console.log(err));
+      courses_Collection
+        .doc(courseID)
+        .collection("Quizzes")
+        .get()
+        .then((snapshot) => {
+          const quizData = firebaseLooper(snapshot);
+          quizData.forEach((q) => {
+            courses_Collection
+              .doc(courseID)
+              .collection("Quizzes")
+              .doc(q.id)
+              .collection("Components")
+              .get()
+              .then((snapshot) => {
+                const compsData = firebaseLooper(snapshot);
+                compsData.forEach((com) => {
+                  if (com.Type === "audio") {
+                    firebase.storage.ref("Audio/").child(com.Audio).delete();
+                  } else if (com.Type === "video") {
+                    firebase.storage.ref("Videos/").child(com.Video).delete();
+                  } else if (com.Type === "image") {
+                    firebase.storage.ref("Images/").child(com.Video).delete();
+                  }
 
-    courses_Collection
-      .doc(courseID)
-      .delete()
-      .catch((err) => console.log(err));
+                  courses_Collection
+                    .doc(courseID)
+                    .collection("Quizzes")
+                    .doc(q.id)
+                    .collection("Components")
+                    .doc(com.id)
+                    .delete()
+                    .catch((err) => console.log(err));
+                });
+              })
+              .catch((err) => console.log(err));
 
-    // Dispatch
-    const allCourses = [...courses];
-    const filtered = allCourses.filter((cour) => cour.id !== courseID);
+            courses.forEach((c) => {
+              if (c.id === courseID) {
+                firebase.storage.ref("Images/").child(c.Thumbnail).delete();
+              }
+            });
 
-    dispatch(storeTeacherAllCoursesAction(filtered));
+            courses_Collection
+              .doc(courseID)
+              .collection("Quizzes")
+              .doc(q.id)
+              .delete()
+              .catch((err) => console.log(err));
+          });
+        })
+        .catch((err) => console.log(err));
+
+      courses_Collection
+        .doc(courseID)
+        .delete()
+        .catch((err) => console.log(err));
+
+      // Dispatch
+      const allCourses = [...courses];
+      const filtered = allCourses.filter((cour) => cour.id !== courseID);
+
+      dispatch(storeTeacherAllCoursesAction(filtered));
+    }
   };
 
   // ONCHANGE

@@ -1,19 +1,24 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-
 import TopBar from "../TopBar";
 import Footer from "../Footer";
+
+import { firebaseLooper } from "../../../utils/tools";
 import {
   students_Collection,
   teachers_Collection,
 } from "../../../utils/firebase";
 import {
   storeStudentAssignmentsAction,
-  storeStudentSingleAssignmentAction,
-  storeStudentAssignmentsInfoAction,
+  storeStudentIncompleteAssignmentsAction,
+  storeStudentAssignmentAction,
+  storeStudentCompletedAssignmentsAction,
 } from "../../../redux/actions";
-import { firebaseLooper } from "../../../utils/tools";
+
+import "./Assignments.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function StudentAssignmentsMain() {
   const studentAuthID = useSelector((state) => state.storeStudentAuthIDReducer);
@@ -21,74 +26,100 @@ export default function StudentAssignmentsMain() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const assignments = useSelector(
-    (state) => state.storeStudentAssignmentsReducer
+  const completed = useSelector(
+    (state) => state.storeStudentCompletedAssignmentsReducer
   );
-  const assignmentsInfo = useSelector(
-    (state) => state.storeStudentAssignmentsInfoReducer
+  const incomplete = useSelector(
+    (state) => state.storeStudentIncompleteAssignmentsReducer
   );
 
-  //   GET
-  const getAllAssignments = () => {
-    // Get list of assignments info
+  // GET
+  const getAllCompletedAssignments = () => {
     students_Collection
       .doc(studentAuthID)
       .collection("AssignmentsInfo")
+      .where("isComplete", "==", true)
       .get()
       .then((snapshot) => {
-        const assignmentList = firebaseLooper(snapshot);
-        dispatch(storeStudentAssignmentsInfoAction(assignmentList));
+        const assData = firebaseLooper(snapshot);
+        dispatch(storeStudentCompletedAssignmentsAction(assData));
+      })
+      .catch((err) => console.log(err));
+  };
+  const getAllIncompleteAssignments = () => {
+    students_Collection
+      .doc(studentAuthID)
+      .collection("AssignmentsInfo")
+      .where("isComplete", "==", false)
+      .get()
+      .then((snapshot) => {
+        const assData = firebaseLooper(snapshot);
+        dispatch(storeStudentIncompleteAssignmentsAction(assData));
       })
       .catch((err) => console.log(err));
   };
 
-  //   HANDLE
-  const handleCompleteAssignmentList = () => {
-    return assignmentsInfo.map((assInfo, i) => {
-      if (assInfo.isComplete) {
+  // HANDLE
+  const handleCompletedList = () => {
+    if (completed) {
+      return completed.map((ass, i) => {
         return (
-          <div key={i}>
-            <h3>{assInfo.Name}</h3>
-            <p>Teacher: {assInfo.Teacher}</p>
-            <p style={{ color: "green" }}>Complete!</p>
+          <div className="ass-main-block" key={i}>
+            <div>
+              <p className="ass-main-name">{ass.Name}</p>
+              <p className="ass-main-teach">Teacher: {ass.Teacher}</p>
+            </div>
+            <div>
+              <p className="ass-main-due"></p>
+            </div>
           </div>
         );
-      }
-    });
+      });
+    }
   };
-
-  const handleIncompleteAssignmentList = () => {
-    return assignmentsInfo.map((assInfo, i) => {
-      if (!assInfo.isComplete) {
+  const handleIncompleteList = () => {
+    if (incomplete) {
+      return incomplete.map((ass, i) => {
         return (
-          <div key={i}>
-            <h3>{assInfo.Name}</h3>
-            <p>{assInfo.Desc}</p>
-            <p>Teacher: {assInfo.Teacher}</p>
-            <button id={assInfo.AssID} onClick={navAssignmentView}>
-              View
-            </button>
+          <div className="ass-main-block" key={i}>
+            <div>
+              <p className="ass-main-name">{ass.Name}</p>
+              <p className="ass-main-teach">Teacher: {ass.Teacher}</p>
+            </div>
+            <div style={{ marginLeft: "auto" }}>
+              <button
+                id={ass.id}
+                onClick={navAssignmentView}
+                className="btn-ass-go"
+              >
+                <FontAwesomeIcon icon={faChevronRight} />
+              </button>
+            </div>
           </div>
         );
-      }
-    });
+      });
+    }
   };
 
   //   NAV
   const navAssignmentView = (event) => {
-    const assID = event.target.getAttribute("id");
+    const assID = event.currentTarget.getAttribute("id");
 
-    assignmentsInfo.forEach((ass) => {
-      if (ass.AssID === assID) {
+    incomplete.forEach((ass) => {
+      if (ass.id === assID) {
         teachers_Collection
           .doc(ass.Teacher)
           .collection("Assignments")
           .get()
           .then((snapshot) => {
             const assData = firebaseLooper(snapshot);
-            assData.forEach((ad) => {
-              if (ad.id === assID) {
-                dispatch(storeStudentSingleAssignmentAction(ad));
+            assData.forEach((a) => {
+              if (a.id === ass.AssID) {
+                a = {
+                  ...a,
+                  Teacher: ass.Teacher,
+                };
+                dispatch(storeStudentAssignmentAction(a));
               }
             });
           })
@@ -105,8 +136,10 @@ export default function StudentAssignmentsMain() {
       return;
     }
 
-    getAllAssignments();
-  }, []);
+    getAllCompletedAssignments();
+    getAllIncompleteAssignments();
+  }, [completed, incomplete]);
+
   return (
     <div>
       {/* Top Bar */}
@@ -114,15 +147,16 @@ export default function StudentAssignmentsMain() {
         <TopBar />
       </div>
 
-      <div>
+      <div className="content">
         <h1>Assignments</h1>
-
-        <br />
-        <h3>Incomplete</h3>
-        {handleIncompleteAssignmentList()}
-        <hr />
-        <h3>Completed</h3>
-        {handleCompleteAssignmentList()}
+        <div className="white-background">
+          <p className="ass-main-head">Incomplete</p>
+          {handleIncompleteList()}
+        </div>
+        <div className="white-background">
+          <p className="ass-main-head">Complete</p>
+          {handleCompletedList()}
+        </div>
       </div>
 
       {/* Footer */}

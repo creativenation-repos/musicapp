@@ -1,0 +1,203 @@
+.milestone-block {
+  background-color: rgba(0, 0, 0, 0.03);
+  display: flex;
+  border-radius: 5px;
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 7px 10px;
+}
+.mile-name {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
+  padding: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.mile-view {
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: 30px;
+  background-color: #3e00f9;
+  color: white;
+  font-size: 15px;
+  width: 100px;
+  padding: 7px;
+}
+.mile-view:hover {
+  opacity: 0.7;
+}
+.mile-remove {
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: 30px;
+  font-size: 18px;
+  background-color: rgba(255, 0, 0, 0.2);
+  color: red;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+}
+.mile-remove:hover {
+  opacity: 0.7;
+}
+
+.task-block {
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.06);
+  margin: 0;
+  padding: 15px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+}
+.task-task {
+  font-weight: 800;
+  letter-spacing: -1px;
+  font-size: 22px;
+  margin: 0;
+  padding: 0;
+}
+.task-desc {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  margin-top: 10px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.btn-edit-tasks {
+  background-color: #3e00f9;
+  color: white;
+  position: absolute;
+  right: 20px;
+  top: 70px;
+  border-radius: 30px;
+  width: 140px;
+  font-size: 15px;
+  padding: 8px;
+}
+.btn-edit-tasks:hover {
+  opacity: 0.7;
+}
+
+.task-edit-block {
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  margin: 0;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.task-edit-head {
+  margin: 0;
+  padding: 0;
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 6px;
+  margin-top: 5px;
+}
+.task-edit-main-head {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 15px;
+  font-size: 30px;
+}
+.btn-add-task {
+  -webkit-appearance: none;
+  background-color: #3e00f9;
+  color: white;
+  border-radius: 30px;
+  width: 50px;
+  height: 50px;
+  font-size: 18px;
+  display: block;
+  margin: 20px auto;
+}
+.btn-add-task:hover {
+  opacity: 0.7;
+}
+
+.btn-remove-task {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: red;
+  width: 50px;
+  height: 50px;
+  border: 0;
+  font-size: 22px;
+  border-radius: 30px;
+  position: absolute;
+  right: 40px;
+  transform: translateY(-100px);
+}
+.btn-remove-task:hover {
+  opacity: 0.7;
+}
+
+.set-name-head {
+  margin: 0;
+  padding: 0;
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.btn-add-mile-ass {
+  margin: 0;
+  border: 0;
+  border-radius: 30px;
+  background-color: #3e00f9;
+  color: white;
+  font-size: 15px;
+  width: 35px;
+  height: 35px;
+}
+.add-ass-form-head {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.ass-form-stud-block {
+  background-color: rgba(0, 0, 0, 0.05);
+  margin: 0;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  border-radius: 5px;
+}
+.ass-form-stud-block > * {
+  margin: auto 0;
+  padding: 0;
+}
+.btn-ass-form-add {
+  -webkit-appearance: none;
+  border: 0;
+  background-color: #3e00f9;
+  color: white;
+  border-radius: 30px;
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+  margin-left: auto;
+}
+.btn-ass-form-add:hover {
+  opacity: 0.7;
+}
+
+.ass-name-block {
+  display: flex;
+  margin-bottom: 10px;
+}
+.ass-name-block > * {
+  margin: 0;
+  padding: 0;
+
+}
+.ass-name-icon {
+  color: #3e00f9;
+  margin-right: 10px;
+}
+
+.ass-name-block > p {
+  font-weight: 800;
+}

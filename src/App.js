@@ -26,18 +26,18 @@ import AssignmentView from "./components/Teachers/Assignments/AssignmentView";
 import AssignmentEdit from "./components/Teachers/Assignments/AssignmentEdit";
 import AssignmentNew from "./components/Teachers/Assignments/AssignmentNew";
 import MilestonesMain from "./components/Teachers/Milestones/MilestonesMain";
-import MilestoneView from "./components/Teachers/Milestones/MilestoneView";
-import MilestoneEdit from "./components/Teachers/Milestones/MilestoneEdit";
-import MilestoneAssign from "./components/Teachers/Milestones/MilestoneAssign";
+import MilestonesView from "./components/Teachers/Milestones/MilestonesView";
+import MilestonesEdit from "./components/Teachers/Milestones/MilestonesEdit";
+import MilestonesCreate from "./components/Teachers/Milestones/MilestonesCreate";
 import ForumsMain from "./components/Teachers/Forums/ForumsMain";
 import ArticlesMain from "./components/Teachers/Articles/ArticlesMain";
 import MessagesMain from "./components/Teachers/Messages/MessagesMain";
-import MessageThreadView from "./components/Teachers/Messages/MessageThreadView";
-import FileManagerMain from "./components/Teachers/FileManager/FileManagerMain";
+import MessagesCreate from "./components/Teachers/Messages/MessagesCreate";
+import MessagesView from "./components/Teachers/Messages/MessagesView";
 import EventsMain from "./components/Teachers/Events/EventsMain";
-import EventView from "./components/Teachers/Events/EventView";
-import EventEdit from "./components/Teachers/Events/EventEdit";
-import EventNew from "./components/Teachers/Events/EventNew";
+import EventsView from "./components/Teachers/Events/EventsView";
+import EventsCreate from "./components/Teachers/Events/EventsCreate";
+import EventsEdit from "./components/Teachers/Events/EventsEdit";
 import InvoicesMain from "./components/Teachers/Invoices/InvoicesMain";
 import InvoiceView from "./components/Teachers/Invoices/InvoiceView";
 import SettingsMain from "./components/Teachers/Settings/SettingsMain";
@@ -54,9 +54,11 @@ import StudentCourseQuiz from "./components/Students/Courses/StudentCourseQuiz";
 import StudentCourseQuizResults from "./components/Students/Courses/StudentCourseQuizResults";
 import StudentConnectionsMain from "./components/Students/Connections/StudentConnectionsMain";
 import StudentAssignmentsMain from "./components/Students/Assignments/StudentAssignmentsMain";
-import StudentAssignmentView from "./components/Students/Assignments/StudentAssignmentView";
+import StudentAssignmentsView from "./components/Students/Assignments/StudentAssignmentsView";
 import StudentMessagesMain from "./components/Students/Messages/StudentMessagesMain";
 import StudentMessageThreadView from "./components/Students/Messages/StudentMessageThreadView";
+import StudentMilestonesMain from "./components/Students/Milestones/StudentMilestonesMain";
+import StudentMilestoneView from "./components/Students/Milestones/StudentMilestoneView";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -554,7 +556,7 @@ export default function App() {
                         </li>
                         <li>
                           <Link
-                          onClick={navProfile}
+                            onClick={navProfile}
                             className="list-item-link"
                             to="/student-profile"
                           >
@@ -665,6 +667,18 @@ export default function App() {
                               </div>
                               <div className="dash-text">
                                 <p className="menuText">Messages</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="list-item-link" to="/student-events">
+                            <div className="dash-links">
+                              <div className="dash-icon">
+                                <FontAwesomeIcon icon={faCalendarAlt} />
+                              </div>
+                              <div className="dash-text">
+                                <p className="menuText">Events</p>
                               </div>
                             </div>
                           </Link>
@@ -823,13 +837,13 @@ export default function App() {
               <MilestonesMain />
             </Route>
             <Route path="/teacher-milestone-view">
-              <MilestoneView />
+              <MilestonesView />
             </Route>
             <Route path="/teacher-milestone-edit">
-              <MilestoneEdit />
+              <MilestonesEdit />
             </Route>
-            <Route path="/teacher-milestone-assign">
-              <MilestoneAssign />
+            <Route path="/teacher-milestone-create">
+              <MilestonesCreate />
             </Route>
             {/* Forums */}
             <Route path="/teacher-forums">
@@ -842,24 +856,24 @@ export default function App() {
             <Route path="/teacher-messages">
               <MessagesMain />
             </Route>
-            <Route path="/teacher-message-thread">
-              <MessageThreadView />
+            <Route path="/teacher-message-create">
+              <MessagesCreate />
             </Route>
-            <Route path="/teacher-filemanager">
-              <FileManagerMain />
+            <Route path="/teacher-message-view">
+              <MessagesView />
             </Route>
             {/* Events */}
             <Route path="/teacher-events">
               <EventsMain />
             </Route>
             <Route path="/teacher-event-view">
-              <EventView />
+              <EventsView />
+            </Route>
+            <Route path="/teacher-event-create">
+              <EventsCreate />
             </Route>
             <Route path="/teacher-event-edit">
-              <EventEdit />
-            </Route>
-            <Route path="/teacher-event-new">
-              <EventNew />
+              <EventsEdit />
             </Route>
             {/* Invoices */}
             <Route path="/teacher-invoices">
@@ -911,7 +925,7 @@ export default function App() {
               <StudentAssignmentsMain />
             </Route>
             <Route path="/student-assignment-view">
-              <StudentAssignmentView />
+              <StudentAssignmentsView />
             </Route>
             {/* Messages */}
             <Route path="/student-messages">
@@ -919,6 +933,13 @@ export default function App() {
             </Route>
             <Route path="/student-message-thread">
               <StudentMessageThreadView />
+            </Route>
+            {/* Milestones */}
+            <Route path="/student-milestones">
+              <StudentMilestonesMain />
+            </Route>
+            <Route path="/student-milestone-view">
+              <StudentMilestoneView />
             </Route>
           </Switch>
         </div>

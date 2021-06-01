@@ -260,7 +260,7 @@ export default function StudentCourseOverview() {
     }
 
     doEverything();
-  }, [lessons, quizzes]);
+  }, []);
 
   return (
     <div>

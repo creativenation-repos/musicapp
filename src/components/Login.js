@@ -58,6 +58,7 @@ export default function Login() {
               // Save authID
               dispatch(storeStudentAuthIDAction(username));
               dispatch(storeAccountTypeAction("Student"));
+
               document
                 .querySelector("#studentMainMenu")
                 .classList.remove("hide");

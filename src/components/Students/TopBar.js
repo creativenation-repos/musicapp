@@ -25,6 +25,8 @@ import {
   faPlusCircle,
   faChalkboardTeacher,
   faBookReader,
+  faBookOpen,
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   storeAccountTypeAction,
@@ -89,6 +91,10 @@ export default function TopBar() {
                   ? faBell
                   : notif.Icon === "faUser"
                   ? faUser
+                  : notif.Icon === "faBookOpen"
+                  ? faBookOpen
+                  : notif.Icon === "faSpinner"
+                  ? faSpinner
                   : notif.Icon === "faUsers"
                   ? faUsers
                   : notif.Icon === "faStar"

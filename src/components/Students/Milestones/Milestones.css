@@ -1,0 +1,83 @@
+.mile-list-block {
+  display: flex;
+  margin: 0;
+  padding: 14px;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-bottom: 10px;
+}
+.mile-list-block > * {
+  margin: auto 0;
+  padding: 0;
+}
+.btn-mile-view {
+  -webkit-appearance: none;
+  background-color: #3e00f9;
+  color: white;
+  border-radius: 30px;
+  width: 35px;
+  height: 35px;
+  margin-left: auto;
+  font-size: 15px;
+}
+.btn-mile-view:hover {
+  opacity: 0.7;
+}
+
+.mile-list-name {
+  margin: 0;
+  padding: 0;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+.mile-list-teacher {
+  margin: 0;
+  padding: 0;
+}
+
+.mile-list-head {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+  font-weight: 800;
+  font-size: 25px;
+}
+
+.task-list-block {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+  margin: 0;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+.task-list-block > * {
+  margin: auto 0;
+  padding: 0;
+}
+.task-list-icon-complete {
+  background-color: rgba(91, 228, 105, 0.6);
+  color: white;
+  border-radius: 30px;
+  font-size: 14px;
+  padding: 6px;
+  width: 10px;
+  height: 10px;
+  margin-bottom: 10px;
+}
+.task-list-icon-incomplete {
+  background-color: rgba(255, 0, 0, 0.8);
+  color: white;
+  border-radius: 30px;
+  font-size: 14px;
+  padding: 6px;
+  width: 10px;
+  height: 10px;
+  margin-bottom: 10px;
+}
+.task-list-desc {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+}
+.task-list-task {
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -1px;
+}
